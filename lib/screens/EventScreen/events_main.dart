@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Events'),
         ),
-        drawer: Drawer(
+        drawer: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
           child: Container(
             color: Color(0xFFC7CCCA),
             child: ListView(
