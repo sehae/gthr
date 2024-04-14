@@ -23,7 +23,54 @@ class MyApp extends StatelessWidget {
                   child: Center(
                     child: Image.asset('assets/'),
                   ),
-                )
+                ),
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text(
+                    'Home',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                  onTap: (){
+                    'Navigator.of(context).push('
+                        'MaterialPageRoute(builder: (context)=> homepage())'
+                        ')';
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.event),
+                  title: Text(
+                    'Events',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.chat_bubble),
+                  title: Text(
+                    'Chats',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.people_alt_rounded),
+                  title: Text(
+                    'Friends',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text(
+                    'Profile',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text(
+                    'Settings',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
               ],
             ),
           ),
