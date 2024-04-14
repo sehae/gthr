@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
               children: [
                 DrawerHeader(
                   child: Center(
-                    child: Image.asset('assets/'),
+                    child: Image.asset('assets/gthr_Logo.png'),
                   ),
                 ),
                 ListTile(
