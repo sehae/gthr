@@ -26,7 +26,10 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.home),
+                  leading: Icon(
+                      Icons.home,
+                    color: Color(0xFF1E5720),
+                  ),
                   title: Text(
                     'Home',
                     style: TextStyle(fontSize: 15),
@@ -38,35 +41,50 @@ class MyApp extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.event),
+                  leading: Icon(
+                      Icons.event,
+                    color: Color(0xFF1E5720),
+                  ),
                   title: Text(
                     'Events',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.chat_bubble),
+                  leading: Icon(
+                      Icons.chat_bubble,
+                    color: Color(0xFF1E5720),
+                  ),
                   title: Text(
                     'Chats',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.people_alt_rounded),
+                  leading: Icon(
+                      Icons.people_alt_rounded,
+                    color: Color(0xFF1E5720),
+                  ),
                   title: Text(
                     'Friends',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.person),
+                  leading: Icon(
+                      Icons.person,
+                    color: Color(0xFF1E5720),
+                  ),
                   title: Text(
                     'Profile',
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 ListTile(
-                  leading: Icon(Icons.settings),
+                  leading: Icon(
+                      Icons.settings,
+                    color: Color(0xFF1E5720),
+                  ),
                   title: Text(
                     'Settings',
                     style: TextStyle(fontSize: 15),
