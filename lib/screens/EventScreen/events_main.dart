@@ -196,7 +196,7 @@ class _ContentState extends State<Content> {
                   ),
                   child: Image.asset(
                     'assets/test.png',
-                    width: 350,
+                    width: 400,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -291,11 +291,20 @@ class _ContentState extends State<Content> {
                         ),
                       ),
                       SizedBox(height: 5,),
-                      Text(
-                        '9 People are Interested',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            minRadius: 15,
+                            maxRadius: 15,
+                          ),
+                          SizedBox(width: 5,),
+                          Text(
+                            '9 People are Interested',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 5,),
                       Row(
@@ -511,8 +520,49 @@ class _ContentState extends State<Content> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                          'Guest Speaker'
+
+                      // Additional Content: if the event has guest speakers/special artist.
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Guest Speaker',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  minRadius: 30,
+                                  maxRadius: 30,
+                                ),
+                                SizedBox(width: 20,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Shrek de Swamp',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Former President of ACM',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
