@@ -593,7 +593,10 @@ class _ContentState extends State<Content> {
                       child: Container(
                           width: 350,
                           height: 450,
-                          color: Colors.white,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                          ),
                           child: Padding(
                             padding: EdgeInsets.all(20),
                             child: Center(
