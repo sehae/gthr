@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Profile',
+            '',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.bold,
