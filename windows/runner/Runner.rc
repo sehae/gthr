@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "gthr" "\0"
+            VALUE "FileDescription", "better_gthr" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "gthr" "\0"
+            VALUE "InternalName", "better_gthr" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "gthr.exe" "\0"
-            VALUE "ProductName", "gthr" "\0"
+            VALUE "OriginalFilename", "better_gthr.exe" "\0"
+            VALUE "ProductName", "better_gthr" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
