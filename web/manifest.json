@@ -1,11 +1,11 @@
 {
-    "name": "gthr",
-    "short_name": "gthr",
+    "name": "better_gthr",
+    "short_name": "better_gthr",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "GTHR",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

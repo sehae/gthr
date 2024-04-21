@@ -1,6 +1,6 @@
-# gthr
+# better_gthr
 
-A new Flutter project.
+GTHR
 
 ## Getting Started
 
