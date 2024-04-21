@@ -16,6 +16,7 @@ flutter:
   assets:
     - assets/gthr_logo.png
     - assets/gthr_logo2.png
+    - assets/gthr_logoALT.png
     - assets/event_1.jpg
     - assets/event_2.jpg
     - assets/user_1.jpg
