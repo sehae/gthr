@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gthr/initialScreens/SignUpScreen/signup1.dart';
+import 'package:gthr/main.dart';
 
 import '../../screens/HomePage/homepage.dart';
 
@@ -63,7 +64,7 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => MyHomePage(),
                 ));
               },
               child: Text(

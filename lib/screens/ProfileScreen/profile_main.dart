@@ -13,17 +13,6 @@ class ProfilePage extends StatelessWidget {
       title: 'Profile Main Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: true,
-        ),
-        drawer: AppDrawer(),
         body: Content(),
       ),
     );

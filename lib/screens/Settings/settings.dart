@@ -22,21 +22,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff1E7251),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: FaIcon(FontAwesomeIcons.bars), // Replace with Font Awesome bars icon
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-        title: null,
-      ),
-      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/navigation/drawer.dart';
 import 'package:gthr/navigation/routing.dart';
+import 'package:gthr/screens/ChatScreen/chat_main.dart';
 import 'package:gthr/screens/EventScreen/events_main.dart';
 import 'package:gthr/screens/FriendsScreen/friend_list.dart';
 import 'package:gthr/screens/HomePage/homepage.dart';
@@ -15,29 +17,153 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Define routes
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case Routes.home:
-            return MaterialPageRoute(builder: (context) => HomePage());
-          case Routes.events:
-            return MaterialPageRoute(builder: (context) => EventsPage());
-          case Routes.chats:
-            //return MaterialPageRoute(builder: (context) => ChatsScreen());
-          case Routes.friends:
-            return MaterialPageRoute(builder: (context) => FriendsPage());
-          case Routes.profile:
-            return MaterialPageRoute(builder: (context) => ProfilePage());
-          case Routes.settings:
-            return MaterialPageRoute(builder: (context) => SettingsPage());
-          case Routes.splash: // Assuming you have a SplashScreen
-            return MaterialPageRoute(builder: (context) => SplashScreen());
-          default:
-            return null; // If the route is not found, return null
-        }
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+      routes: {
+        Routes.home: (context) => MyHomePage(),
+        Routes.events: (context) => EventsPage(),
+        Routes.chats: (context) => ChatPage(),
+        Routes.friends: (context) => FriendsPage(),
+        Routes.profile: (context) => ProfilePage(),
+        Routes.settings: (context) => SettingsPage(),
       },
-      // Set the initial route
-      initialRoute: Routes.splash, // Assuming SplashScreen is your initial route
     );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String _selectedRoute = Routes.home;
+
+  void _onSelectRoute(String route) {
+    setState(() {
+      _selectedRoute = route;
+    });
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color appBarColor = _getAppBarColor();
+
+    return Scaffold(
+      extendBodyBehindAppBar: _selectedRoute == Routes.chats || _selectedRoute == Routes.friends,
+      appBar: AppBar(
+        title: Text(
+            _getAppBarTitle(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: appBarColor == Colors.white ? Colors.black : Colors.white,
+          ),
+        ),
+        backgroundColor: _getAppBarColor(),
+        actions: _getActions(),
+        centerTitle: true,
+      ),
+      drawer: AppDrawer(
+        onSelectRoute: _onSelectRoute,
+        selectedRoute: _selectedRoute,
+      ),
+      body: Builder(
+        builder: (BuildContext context) {
+          switch (_selectedRoute) {
+            case Routes.home:
+              return HomePage();
+            case Routes.events:
+              return EventsPage();
+            case Routes.chats:
+              return ChatPage();
+            case Routes.friends:
+              return FriendsPage();
+            case Routes.profile:
+              return ProfilePage();
+            case Routes.settings:
+              return SettingsPage();
+            default:
+              return Container();
+          }
+        },
+      ),
+    );
+  }
+
+  String _getAppBarTitle() {
+    switch (_selectedRoute) {
+      case Routes.home:
+        return '';
+      case Routes.events:
+        return 'Events';
+      case Routes.chats:
+        return 'Chats';
+      case Routes.friends:
+        return 'Friends';
+      case Routes.profile:
+        return '';
+      case Routes.settings:
+        return 'Settings';
+      default:
+        return '';
+    }
+  }
+
+  Color _getAppBarColor() {
+    switch (_selectedRoute) {
+      case Routes.home:
+        return Colors.white;
+      case Routes.events:
+        return Colors.white;
+      case Routes.chats:
+        return Color(0xff1E7251);
+      case Routes.friends:
+        return Color(0xff1E7251);
+      case Routes.profile:
+        return Colors.white;
+      case Routes.settings:
+        return Colors.white;
+      default:
+        return Color(0xff1E7251);
+    }
+  }
+
+  List<Widget> _getActions() {
+    if (_selectedRoute == Routes.events) {
+      return [
+        IconButton(
+          icon: Image.asset('assets/gthr_LogoALT.png'),
+          onPressed: (){
+          },
+        )
+      ];
+    } else if (_selectedRoute == Routes.friends) {
+      return [
+        IconButton(
+          icon: Image.asset('assets/gthr_LogoALT.png'),
+          onPressed: (){
+          },
+        )
+      ];
+    } else if (_selectedRoute == Routes.chats) {
+      return [
+        IconButton(
+          icon: Image.asset('assets/gthr_LogoALT.png'),
+          onPressed: (){
+          },
+        )
+      ];
+    } else if (_selectedRoute == Routes.profile) {
+      return [
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+
+          },
+        ),
+      ];
+    }
+    return [];
   }
 }

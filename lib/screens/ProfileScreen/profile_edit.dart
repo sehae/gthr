@@ -39,7 +39,7 @@ class Content extends StatefulWidget {
 class _ContentState extends State<Content> {
   final double coverHeight = 150;
   final double profileHeight = 144;
-  var _formKey = GlobalKey<FormState>();
+  //var _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class _ContentState extends State<Content> {
 
   Widget buildForm() {
     return Form(
-      key: _formKey,
+      //key: _formKey,
       child: Column(
         children: [
           TextFormField(

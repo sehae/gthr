@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'routing.dart';
 
 class AppDrawer extends StatelessWidget {
+  final Function(String) onSelectRoute;
+  final String selectedRoute;
+
+  AppDrawer({
+    required this.onSelectRoute,
+    required this.selectedRoute
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.5,
+      child: Drawer(
         child: Container(
           color: Color(0xFFC7CCCA),
           child: Column(
@@ -33,9 +41,7 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        print("Tapped on Home");
-                        Navigator.pop(context); // Close the drawer
-                        Navigator.pushNamed(context, Routes.home);
+                        onSelectRoute(Routes.home);
                       },
                     ),
                     ListTile(
@@ -52,8 +58,7 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pop(context); // Close the drawer
-                        Navigator.pushNamed(context, Routes.events);
+                        onSelectRoute(Routes.events);
                       },
                     ),
                     ListTile(
@@ -69,6 +74,9 @@ class AppDrawer extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
+                      onTap: () {
+                        onSelectRoute(Routes.chats);
+                      },
                     ),
                     ListTile(
                       leading: Icon(
@@ -83,6 +91,9 @@ class AppDrawer extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
+                      onTap: () {
+                        onSelectRoute(Routes.friends);
+                      },
                     ),
                     ListTile(
                       leading: Icon(
@@ -97,6 +108,9 @@ class AppDrawer extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
+                      onTap: () {
+                        onSelectRoute(Routes.profile);
+                      },
                     ),
                     ListTile(
                       leading: Icon(
@@ -111,6 +125,9 @@ class AppDrawer extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
+                      onTap: () {
+                        onSelectRoute(Routes.settings);
+                      },
                     ),
                   ],
                 ),

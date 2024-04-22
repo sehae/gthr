@@ -2,7 +2,7 @@ import 'package:gthr/screens/Settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../navigation/drawer.dart';
+import '../../navigation/navDrawer.dart';
 
 void main() {
   runApp(HomePage());
@@ -14,11 +14,6 @@ class HomePage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xff1E7251),
-          title: null,
-        ),
-        drawer: AppDrawer(),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +39,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

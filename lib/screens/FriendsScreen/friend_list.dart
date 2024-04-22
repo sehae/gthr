@@ -14,28 +14,6 @@ class FriendsPage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: Text(
-            'Friends',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
-          forceMaterialTransparency: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
-            IconButton(
-              icon: Image.asset('assets/gthr_LogoALT.png'),
-              onPressed: (){
-              },
-            )
-          ],
-        ),
-        drawer: AppDrawer(),
         body: Content(),
       ),
     );

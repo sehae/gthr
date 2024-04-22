@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gthr/navigation/drawer.dart';
+import 'package:gthr/navigation/navDrawer.dart';
 import 'package:gthr/navigation/routing.dart';
 import 'package:readmore/readmore.dart';
 
@@ -10,31 +11,18 @@ class EventsPage extends StatelessWidget{
       title: 'Events Main Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-              'Events',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Image.asset('assets/gthr_LogoALT.png'),
-              onPressed: (){
-              },
-            )
-          ],
-        ),
-        drawer: AppDrawer(),
         body: Content(),
       ),
     );
   }
 }
 
-class Content extends StatelessWidget {
+class Content extends StatefulWidget {
+  @override
+  _ContentState createState() => _ContentState();
+}
+
+class _ContentState extends State<Content> {
   String text = 'Lorem ipsum dolor sit amet consectetur. Volutpat ac pulvinar egestas id vitae. Risus lacinia ac aliquam bibendum viverra facilisis id. Neque nisi pharetra quis ultrices habitasse vivamus leo. Ultricies morbi in morbi non.Lorem ipsum dolor sit amet consectetur. Volutpat ac pulvinar egestas id vitae. Risus lacinia ac aliquam bibendum viverra facilisis id. Neque nisi pharetra quis ultrices habitasse vivamus leo. Ultricies morbi in morbi non.';
 
   int selectedIndex = 0;
@@ -345,7 +333,9 @@ class Content extends StatelessWidget {
     return Expanded(
       child: ElevatedButton(
         onPressed: () {
-          selectedIndex = index;
+          setState(() {
+            selectedIndex = index;
+          });
         },
         child: Text(
           text,
