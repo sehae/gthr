@@ -1,5 +1,3 @@
-# better_gthr
-
 GTHR
 
 ## Getting Started
