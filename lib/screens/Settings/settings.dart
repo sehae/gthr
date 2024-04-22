@@ -2,6 +2,8 @@ import 'package:gthr/screens/HomePage/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../navigation/drawer.dart';
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -34,132 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         title: null,
       ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
-        child: Drawer(
-          child: Container(
-            color: Color(0xFFC7CCCA),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    children: [
-                      DrawerHeader(
-                        child: Center(
-                          child: Image.asset('assets/gthr_logo2.png'),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.home,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Home',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.event,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Events',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.chat_bubble,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Chats',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.people_alt_rounded,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Friends',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Profile',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.settings,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Settings',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: Color(0xFF1E5720),
-                    size: 32,
-                  ),
-                  title: Text(
-                    'Sign-out',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
