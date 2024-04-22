@@ -1,4 +1,6 @@
+import 'package:better_gthr/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,13 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+    return const MaterialApp(
+      home: HomePage(),
     );
   }
 }
@@ -27,11 +24,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Color(0xff1E7251),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.menu),
+              icon: FaIcon(FontAwesomeIcons.bars), // Replace with Font Awesome bars icon
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -41,10 +38,8 @@ class HomePage extends StatelessWidget {
         title: null,
       ),
       drawer: SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width * 0.5,
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Drawer(
           child: Container(
             color: Color(0xFFC7CCCA),
             child: Column(
@@ -66,14 +61,14 @@ class HomePage extends StatelessWidget {
                         title: Text(
                           'Home',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         onTap: () {
-                          'Navigator.of(context).push('
-                              'MaterialPageRoute(builder: (context)=> homepage())'
-                              ')';
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => HomePage()),
+                          );
                         },
                       ),
                       ListTile(
@@ -99,8 +94,8 @@ class HomePage extends StatelessWidget {
                         title: Text(
                           'Chats',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -113,8 +108,8 @@ class HomePage extends StatelessWidget {
                         title: Text(
                           'Friends',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -127,8 +122,8 @@ class HomePage extends StatelessWidget {
                         title: Text(
                           'Profile',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -141,10 +136,15 @@ class HomePage extends StatelessWidget {
                         title: Text(
                           'Settings',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => SettingsPage()),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -158,8 +158,8 @@ class HomePage extends StatelessWidget {
                   title: Text(
                     'Sign-out',
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -167,6 +167,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,13 +177,6 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
-                  Center(
-                    child: Image.asset(
-                      'assets/gthr_logo.png',
-                      height: 150,
-                    ),
-                  ),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
