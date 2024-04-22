@@ -2,294 +2,146 @@ import 'package:gthr/screens/Settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../navigation/drawer.dart';
+
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
-    );
-  }
+  runApp(HomePage());
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff1E7251),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: FaIcon(FontAwesomeIcons.bars), // Replace with Font Awesome bars icon
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xff1E7251),
+          title: null,
         ),
-        title: null,
-      ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
-        child: Drawer(
-          child: Container(
-            color: Color(0xFFC7CCCA),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    children: [
-                      DrawerHeader(
-                        child: Center(
-                          child: Image.asset('assets/gthr_logo2.png'),
+        drawer: AppDrawer(),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: const Text(
+                        'Welcome, User!',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.home,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Home',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.event,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Events',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.chat_bubble,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Chats',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.people_alt_rounded,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Friends',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Profile',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.settings,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Settings',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => SettingsPage()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: Color(0xFF1E5720),
-                    size: 32,
-                  ),
-                  title: Text(
-                    'Sign-out',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: const Text(
-                      'Welcome, User!',
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Upcoming Events',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                       textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Handle "See more..." button press
+                      },
+                      child: const Text(
+                        'See more...',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Upcoming Events',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Handle "See more..." button press
-                    },
-                    child: const Text(
-                      'See more...',
+              _buildCard(
+                imageUrl: 'assets/event_1.jpg',
+                title: 'InnovatED Fair',
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Past Events',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Handle "See more..." button press
+                      },
+                      child: const Text(
+                        'See more...',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            _buildCard(
-              imageUrl: 'assets/event_1.jpg',
-              title: 'InnovatED Fair',
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Past Events',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Handle "See more..." button press
-                    },
-                    child: const Text(
-                      'See more...',
+              _buildCard(
+                imageUrl: 'assets/event_2.jpg',
+                title: 'PasKorner',
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Announcements',
                       style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Handle "See more..." button press
+                      },
+                      child: const Text(
+                        'See more...',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            _buildCard(
-              imageUrl: 'assets/event_2.jpg',
-              title: 'PasKorner',
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Adjusting vertical padding
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Announcements',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Handle "See more..." button press
-                    },
-                    child: const Text(
-                      'See more...',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ],
+              _buildAnnouncement(
+                profileImageUrl: 'assets/user_1.jpg',
+                name: 'Johan Santos',
+                date: 'April 16, 2024',
+                time: '10:00 AM',
+                announcementText:
+                'LF ka-duo sa valo, babae only',
               ),
-            ),
-            _buildAnnouncement(
-              profileImageUrl: 'assets/user_1.jpg',
-              name: 'Johan Santos',
-              date: 'April 16, 2024',
-              time: '10:00 AM',
-              announcementText:
-                  'LF ka-duo sa valo, babae only',
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/navigation/drawer.dart';
+import 'package:gthr/navigation/routing.dart';
 import 'package:readmore/readmore.dart';
 
-
-
-void main() {
-  runApp(EventsPage());
-}
-
-class EventsPage extends StatelessWidget {
+class EventsPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,142 +27,14 @@ class EventsPage extends StatelessWidget {
             )
           ],
         ),
-        drawer: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Container(
-            color: Color(0xFFC7CCCA),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    children: [
-                      DrawerHeader(
-                        child: Center(
-                          child: Image.asset('assets/gthr_Logo.png'),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.home,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Home',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        onTap: (){
-                          'Navigator.of(context).push('
-                              'MaterialPageRoute(builder: (context)=> homepage())'
-                              ')';
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.event,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Events',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.chat_bubble,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Chats',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.people_alt_rounded,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Friends',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Profile',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.settings,
-                          color: Color(0xFF1E5720),
-                          size: 32,
-                        ),
-                        title: Text(
-                          'Settings',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: Color(0xFF1E5720),
-                    size: 32,
-                  ),
-                  title: Text(
-                    'Sign-out',
-                    style: TextStyle(
-                        fontSize: 20,
-                    fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        drawer: AppDrawer(),
         body: Content(),
       ),
     );
   }
 }
 
-class Content extends StatefulWidget {
-  @override
-  _ContentState createState() => _ContentState();
-}
-
-class _ContentState extends State<Content> {
+class Content extends StatelessWidget {
   String text = 'Lorem ipsum dolor sit amet consectetur. Volutpat ac pulvinar egestas id vitae. Risus lacinia ac aliquam bibendum viverra facilisis id. Neque nisi pharetra quis ultrices habitasse vivamus leo. Ultricies morbi in morbi non.Lorem ipsum dolor sit amet consectetur. Volutpat ac pulvinar egestas id vitae. Risus lacinia ac aliquam bibendum viverra facilisis id. Neque nisi pharetra quis ultrices habitasse vivamus leo. Ultricies morbi in morbi non.';
 
   int selectedIndex = 0;
@@ -477,9 +345,7 @@ class _ContentState extends State<Content> {
     return Expanded(
       child: ElevatedButton(
         onPressed: () {
-          setState(() {
-            selectedIndex = index;
-          });
+          selectedIndex = index;
         },
         child: Text(
           text,

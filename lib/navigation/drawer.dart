@@ -33,7 +33,9 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.home);
+                        print("Tapped on Home");
+                        Navigator.pop(context); // Close the drawer
+                        Navigator.pushNamed(context, Routes.home);
                       },
                     ),
                     ListTile(
@@ -50,10 +52,66 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.events);
+                        Navigator.pop(context); // Close the drawer
+                        Navigator.pushNamed(context, Routes.events);
                       },
                     ),
-                    // Add similar ListTile widgets for other screens
+                    ListTile(
+                      leading: Icon(
+                        Icons.chat_bubble,
+                        color: Color(0xFF1E5720),
+                        size: 32,
+                      ),
+                      title: Text(
+                        'Chats',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.people_alt_rounded,
+                        color: Color(0xFF1E5720),
+                        size: 32,
+                      ),
+                      title: Text(
+                        'Friends',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.person,
+                        color: Color(0xFF1E5720),
+                        size: 32,
+                      ),
+                      title: Text(
+                        'Profile',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.settings,
+                        color: Color(0xFF1E5720),
+                        size: 32,
+                      ),
+                      title: Text(
+                        'Settings',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

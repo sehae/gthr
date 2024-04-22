@@ -11,9 +11,9 @@ class SplashScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/logowtext.png', // GTHR LOGO
+              'assets/gthr_LogoWithText.png',
             ),
-            SizedBox(height: 100), // Button to logo spacing
+            SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -21,10 +21,10 @@ class SplashScreen extends StatelessWidget {
                 ));
               },
               child: Text('Get Started'),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xff1E7251), // BG color
-                onPrimary: Colors.white, // Text color
-                minimumSize: Size(250, 50), // Button minimum size
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xff1E7251)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                minimumSize: MaterialStateProperty.all<Size>(Size(250, 50)),
               ),
             ),
           ],

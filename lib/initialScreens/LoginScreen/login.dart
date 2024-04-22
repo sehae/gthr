@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart'; //Gestures for register button
+import 'package:flutter/gestures.dart';
 import 'package:gthr/initialScreens/SignUpScreen/signup1.dart';
+
+import '../../screens/HomePage/homepage.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -12,9 +14,12 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset(
-              'assets/logo.png',
-              width: 500, // Logo size; for some reason di ko pa to mabago further
+            Container(
+              width: 250,
+              child: Image.asset(
+                'assets/gthr_Logo.png',
+                fit: BoxFit.contain,
+              ),
             ),
             SizedBox(height: 48),
             TextField(
@@ -57,19 +62,26 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 15),
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement login logic
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ));
               },
-              child: Text('Login'),
+              child: Text(
+                  'Login',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xff1E7251), // Background color
-                onPrimary: Colors.white, // Text color
-                minimumSize: Size(double.infinity, 50), // Button size
+                primary: Color(0xff1E7251),
+                onPrimary: Colors.white,
+                minimumSize: Size(double.infinity, 50),
               ),
             ),
             SizedBox(height: 10),
             RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black, fontSize: 14.0), // Default text style
+                style: TextStyle(color: Colors.black, fontSize: 14.0),
                 children: <TextSpan>[
                   TextSpan(text: "Don't have an account? "),
                   TextSpan(
