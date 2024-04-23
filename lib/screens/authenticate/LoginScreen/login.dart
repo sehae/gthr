@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gthr/main.dart';
+import 'package:gthr/services/auth.dart';
 
 import '../SignUpScreen/signup1.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreen createState() => _LoginScreen();
+}
+
+class _LoginScreen extends State<LoginScreen> {
+
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +70,15 @@ class LoginScreen extends StatelessWidget {
             ),
             SizedBox(height: 15),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MyHomePage(),
-                ));
+              onPressed: () async {
+                dynamic result = _auth.signInAnon();
+                if (result == null){
+                  print("couldn't sign in");
+                } else {
+                  print('Signed In');
+                  print(result + 'yes?');
+
+                }
               },
               child: Text(
                   'Login',

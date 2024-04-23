@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gthr/navigation/drawer.dart';
 import 'package:gthr/navigation/routing.dart';
@@ -9,7 +10,18 @@ import 'package:gthr/screens/ProfileScreen/profile_main.dart';
 import 'package:gthr/screens/Settings/settings.dart';
 import 'package:gthr/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: 'AIzaSyCdRjCVZlhrq72RuEklEyyxYlBRCYhI2Sw',
+      projectId: 'gthr-b7547',
+      appId: '1:417493490436:android:7df380d827c4419e14ce51',
+      messagingSenderId: '417493490436',
+    ),
+  );
+
   runApp(MyApp());
 }
 
