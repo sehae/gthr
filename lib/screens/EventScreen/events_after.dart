@@ -588,270 +588,270 @@ class _ContentState extends State<Content> {
                 child: Container(
                   color: Colors.black.withOpacity(0.5),
                   child: Center(
-                    child: GestureDetector(
-                      onTap: (){},
-                      child: Container(
-                          width: 350,
-                          height: 450,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(10))
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Give Feedback',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  Text(
-                                      'How would you describe your experience at the event?*',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10,),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: FittedBox(
-                                          child: ElevatedButton(
-                                            onPressed: (){
-                                            },
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                EdgeInsets.all(15),
-                                              ),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                              foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.faceSadTear,
-                                                  size: 60,
-                                                ),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  child: Text(
-                                                    'Terrible',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: FittedBox(
-                                          child: ElevatedButton(
-                                            onPressed: (){
-                                            },
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                EdgeInsets.all(15),
-                                              ),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                              foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.faceFrown,
-                                                  size: 60,
-                                                ),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  child: Text(
-                                                    'Bad',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: FittedBox(
-                                          child: ElevatedButton(
-                                            onPressed: (){
-                                            },
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                EdgeInsets.all(15),
-                                              ),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                              foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.faceMeh,
-                                                  size: 60,
-                                                ),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  child: Text(
-                                                    'Okay',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: FittedBox(
-                                          child: ElevatedButton(
-                                            onPressed: (){
-                                            },
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                EdgeInsets.all(15),
-                                              ),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                              foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.faceSmile,
-                                                  size: 60,
-                                                ),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  child: Text(
-                                                    'Good',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: FittedBox(
-                                          child: ElevatedButton(
-                                            onPressed: (){
-                                            },
-                                            style: ButtonStyle(
-                                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                EdgeInsets.all(15),
-                                              ),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                              ),
-                                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                              foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.faceLaugh,
-                                                  size: 60,
-                                                ),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  child: Text(
-                                                    'Amazing',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10,),
-                                  Text(
-                                    'Feel free to share any additional feedback or comments.',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5,),
-                                  TextField(
-                                    maxLines: 3,
-                                    decoration: InputDecoration(
-                                      hintText: 'Tell us how can we improve',
-                                      hintStyle: TextStyle(
-                                        fontSize: 16,
-                                        color: Color(0xFFC5C5C5)
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Color(0xFF1E7251),
-                                          width: 5.0,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10,),
-                                  Row(
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: (){
-
-                                        },
-                                        child: Text(
-                                            'Submit'
-                                        ),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: (){
-
-                                        },
-                                        child: Text(
-                                            'Cancel'
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                      child: GestureDetector(
+                        onTap: (){},
+                        child: Container(
+                            width: 350,
+                            height: 450,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(10))
                             ),
-                          )
-                      ),
-                    )
+                            child: Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Center(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Give Feedback',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    Text(
+                                      'How would you describe your experience at the event?*',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: FittedBox(
+                                            child: ElevatedButton(
+                                              onPressed: (){
+                                              },
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  EdgeInsets.all(15),
+                                                ),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.faceSadTear,
+                                                    size: 60,
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 0,
+                                                    child: Text(
+                                                      'Terrible',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Expanded(
+                                          child: FittedBox(
+                                            child: ElevatedButton(
+                                              onPressed: (){
+                                              },
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  EdgeInsets.all(15),
+                                                ),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.faceFrown,
+                                                    size: 60,
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 0,
+                                                    child: Text(
+                                                      'Bad',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Expanded(
+                                          child: FittedBox(
+                                            child: ElevatedButton(
+                                              onPressed: (){
+                                              },
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  EdgeInsets.all(15),
+                                                ),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.faceMeh,
+                                                    size: 60,
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 0,
+                                                    child: Text(
+                                                      'Okay',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Expanded(
+                                          child: FittedBox(
+                                            child: ElevatedButton(
+                                              onPressed: (){
+                                              },
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  EdgeInsets.all(15),
+                                                ),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.faceSmile,
+                                                    size: 60,
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 0,
+                                                    child: Text(
+                                                      'Good',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10,),
+                                        Expanded(
+                                          child: FittedBox(
+                                            child: ElevatedButton(
+                                              onPressed: (){
+                                              },
+                                              style: ButtonStyle(
+                                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                                  EdgeInsets.all(15),
+                                                ),
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                  ),
+                                                ),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.faceLaugh,
+                                                    size: 60,
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 0,
+                                                    child: Text(
+                                                      'Amazing',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Text(
+                                      'Feel free to share any additional feedback or comments.',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5,),
+                                    TextField(
+                                      maxLines: 3,
+                                      decoration: InputDecoration(
+                                        hintText: 'Tell us how can we improve',
+                                        hintStyle: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xFFC5C5C5)
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(0xFF1E7251),
+                                            width: 5.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: (){
+
+                                          },
+                                          child: Text(
+                                              'Submit'
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: (){
+
+                                          },
+                                          child: Text(
+                                              'Cancel'
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                        ),
+                      )
                   ),
                 ),
               ),

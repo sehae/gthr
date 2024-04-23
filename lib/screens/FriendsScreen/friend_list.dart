@@ -71,7 +71,7 @@ class _ContentState extends State<Content> {
       child: Column(
         children: [
           Expanded(
-              child: Container(),
+            child: Container(),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -158,14 +158,14 @@ class _ContentState extends State<Content> {
               hintText: 'Search',
               prefixIcon: Icon(Icons.search),
               suffixIcon: _controller.text.isEmpty
-                ? null
-                : IconButton(onPressed: (){
-                  setState(() {
-                    _controller.clear();
-                  });
-                },
+                  ? null
+                  : IconButton(onPressed: (){
+                setState(() {
+                  _controller.clear();
+                });
+              },
                 icon: FaIcon(
-                    FontAwesomeIcons.solidCircleXmark,
+                  FontAwesomeIcons.solidCircleXmark,
                   size: 20,
                   color: Colors.black38,
                 ),
@@ -173,7 +173,7 @@ class _ContentState extends State<Content> {
               border: InputBorder.none,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(color: Colors.black12),
+                borderSide: BorderSide(color: Colors.black12),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
