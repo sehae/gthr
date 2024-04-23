@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/services/auth.dart';
 import 'routing.dart';
 
 class AppDrawer extends StatelessWidget {
   final Function(String) onSelectRoute;
   final String selectedRoute;
+  final AuthService _auth = AuthService();
 
   AppDrawer({
     required this.onSelectRoute,
@@ -145,8 +147,8 @@ class AppDrawer extends StatelessWidget {
                       fontWeight: FontWeight.bold
                   ),
                 ),
-                onTap: () {
-                  // Handle sign-out logic here
+                onTap: () async {
+                  await _auth.signOut();
                 },
               ),
             ],

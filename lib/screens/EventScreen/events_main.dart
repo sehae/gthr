@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gthr/navigation/drawer.dart';
-import 'package:gthr/navigation/navDrawer.dart';
 import 'package:gthr/navigation/routing.dart';
 import 'package:readmore/readmore.dart';
 

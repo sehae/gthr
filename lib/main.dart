@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gthr/models/user.dart';
 import 'package:gthr/navigation/drawer.dart';
 import 'package:gthr/navigation/routing.dart';
 import 'package:gthr/screens/ChatScreen/chat_main.dart';
@@ -8,7 +9,10 @@ import 'package:gthr/screens/FriendsScreen/friend_list.dart';
 import 'package:gthr/screens/HomePage/homepage.dart';
 import 'package:gthr/screens/ProfileScreen/profile_main.dart';
 import 'package:gthr/screens/Settings/settings.dart';
+import 'package:gthr/screens/wrapper.dart';
+import 'package:gthr/services/auth.dart';
 import 'package:gthr/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,17 +32,21 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
-      routes: {
-        Routes.home: (context) => MyHomePage(),
-        Routes.events: (context) => EventsPage(),
-        Routes.chats: (context) => ChatPage(),
-        Routes.friends: (context) => FriendsPage(),
-        Routes.profile: (context) => ProfilePage(),
-        Routes.settings: (context) => SettingsPage(),
-      },
+    return StreamProvider<myUser?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Wrapper(), //SplashScreen(),
+        routes: {
+          Routes.home: (context) => MyHomePage(),
+          Routes.events: (context) => EventsPage(),
+          Routes.chats: (context) => ChatPage(),
+          Routes.friends: (context) => FriendsPage(),
+          Routes.profile: (context) => ProfilePage(),
+          Routes.settings: (context) => SettingsPage(),
+        },
+      ),
     );
   }
 }

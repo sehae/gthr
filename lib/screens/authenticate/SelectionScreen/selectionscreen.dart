@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../services/auth.dart';
 import '../LoginScreen/login.dart';
 
-class SelectionScreen extends StatelessWidget {
+class SelectionScreen extends StatefulWidget {
+  @override
+  State<SelectionScreen> createState() => _SelectionScreenState();
+}
+
+class _SelectionScreenState extends State<SelectionScreen> {
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
+
     //Minimum screen width and 1/2 screen height to make sure shit squares up
     final size = MediaQuery.of(context).size;
     final buttonWidth = size.width;
@@ -23,8 +31,7 @@ class SelectionScreen extends StatelessWidget {
             height: buttonSize.height,
             child: TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Color(0xff1E7251),
-                primary: Color(0xffFFDD0A),
+                foregroundColor: Color(0xffFFDD0A), backgroundColor: Color(0xff1E7251),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
               onPressed: () {
@@ -48,12 +55,18 @@ class SelectionScreen extends StatelessWidget {
             height: buttonSize.height,
             child: TextButton(
               style: TextButton.styleFrom(
+                foregroundColor: Color(0xff1E7251),
                 backgroundColor: Color(0xffFFDD0A),
-                primary: Color(0xff1E7251),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
-              onPressed: () {
-                // TODO: Add what happens when the guest button is pressed
+              onPressed: () async {
+                dynamic result = await _auth.signInAnon();
+                if (result == null){
+                  print("couldn't sign in");
+                } else {
+                  print('Signed In');
+                  print(result.uid);
+                }
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

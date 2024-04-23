@@ -70,15 +70,7 @@ class _LoginScreen extends State<LoginScreen> {
             ),
             SizedBox(height: 15),
             ElevatedButton(
-              onPressed: () async {
-                dynamic result = _auth.signInAnon();
-                if (result == null){
-                  print("couldn't sign in");
-                } else {
-                  print('Signed In');
-                  print(result + 'yes?');
-
-                }
+              onPressed: () {
               },
               child: Text(
                   'Login',
