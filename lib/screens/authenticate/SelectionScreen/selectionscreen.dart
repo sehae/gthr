@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gthr/initialScreens/LoginScreen/login.dart';
+
+import '../LoginScreen/login.dart';
 
 class SelectionScreen extends StatelessWidget {
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gthr/initialScreens/SelectionScreen/selectionscreen.dart';
+import 'package:gthr/screens/authenticate/SelectionScreen/selectionscreen.dart';
+
 
 class SplashScreen extends StatelessWidget {
   @override

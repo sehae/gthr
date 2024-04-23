@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:gthr/initialScreens/SignUpScreen/signup1.dart';
 import 'package:gthr/main.dart';
 
-import '../../screens/HomePage/homepage.dart';
+import '../SignUpScreen/signup1.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
