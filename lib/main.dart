@@ -9,7 +9,6 @@ import 'package:gthr/screens/HomePage/homepage.dart';
 import 'package:gthr/screens/ProfileScreen/profile_main.dart';
 import 'package:gthr/screens/Settings/settings.dart';
 import 'package:gthr/splash_screen.dart';
-import 'selectionscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
