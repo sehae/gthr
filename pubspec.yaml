@@ -68,6 +68,9 @@ flutter:
     - assets/gthr_LogoALT.png
     - assets/test.png
     - assets/gthr_LogoWithText.png
+    - assets/user_1.jpg
+    - assets/event_1.jpg
+    - assets/event_2.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
