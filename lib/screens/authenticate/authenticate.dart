@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gthr/screens/authenticate/LoginScreen/login.dart';
-import 'package:gthr/screens/authenticate/SelectionScreen/selectionscreen.dart';
+import 'package:gthr/screens/authenticate/SignUpScreen/signup1.dart';
+
 
 class Authenticate extends StatefulWidget{
   @override
@@ -8,10 +9,18 @@ class Authenticate extends StatefulWidget{
 }
 
 class _AuthenticateState extends State<Authenticate> {
+
+  bool showSignIn = true;
+  toggleView(){
+    setState(() => showSignIn = !showSignIn);
+  }
+
   @override
   Widget build(BuildContext context){
-    return Container(
-      child: SelectionScreen(), //LoginScreen(),
-    );
+    if (showSignIn){
+      return LoginScreen(toggleView: toggleView);
+    } else {
+      return SignUpScreen(toggleView: toggleView);
+    }
   }
 }
