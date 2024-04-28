@@ -6,6 +6,10 @@ import 'package:gthr/services/auth.dart';
 import '../SignUpScreen/signup1.dart';
 
 class LoginScreen extends StatefulWidget {
+
+  final Function toggleView;
+  const LoginScreen({super.key, required this.toggleView});
+
   @override
   _LoginScreen createState() => _LoginScreen();
 }
@@ -14,12 +18,16 @@ class _LoginScreen extends State<LoginScreen> {
 
   final AuthService _auth = AuthService();
 
+  String username = '';
+  String password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(16.0),
+        child: Form(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -31,14 +39,20 @@ class _LoginScreen extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 48),
-            TextField(
+            TextFormField(
+              onChanged: (val){
+                setState(() => username = val);
+              },
               decoration: InputDecoration(
                 labelText: 'Username',
                 border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 16),
-            TextField(
+            TextFormField(
+              onChanged: (val){
+                setState(() => password = val);
+              },
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
@@ -56,8 +70,9 @@ class _LoginScreen extends State<LoginScreen> {
                   ],
                 ),
                 TextButton(
-                  onPressed: () {
-                    // TODO: Implement forgot password logic
+                  onPressed: () async {
+                    print(username);
+                    print(password);
                   },
                   child: Text(
                     'Forgot Password?',
@@ -71,6 +86,8 @@ class _LoginScreen extends State<LoginScreen> {
             SizedBox(height: 15),
             ElevatedButton(
               onPressed: () {
+                print(username);
+                print(password);
               },
               child: Text(
                   'Login',
@@ -79,8 +96,7 @@ class _LoginScreen extends State<LoginScreen> {
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xff1E7251),
-                onPrimary: Colors.white,
+                foregroundColor: Colors.white, backgroundColor: Color(0xff1E7251),
                 minimumSize: Size(double.infinity, 50),
               ),
             ),
@@ -95,16 +111,14 @@ class _LoginScreen extends State<LoginScreen> {
                     style: TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUpScreen()),
-                        );
+                        widget.toggleView();
                       },
                   ),
                 ],
               ),
             ),
           ],
+        ),
         ),
       ),
     );
