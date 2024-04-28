@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gthr/screens/authenticate/SelectionScreen/selectionscreen.dart';
+import 'package:gthr/screens/wrapper.dart';
 
 
 class SplashScreen extends StatelessWidget {
@@ -17,9 +18,9 @@ class SplashScreen extends StatelessWidget {
             SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SelectionScreen(),
-                ));
+                 Navigator.of(context).push(MaterialPageRoute(
+                   builder: (context) => Wrapper(),
+                 ));
               },
               child: Text('Get Started'),
               style: ButtonStyle(
