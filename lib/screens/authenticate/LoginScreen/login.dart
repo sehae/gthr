@@ -5,14 +5,14 @@ import 'package:gthr/services/auth.dart';
 
 import '../SignUpScreen/signup1.dart';
 
-class LoginScreen extends StatefulWidget {
+  class LoginScreen extends StatefulWidget {
 
-  final Function toggleView;
-  const LoginScreen({super.key, required this.toggleView});
+    final Function toggleView;
+    const LoginScreen({super.key, required this.toggleView} );
 
-  @override
-  _LoginScreen createState() => _LoginScreen();
-}
+    @override
+    _LoginScreen createState() => _LoginScreen();
+  }
 
 class _LoginScreen extends State<LoginScreen> {
 

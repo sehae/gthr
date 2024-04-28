@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Wrapper(), //SplashScreen(),
+        home: SplashScreen(), //Wrapper(), //
         routes: {
           Routes.home: (context) => MyHomePage(),
           Routes.events: (context) => EventsPage(),

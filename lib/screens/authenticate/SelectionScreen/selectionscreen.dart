@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../../../services/auth.dart';
 import '../LoginScreen/login.dart';
-
+import  '../authenticate.dart';
 class SelectionScreen extends StatefulWidget {
+  final VoidCallback onLoginSelected;
+  final VoidCallback onGuestSignInSelected;
+
+  SelectionScreen({required this.onLoginSelected, required this.onGuestSignInSelected});
+
   @override
   State<SelectionScreen> createState() => _SelectionScreenState();
 }
@@ -34,12 +39,7 @@ class _SelectionScreenState extends State<SelectionScreen> {
                 foregroundColor: Color(0xffFFDD0A), backgroundColor: Color(0xff1E7251),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
+              onPressed: widget.onLoginSelected,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -59,15 +59,16 @@ class _SelectionScreenState extends State<SelectionScreen> {
                 backgroundColor: Color(0xffFFDD0A),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
-              onPressed: () async {
-                dynamic result = await _auth.signInAnon();
-                if (result == null){
-                  print("couldn't sign in");
-                } else {
-                  print('Signed In');
-                  print(result.uid);
-                }
-              },
+              // onPressed: () async {
+              //   dynamic result = await _auth.signInAnon();
+              //   if (result == null){
+              //     print("couldn't sign in");
+              //   } else {
+              //     print('Signed In');
+              //     print(result.uid);
+              //   }
+              // },
+              onPressed: widget.onGuestSignInSelected,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
