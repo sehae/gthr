@@ -1,12 +1,27 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'signup2.dart';
+import 'package:gthr/services/auth.dart';
 
 class SignUpScreen extends StatefulWidget {
+
+  final Function toggleView;
+  const SignUpScreen({super.key, required this.toggleView});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
+
+
 class _SignUpScreenState extends State<SignUpScreen> {
+
+  final AuthService _auth = AuthService();
+
+  String username = '';
+  String email = '';
+  String password = '';
+  String uni = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,47 +31,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
+        child: Form(
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildStepCircle('1', Color(0xff1E7251)), // HIGHLIGHTED SINCE STEP 1
-                _buildLineConnector([Color(0xff1E7251), Color(0xffFFDD0A)]), // Gradient line from 1-2
-                _buildStepCircle('2', Colors.grey), // Grey = not highlighted yet
-                _buildLineConnector([Color(0xffFFDD0A), Color(0xffFF4E1A)]), // Gradient line from 2-3
-                _buildStepCircle('3', Colors.grey),
-              ],
+            SizedBox(height: 10),
+            TextFormField(
+              onChanged: (val){
+                setState(() => username = val);
+              },
+              decoration: InputDecoration(
+                labelText: 'Username',
+                border: OutlineInputBorder(),
+              ),
             ),
-            SizedBox(height: 20),
-            Text('Personal Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 30),
-            _buildTextField('First Name'),
             SizedBox(height: 15),
-            _buildTextField('Last Name'),
+            TextFormField(
+              onChanged: (val){
+                setState(() => email = val);
+              },
+              decoration: InputDecoration(
+                labelText: 'E-mail',
+                border: OutlineInputBorder(),
+              ),
+            ),
             SizedBox(height: 15),
-            _buildTextField('Date of Birth'),
+            TextFormField(
+              onChanged: (val){
+                setState(() => password = val);
+              },
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+            ),
             SizedBox(height: 15),
-            _buildTextField('E-mail address'),
-            SizedBox(height: 15),
-            _buildTextField('Contact Number'),
+            TextFormField(
+              onChanged: (val){
+                setState(() => uni = val);
+              },
+              decoration: InputDecoration(
+                labelText: 'University',
+                border: OutlineInputBorder(),
+              ),
+            ),
             SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpStepTwoScreen()),
-                );
+              onPressed: () async {
+                widget.toggleView();
               },
-              child: Text('Next'),
+              child: Text('Sign Up'),
               style: ElevatedButton.styleFrom(
-                primary: Color(0xff1E7251), // bg color
-                onPrimary: Colors.white, // text color
+                foregroundColor: Colors.white, backgroundColor: Color(0xff1E7251), // text color
                 minimumSize: Size(double.infinity, 50), // button size
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(color: Colors.black, fontSize: 14.0),
+                children: <TextSpan>[
+                  TextSpan(text: "Already have an account? "),
+                  TextSpan(
+                    text: 'Log In',
+                    style: TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        widget.toggleView();
+                      },
+                  ),
+                ],
               ),
             ),
           ],
         ),
+        ), 
       ),
     );
   }
