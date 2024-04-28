@@ -59,15 +59,6 @@ class _SelectionScreenState extends State<SelectionScreen> {
                 backgroundColor: Color(0xffFFDD0A),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
-              // onPressed: () async {
-              //   dynamic result = await _auth.signInAnon();
-              //   if (result == null){
-              //     print("couldn't sign in");
-              //   } else {
-              //     print('Signed In');
-              //     print(result.uid);
-              //   }
-              // },
               onPressed: widget.onGuestSignInSelected,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
