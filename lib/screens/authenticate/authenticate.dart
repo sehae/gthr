@@ -15,18 +15,22 @@ class _AuthenticateState extends State<Authenticate> {
   bool showSignIn = true;
   bool _showSelectionScreen = true;
 
-  void _toggleSelection(bool showSelection) {
+  void _toggleSelection(bool showSelection, bool showSignIn) {
     setState(() {
+      print("Toggling to $showSelection");
       _showSelectionScreen = showSelection;
+      this.showSignIn = showSignIn;
+      print("Toggling to $showSignIn");
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
     return _showSelectionScreen
         ? SelectionScreen(
       onLoginSelected: () {
-        _toggleSelection(false);
+        _toggleSelection(false, true);
       },
       onGuestSignInSelected: () async {
         dynamic result = await _auth.signInAnon();

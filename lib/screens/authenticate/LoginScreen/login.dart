@@ -7,15 +7,15 @@ import '../SignUpScreen/signup1.dart';
 
   class LoginScreen extends StatefulWidget {
 
-    final Function toggleView;
-    const LoginScreen({super.key, required this.toggleView} );
+    final void Function(bool, bool) toggleView;
+    const LoginScreen({Key? key, required this.toggleView}) : super(key: key);
 
     @override
     _LoginScreen createState() => _LoginScreen();
   }
 
 class _LoginScreen extends State<LoginScreen> {
-
+  bool _showSignIn = true;
   final AuthService _auth = AuthService();
 
   String username = '';
@@ -111,7 +111,8 @@ class _LoginScreen extends State<LoginScreen> {
                     style: TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        widget.toggleView();
+                        print("Register tapped");
+                        widget.toggleView(false, false);
                       },
                   ),
                 ],
