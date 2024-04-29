@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/auth.dart';
+import '../../../shared/loading.dart';
 import '../LoginScreen/login.dart';
 import  '../authenticate.dart';
 class SelectionScreen extends StatefulWidget {
@@ -14,6 +15,8 @@ class SelectionScreen extends StatefulWidget {
 }
 
 class _SelectionScreenState extends State<SelectionScreen> {
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
@@ -28,7 +31,7 @@ class _SelectionScreenState extends State<SelectionScreen> {
       buttonHeight,
     );
 
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       body: Column(
         children: <Widget>[
           SizedBox(
@@ -59,7 +62,12 @@ class _SelectionScreenState extends State<SelectionScreen> {
                 backgroundColor: Color(0xffFFDD0A),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
-              onPressed: widget.onGuestSignInSelected,
+              onPressed: () {
+                setState(() {
+                  loading = true;
+                });
+                widget.onGuestSignInSelected();
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

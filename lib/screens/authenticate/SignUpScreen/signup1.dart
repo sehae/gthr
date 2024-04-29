@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gthr/services/auth.dart';
 
+import '../../../shared/loading.dart';
+
 class SignUpScreen extends StatefulWidget {
 
   final void Function(bool, bool) toggleView;
@@ -14,15 +16,18 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
 
   final AuthService _auth = AuthService();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String username = '';
   String email = '';
   String password = '';
   String uni = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       appBar: AppBar(
         leading: BackButton(),
         title: Text('Sign Up'),
@@ -30,10 +35,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 10),
               TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter a username" : null,
                 onChanged: (val){
                   setState(() => username = val);
                 },
@@ -44,6 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: 15),
               TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter an email" : null,
                 onChanged: (val){
                   setState(() => email = val);
                 },
@@ -54,6 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: 15),
               TextFormField(
+                validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
                 onChanged: (val){
                   setState(() => password = val);
                 },
@@ -65,6 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: 15),
               TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter a University" : null,
                 onChanged: (val){
                   setState(() => uni = val);
                 },
@@ -76,7 +86,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () async {
-                  // add function dito, idk kung ano nagagawa nung before pero niremove ko na.
+                  setState(() => loading = true);
+                  if (_formKey.currentState!.validate()){
+                    dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                    if (result == null){
+                      setState(() {
+                        error = 'Please supply a valid email';
+                        loading = false;
+                      });
+                    }
+                  } else {
+                    setState(() => loading = false);
+                  }
                 },
                 child: Text('Sign Up'),
                 style: ElevatedButton.styleFrom(

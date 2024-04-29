@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:gthr/main.dart';
 import 'package:gthr/services/auth.dart';
 
+import '../../../shared/loading.dart';
 import '../SignUpScreen/signup1.dart';
 
   class LoginScreen extends StatefulWidget {
@@ -15,19 +16,24 @@ import '../SignUpScreen/signup1.dart';
   }
 
 class _LoginScreen extends State<LoginScreen> {
-  bool _showSignIn = true;
+
   final AuthService _auth = AuthService();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String username = '';
+  String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
+          key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -40,16 +46,18 @@ class _LoginScreen extends State<LoginScreen> {
             ),
             SizedBox(height: 48),
             TextFormField(
+              validator: (val) => val!.isEmpty ? "Enter an email" : null,
               onChanged: (val){
-                setState(() => username = val);
+                setState(() => email = val);
               },
               decoration: InputDecoration(
-                labelText: 'Username',
+                labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 16),
             TextFormField(
+              validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
               onChanged: (val){
                 setState(() => password = val);
               },
@@ -71,7 +79,7 @@ class _LoginScreen extends State<LoginScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    print(username);
+                    print(email);
                     print(password);
                   },
                   child: Text(
@@ -85,9 +93,17 @@ class _LoginScreen extends State<LoginScreen> {
             ),
             SizedBox(height: 15),
             ElevatedButton(
-              onPressed: () {
-                print(username);
-                print(password);
+              onPressed: () async {
+                if (_formKey.currentState!.validate()){
+                  setState(() => loading = true);
+                  dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+                  if (result == null){
+                    setState(() {
+                      error = 'COULD NOT SIGN IN WITH THOSE CREDENTIALS';
+                      loading = false;
+                    });
+                  }
+                }
               },
               child: Text(
                   'Login',
