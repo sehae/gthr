@@ -20,6 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool loading = false;
 
   String username = '';
+  String fname = '';
+  String lname = '';
   String email = '';
   String password = '';
   String uni = '';
@@ -39,6 +41,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             children: <Widget>[
               const SizedBox(height: 10),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter your First Name" : null,
+                onChanged: (val){
+                  setState(() => fname = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter your Last Name" : null,
+                onChanged: (val){
+                  setState(() => lname = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
               TextFormField(
                 validator: (val) => val!.isEmpty ? "Enter a username" : null,
                 onChanged: (val){
@@ -88,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () async {
                   setState(() => loading = true);
                   if (_formKey.currentState!.validate()){
-                    dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                    dynamic result = await _auth.registerWithEmailAndPassword(fname, lname, username, email, password);
                     if (result == null){
                       setState(() {
                         error = 'Please supply a valid email';
