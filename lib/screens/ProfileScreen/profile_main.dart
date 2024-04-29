@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
 
 
 void main() {
@@ -81,7 +82,12 @@ class _ContentState extends State<Content> {
           top: buttonPOS,
           right: 20,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => profileEdit(),
+              );
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/models/user.dart';
+import 'package:provider/provider.dart';
 
 class profileEdit extends StatefulWidget {
   const profileEdit({super.key});
@@ -7,7 +9,15 @@ class profileEdit extends StatefulWidget {
   State<profileEdit> createState() => _profileEditState();
 }
 
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 class _profileEditState extends State<profileEdit> {
+
+  String fname = '';
+  String lname = '';
+  String bio = '';
+  String location = '';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +26,9 @@ class _profileEditState extends State<profileEdit> {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(Icons.chevron_left),
           ),
           title: const Text(
@@ -114,12 +126,12 @@ class _ContentState extends State<Content> {
 
   Widget buildForm() {
     return Form(
-      //key: _formKey,
+      key: _formKey,
       child: Column(
         children: [
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Name',
+              labelText: 'First Name',
               labelStyle: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
@@ -130,6 +142,33 @@ class _ContentState extends State<Content> {
             ),
             obscureText: false,
             maxLength: 50,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your first name';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 20,),
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Last Name',
+              labelStyle: TextStyle(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+              border: InputBorder.none,
+              fillColor: Colors.black12,
+              filled: true,
+            ),
+            obscureText: false,
+            maxLength: 50,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your last name';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 20,),
           TextFormField(
@@ -161,9 +200,19 @@ class _ContentState extends State<Content> {
             ),
             obscureText: false,
             maxLength: 30,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter your location';
+              }
+              return null;
+            },
           ),
           ElevatedButton(
-              onPressed: (){},
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                // If all validators pass, you can proceed with saving
+              }
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
@@ -171,22 +220,23 @@ class _ContentState extends State<Content> {
                 },
               ),
             ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                child: Text(
-                  'Save',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
           )
         ],
       ),
     );
   }
+
 }
 
 
