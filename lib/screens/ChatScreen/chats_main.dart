@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'directMessages.dart';
 import 'groupMessages.dart';
-import 'chatUI.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: ChatsMainPage(),
     );
   }
 }
 
 class ChatsMainPage extends StatefulWidget {
+  const ChatsMainPage({super.key});
+
   @override
   _ChatsMainPageState createState() => _ChatsMainPageState();
 }
@@ -36,8 +39,8 @@ class _ChatsMainPageState extends State<ChatsMainPage> {
       length: 2, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF1E7251),
-          title: Center(
+          backgroundColor: const Color(0xFF1E7251),
+          title: const Center(
             child: Text(
               'Chat',
               style: TextStyle(
@@ -47,9 +50,9 @@ class _ChatsMainPageState extends State<ChatsMainPage> {
               ),
             ),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             // Tab bar at the bottom of AppBar
-            labelColor: Color(0xFFDD09),
+            labelColor: Color(0x00ffdd09),
             labelStyle: TextStyle(color: Colors.white),
             tabs: [
               // Use Tab with label and icon for text and icon
@@ -68,7 +71,7 @@ class _ChatsMainPageState extends State<ChatsMainPage> {
           // Content for each tab
           children: [
             DirectMessagesScreen(),
-            GroupMessagesScreen(),
+            const GroupMessagesScreen(),
           ],
         ),
       ),

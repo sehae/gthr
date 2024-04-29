@@ -27,63 +27,63 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
+    return loading ? const Loading() : Scaffold(
       appBar: AppBar(
-        leading: BackButton(),
-        title: Text('Sign Up'),
+        leading: const BackButton(),
+        title: const Text('Sign Up'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 validator: (val) => val!.isEmpty ? "Enter a username" : null,
                 onChanged: (val){
                   setState(() => username = val);
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 validator: (val) => val!.isEmpty ? "Enter an email" : null,
                 onChanged: (val){
                   setState(() => email = val);
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'E-mail',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
                 onChanged: (val){
                   setState(() => password = val);
                 },
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 validator: (val) => val!.isEmpty ? "Enter a University" : null,
                 onChanged: (val){
                   setState(() => uni = val);
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'University',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () async {
                   setState(() => loading = true);
@@ -99,20 +99,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     setState(() => loading = false);
                   }
                 },
-                child: Text('Sign Up'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Color(0xff1E7251), // text color
-                  minimumSize: Size(double.infinity, 50), // button size
+                  foregroundColor: Colors.white, backgroundColor: const Color(0xff1E7251), // text color
+                  minimumSize: const Size(double.infinity, 50), // button size
                 ),
+                child: const Text('Sign Up'),
               ),
               RichText(
                 text: TextSpan(
-                  style: TextStyle(color: Colors.black, fontSize: 14.0),
+                  style: const TextStyle(color: Colors.black, fontSize: 14.0),
                   children: <TextSpan>[
-                    TextSpan(text: "Already have an account? "),
+                    const TextSpan(text: "Already have an account? "),
                     TextSpan(
                       text: 'Log In',
-                      style: TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
+                      style: const TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           widget.toggleView(true, true);
@@ -131,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildStepCircle(String number, Color color) {
     return CircleAvatar(
       backgroundColor: color,
-      child: Text(number, style: TextStyle(color: Colors.white)),
+      child: Text(number, style: const TextStyle(color: Colors.white)),
     );
   }
 
@@ -155,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }

@@ -3,10 +3,12 @@ import 'package:readmore/readmore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Events',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
         drawer: SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
           child: Container(
-            color: Color(0xFFC7CCCA),
+            color: const Color(0xFFC7CCCA),
             child: Column(
               children: [
                 Expanded(
@@ -45,12 +47,12 @@ class MyApp extends StatelessWidget {
                         ),
                       ),
                       ListTile(
-                        leading: Icon(
+                        leading: const Icon(
                           Icons.home,
                           color: Color(0xFF1E5720),
                           size: 32,
                         ),
-                        title: Text(
+                        title: const Text(
                           'Home',
                           style: TextStyle(
                               fontSize: 20,
@@ -63,7 +65,7 @@ class MyApp extends StatelessWidget {
                               ')';
                         },
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.event,
                           color: Color(0xFF1E5720),
@@ -77,7 +79,7 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.chat_bubble,
                           color: Color(0xFF1E5720),
@@ -91,7 +93,7 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.people_alt_rounded,
                           color: Color(0xFF1E5720),
@@ -105,7 +107,7 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.person,
                           color: Color(0xFF1E5720),
@@ -119,7 +121,7 @@ class MyApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.settings,
                           color: Color(0xFF1E5720),
@@ -136,7 +138,7 @@ class MyApp extends StatelessWidget {
                     ],
                   ),
                 ),
-                ListTile(
+                const ListTile(
                   leading: Icon(
                     Icons.logout,
                     color: Color(0xFF1E5720),
@@ -154,13 +156,15 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        body: Content(),
+        body: const Content(),
       ),
     );
   }
 }
 
 class Content extends StatefulWidget {
+  const Content({super.key});
+
   @override
   _ContentState createState() => _ContentState();
 }
@@ -174,14 +178,14 @@ class _ContentState extends State<Content> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: double.infinity,
       child: Stack(
         children: [
           SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -193,13 +197,13 @@ class _ContentState extends State<Content> {
                             color: Colors.black.withOpacity(0.3),
                             spreadRadius: 2,
                             blurRadius: 8,
-                            offset: Offset(0, 8),
+                            offset: const Offset(0, 8),
                           ),
                         ],
                       ),
                       child: ColorFiltered(
                         colorFilter: ColorFilter.mode(
-                          Color(0xFF1E7251).withOpacity(0.4),
+                          const Color(0xFF1E7251).withOpacity(0.4),
                           BlendMode.srcATop,
                         ),
                         child: Image.asset(
@@ -209,7 +213,7 @@ class _ContentState extends State<Content> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         Expanded(
@@ -219,31 +223,31 @@ class _ContentState extends State<Content> {
                                 showFeedback = true;
                               });
                             },
-                            icon: Icon(Icons.feedback),
-                            label: Text(
+                            icon: const Icon(Icons.feedback),
+                            label: const Text(
                               'Review',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
                             ),
                             style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 10)),
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFDD09)),
-                              foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF2C2C30)),
+                              backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFFDD09)),
+                              foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -319,11 +323,11 @@ class _ContentState extends State<Content> {
                                 width: 70,
                                 height: 80,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFD9D9D9),
+                                  color: const Color(0xFFD9D9D9),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                child: Center(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                child: const Center(
                                   child: Column(
                                     children: [
                                       Text(
@@ -348,16 +352,16 @@ class _ContentState extends State<Content> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Container(
                                 width: 70,
                                 height: 50,
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFD9D9D9),
+                                  color: const Color(0xFFD9D9D9),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                child: Center(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                child: const Center(
                                     child: Column(
                                       children: [
                                         Text(
@@ -387,7 +391,7 @@ class _ContentState extends State<Content> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
@@ -398,30 +402,30 @@ class _ContentState extends State<Content> {
                                 showDiscussionContainer = false;
                               });
                             },
-                            child: Text(
-                              'About',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              minimumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 30)),
-                              maximumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 50)),
+                              minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 30)),
+                              maximumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  showAboutContainer ? Color(0xFF787878) : Color(0xFFD9D9D9)
+                                  showAboutContainer ? const Color(0xFF787878) : const Color(0xFFD9D9D9)
                               ),
                               foregroundColor: MaterialStateProperty.all<Color>(
-                                  showAboutContainer ? Color(0xFFFFFFFF) : Color(0xFF2C2C30)
+                                  showAboutContainer ? const Color(0xFFFFFFFF) : const Color(0xFF2C2C30)
+                              ),
+                            ),
+                            child: const Text(
+                              'About',
+                              style: TextStyle(
+                                fontSize: 16,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
@@ -430,38 +434,38 @@ class _ContentState extends State<Content> {
                                 showAboutContainer = false;
                               });
                             },
-                            child: Text(
-                              'Discussion',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              minimumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 30)),
-                              maximumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 50)),
+                              minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 30)),
+                              maximumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
                               backgroundColor: MaterialStateProperty.all<Color>(
-                                  showDiscussionContainer ? Color(0xFF787878) : Color(0xFFD9D9D9)
+                                  showDiscussionContainer ? const Color(0xFF787878) : const Color(0xFFD9D9D9)
                               ),
                               foregroundColor: MaterialStateProperty.all<Color>(
-                                  showDiscussionContainer ? Color(0xFFFFFFFF) : Color(0xFF2C2C30)
+                                  showDiscussionContainer ? const Color(0xFFFFFFFF) : const Color(0xFF2C2C30)
+                              ),
+                            ),
+                            child: const Text(
+                              'Discussion',
+                              style: TextStyle(
+                                fontSize: 16,
                               ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     if (showAboutContainer)
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'About Event',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -474,25 +478,25 @@ class _ContentState extends State<Content> {
                               trimMode: TrimMode.Line,
                               trimCollapsedText: 'Read More.',
                               trimExpandedText: 'Read Less.',
-                              moreStyle: TextStyle(
+                              moreStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF1E7251),
                                 decoration: TextDecoration.underline,
                               ),
-                              lessStyle: TextStyle(
+                              lessStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF1E7251),
                                 decoration: TextDecoration.underline,
                               ),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
 
                             // Additional Content: if the event has guest speakers/special artist.
                             Container(
-                              child: Column(
+                              child: const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -544,16 +548,16 @@ class _ContentState extends State<Content> {
                               onPressed: (){
                               },
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 10)),
+                                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                 ),
-                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFD9D9D9)),
-                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF2C2C30)),
+                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
+                                foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
                               ),
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
@@ -593,30 +597,30 @@ class _ContentState extends State<Content> {
                         child: Container(
                             width: 350,
                             height: 450,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.all(Radius.circular(10))
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(20),
                               child: Center(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Give Feedback',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       'How would you describe your experience at the event?*',
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
-                                    SizedBox(height: 10,),
+                                    const SizedBox(height: 10,),
                                     Row(
                                       children: [
                                         Expanded(
@@ -626,17 +630,17 @@ class _ContentState extends State<Content> {
                                               },
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.all(15),
+                                                  const EdgeInsets.all(15),
                                                 ),
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(10.0),
                                                   ),
                                                 ),
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                                               ),
-                                              child: Column(
+                                              child: const Column(
                                                 children: [
                                                   FaIcon(
                                                     FontAwesomeIcons.faceSadTear,
@@ -654,7 +658,7 @@ class _ContentState extends State<Content> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 10,),
+                                        const SizedBox(width: 10,),
                                         Expanded(
                                           child: FittedBox(
                                             child: ElevatedButton(
@@ -662,17 +666,17 @@ class _ContentState extends State<Content> {
                                               },
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.all(15),
+                                                  const EdgeInsets.all(15),
                                                 ),
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(10.0),
                                                   ),
                                                 ),
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                                               ),
-                                              child: Column(
+                                              child: const Column(
                                                 children: [
                                                   FaIcon(
                                                     FontAwesomeIcons.faceFrown,
@@ -690,7 +694,7 @@ class _ContentState extends State<Content> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 10,),
+                                        const SizedBox(width: 10,),
                                         Expanded(
                                           child: FittedBox(
                                             child: ElevatedButton(
@@ -698,17 +702,17 @@ class _ContentState extends State<Content> {
                                               },
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.all(15),
+                                                  const EdgeInsets.all(15),
                                                 ),
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(10.0),
                                                   ),
                                                 ),
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                                               ),
-                                              child: Column(
+                                              child: const Column(
                                                 children: [
                                                   FaIcon(
                                                     FontAwesomeIcons.faceMeh,
@@ -726,7 +730,7 @@ class _ContentState extends State<Content> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 10,),
+                                        const SizedBox(width: 10,),
                                         Expanded(
                                           child: FittedBox(
                                             child: ElevatedButton(
@@ -734,17 +738,17 @@ class _ContentState extends State<Content> {
                                               },
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.all(15),
+                                                  const EdgeInsets.all(15),
                                                 ),
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(10.0),
                                                   ),
                                                 ),
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                                               ),
-                                              child: Column(
+                                              child: const Column(
                                                 children: [
                                                   FaIcon(
                                                     FontAwesomeIcons.faceSmile,
@@ -762,7 +766,7 @@ class _ContentState extends State<Content> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 10,),
+                                        const SizedBox(width: 10,),
                                         Expanded(
                                           child: FittedBox(
                                             child: ElevatedButton(
@@ -770,17 +774,17 @@ class _ContentState extends State<Content> {
                                               },
                                               style: ButtonStyle(
                                                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                                  EdgeInsets.all(15),
+                                                  const EdgeInsets.all(15),
                                                 ),
                                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                   RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(10.0),
                                                   ),
                                                 ),
-                                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFF3F3F3)),
-                                                foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFF3F3F3)),
+                                                foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                                               ),
-                                              child: Column(
+                                              child: const Column(
                                                 children: [
                                                   FaIcon(
                                                     FontAwesomeIcons.faceLaugh,
@@ -800,24 +804,24 @@ class _ContentState extends State<Content> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10,),
-                                    Text(
+                                    const SizedBox(height: 10,),
+                                    const Text(
                                       'Feel free to share any additional feedback or comments.',
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
-                                    SizedBox(height: 5,),
+                                    const SizedBox(height: 5,),
                                     TextField(
                                       maxLines: 3,
                                       decoration: InputDecoration(
                                         hintText: 'Tell us how can we improve',
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                             fontSize: 16,
                                             color: Color(0xFFC5C5C5)
                                         ),
                                         border: OutlineInputBorder(
-                                          borderSide: BorderSide(
+                                          borderSide: const BorderSide(
                                             color: Color(0xFF1E7251),
                                             width: 5.0,
                                           ),
@@ -825,14 +829,14 @@ class _ContentState extends State<Content> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 10,),
+                                    const SizedBox(height: 10,),
                                     Row(
                                       children: [
                                         ElevatedButton(
                                           onPressed: (){
 
                                           },
-                                          child: Text(
+                                          child: const Text(
                                               'Submit'
                                           ),
                                         ),
@@ -840,7 +844,7 @@ class _ContentState extends State<Content> {
                                           onPressed: (){
 
                                           },
-                                          child: Text(
+                                          child: const Text(
                                               'Cancel'
                                           ),
                                         ),

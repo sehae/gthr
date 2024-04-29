@@ -1,12 +1,12 @@
-import 'package:gthr/screens/Settings/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
-  runApp(HomePage());
+  runApp(const HomePage());
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,15 +16,15 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(5),
+              const Padding(
+                padding: EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      child: const Text(
+                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      child: Text(
                         'Welcome, User!',
                         textAlign: TextAlign.start,
                         style: TextStyle(
@@ -142,7 +142,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildCard({required String imageUrl, required String title}) {
     return Card(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       elevation: 5,
       child: Stack(
         children: [
@@ -173,7 +173,7 @@ class HomePage extends StatelessWidget {
             left: 10,
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -193,7 +193,7 @@ class HomePage extends StatelessWidget {
     required String announcementText,
   }) {
     return Card(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -204,29 +204,29 @@ class HomePage extends StatelessWidget {
               radius: 30,
               backgroundImage: AssetImage(profileImageUrl),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     '$date | $time',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     announcementText,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),

@@ -9,7 +9,6 @@ import 'package:gthr/screens/FriendsScreen/friend_list.dart';
 import 'package:gthr/screens/HomePage/homepage.dart';
 import 'package:gthr/screens/ProfileScreen/profile_main.dart';
 import 'package:gthr/screens/Settings/settings.dart';
-import 'package:gthr/screens/wrapper.dart';
 import 'package:gthr/services/auth.dart';
 import 'package:gthr/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -18,18 +17,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: 'AIzaSyCdRjCVZlhrq72RuEklEyyxYlBRCYhI2Sw',
+    options: const FirebaseOptions(
+      apiKey: 'AIzaSyCzPxlFUts9o9i6tx6BSOZPXAgMjttHyIs',
       projectId: 'gthr-b7547',
       appId: '1:417493490436:android:7df380d827c4419e14ce51',
       messagingSenderId: '417493490436',
     ),
   );
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<myUser?>.value(
@@ -37,14 +38,14 @@ class MyApp extends StatelessWidget {
       initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(), //Wrapper(), //
+        home: const SplashScreen(), //Wrapper(), //
         routes: {
-          Routes.home: (context) => MyHomePage(),
-          Routes.events: (context) => EventsPage(),
-          Routes.chats: (context) => ChatPage(),
-          Routes.friends: (context) => FriendsPage(),
-          Routes.profile: (context) => ProfilePage(),
-          Routes.settings: (context) => SettingsPage(),
+          Routes.home: (context) => const MyHomePage(),
+          Routes.events: (context) => const EventsPage(),
+          Routes.chats: (context) => const ChatPage(),
+          Routes.friends: (context) => const FriendsPage(),
+          Routes.profile: (context) => const ProfilePage(),
+          Routes.settings: (context) => const SettingsPage(),
         },
       ),
     );
@@ -52,6 +53,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -92,17 +95,17 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (BuildContext context) {
           switch (_selectedRoute) {
             case Routes.home:
-              return HomePage();
+              return const HomePage();
             case Routes.events:
-              return EventsPage();
+              return const EventsPage();
             case Routes.chats:
-              return ChatPage();
+              return const ChatPage();
             case Routes.friends:
-              return FriendsPage();
+              return const FriendsPage();
             case Routes.profile:
-              return ProfilePage();
+              return const ProfilePage();
             case Routes.settings:
-              return SettingsPage();
+              return const SettingsPage();
             default:
               return Container();
           }
@@ -137,15 +140,15 @@ class _MyHomePageState extends State<MyHomePage> {
       case Routes.events:
         return Colors.white;
       case Routes.chats:
-        return Color(0xff1E7251);
+        return const Color(0xff1E7251);
       case Routes.friends:
-        return Color(0xff1E7251);
+        return const Color(0xff1E7251);
       case Routes.profile:
         return Colors.white;
       case Routes.settings:
         return Colors.white;
       default:
-        return Color(0xff1E7251);
+        return const Color(0xff1E7251);
     }
   }
 
@@ -177,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (_selectedRoute == Routes.profile) {
       return [
         IconButton(
-          icon: Icon(Icons.search),
+          icon: const Icon(Icons.search),
           onPressed: () {
 
           },

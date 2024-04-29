@@ -1,8 +1,5 @@
-import 'package:gthr/screens/HomePage/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../navigation/drawer.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -57,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
@@ -103,9 +100,9 @@ class _SettingsPageState extends State<SettingsPage> {
           }
         });
       },
-      activeColor: Color(0xff1E7251), // Color when toggle is enabled
-      inactiveThumbColor: Color(0xff1E7251).withOpacity(0.3), // Color when toggle is disabled
-      inactiveTrackColor: Color(0xff1E7251).withOpacity(0.3), // Color of the toggle track when toggle is disabled
+      activeColor: const Color(0xff1E7251), // Color when toggle is enabled
+      inactiveThumbColor: const Color(0xff1E7251).withOpacity(0.3), // Color when toggle is disabled
+      inactiveTrackColor: const Color(0xff1E7251).withOpacity(0.3), // Color of the toggle track when toggle is disabled
     );
   }
 
@@ -113,15 +110,15 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _buildDeleteAccountButton() {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
         onPressed: _deleteAccount,
-        child: Text(
-          'Delete Account',
-          style: TextStyle(color: Colors.red), // Set text color to red
-        ),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.green.shade50), // Yellow background color
+        ),
+        child: const Text(
+          'Delete Account',
+          style: TextStyle(color: Colors.red), // Set text color to red
         ),
       ),
     );

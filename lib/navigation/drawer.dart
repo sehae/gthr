@@ -7,7 +7,7 @@ class AppDrawer extends StatelessWidget {
   final String selectedRoute;
   final AuthService _auth = AuthService();
 
-  AppDrawer({
+  AppDrawer({super.key, 
     required this.onSelectRoute,
     required this.selectedRoute
   });
@@ -18,7 +18,7 @@ class AppDrawer extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.5,
       child: Drawer(
         child: Container(
-          color: Color(0xFFC7CCCA),
+          color: const Color(0xFFC7CCCA),
           child: Column(
             children: [
               Expanded(
@@ -30,12 +30,12 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.home,
                         color: Color(0xFF1E5720),
                         size: 32,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Home',
                         style: TextStyle(
                             fontSize: 20,
@@ -47,12 +47,12 @@ class AppDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.event,
                         color: Color(0xFF1E5720),
                         size: 32,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Events',
                         style: TextStyle(
                           fontSize: 20,
@@ -64,12 +64,12 @@ class AppDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.chat_bubble,
                         color: Color(0xFF1E5720),
                         size: 32,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Chats',
                         style: TextStyle(
                             fontSize: 20,
@@ -81,12 +81,12 @@ class AppDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.people_alt_rounded,
                         color: Color(0xFF1E5720),
                         size: 32,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Friends',
                         style: TextStyle(
                             fontSize: 20,
@@ -98,12 +98,12 @@ class AppDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.person,
                         color: Color(0xFF1E5720),
                         size: 32,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Profile',
                         style: TextStyle(
                             fontSize: 20,
@@ -115,12 +115,12 @@ class AppDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.settings,
                         color: Color(0xFF1E5720),
                         size: 32,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Settings',
                         style: TextStyle(
                             fontSize: 20,
@@ -135,12 +135,12 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                leading: Icon(
+                leading: const Icon(
                   Icons.logout,
                   color: Color(0xFF1E5720),
                   size: 32,
                 ),
-                title: Text(
+                title: const Text(
                   'Sign-out',
                   style: TextStyle(
                       fontSize: 20,

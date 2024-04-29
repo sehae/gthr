@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gthr/navigation/drawer.dart';
 
 void main() {
-  runApp(FriendsPage());
+  runApp(const FriendsPage());
 }
 
 class FriendsPage extends StatelessWidget {
+  const FriendsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Friend List Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -21,6 +22,8 @@ class FriendsPage extends StatelessWidget {
 }
 
 class Content extends StatefulWidget {
+  const Content({super.key});
+
   @override
   _ContentState createState() => _ContentState();
 }
@@ -34,13 +37,13 @@ class _ContentState extends State<Content> {
     selectedIndex = 0;
   }
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -48,7 +51,7 @@ class _ContentState extends State<Content> {
             children: [
               buildHeader(),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
                     if (selectedIndex == 0) buildListContent(),
@@ -66,7 +69,7 @@ class _ContentState extends State<Content> {
   Widget buildHeader() {
 
     return Container(
-      color: Color(0xFF1E7251),
+      color: const Color(0xFF1E7251),
       height: headerHeight,
       child: Column(
         children: [
@@ -83,7 +86,7 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildContent(){
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,12 +103,12 @@ class _ContentState extends State<Content> {
 
     return Expanded(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Container(
             decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                      color: isActive ? Color(0xFFFFDD0A) : Colors.transparent,
+                      color: isActive ? const Color(0xFFFFDD0A) : Colors.transparent,
                       width: 5.0,
                     )
                 )
@@ -136,7 +139,7 @@ class _ContentState extends State<Content> {
               ),
               child: Text(
                   text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   )
               ),
@@ -156,7 +159,7 @@ class _ContentState extends State<Content> {
             },
             decoration: InputDecoration(
               hintText: 'Search',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               suffixIcon: _controller.text.isEmpty
                   ? null
                   : IconButton(onPressed: (){
@@ -164,7 +167,7 @@ class _ContentState extends State<Content> {
                   _controller.clear();
                 });
               },
-                icon: FaIcon(
+                icon: const FaIcon(
                   FontAwesomeIcons.solidCircleXmark,
                   size: 20,
                   color: Colors.black38,
@@ -173,17 +176,17 @@ class _ContentState extends State<Content> {
               border: InputBorder.none,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(color: Colors.black12),
+                borderSide: const BorderSide(color: Colors.black12),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(color: Colors.black12),
+                borderSide: const BorderSide(color: Colors.black12),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(color: Colors.black12),
+                borderSide: const BorderSide(color: Colors.black12),
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+              contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
               fillColor: Colors.black12,
               filled: true,
             ),
@@ -202,7 +205,7 @@ class _ContentState extends State<Content> {
             },
             decoration: InputDecoration(
               hintText: 'Search',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               suffixIcon: _controller.text.isEmpty
                   ? null
                   : IconButton(onPressed: (){
@@ -210,7 +213,7 @@ class _ContentState extends State<Content> {
                   _controller.clear();
                 });
               },
-                icon: FaIcon(
+                icon: const FaIcon(
                   FontAwesomeIcons.solidCircleXmark,
                   size: 20,
                   color: Colors.black38,
@@ -219,17 +222,17 @@ class _ContentState extends State<Content> {
               border: InputBorder.none,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(color: Colors.black12),
+                borderSide: const BorderSide(color: Colors.black12),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(color: Colors.black12),
+                borderSide: const BorderSide(color: Colors.black12),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
-                borderSide: BorderSide(color: Colors.black12),
+                borderSide: const BorderSide(color: Colors.black12),
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+              contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
               fillColor: Colors.black12,
               filled: true,
             ),

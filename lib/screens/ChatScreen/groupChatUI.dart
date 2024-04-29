@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'directMessages.dart';
-import 'chatUI.dart';
-import 'groupMessages.dart';
 
 class GroupChatUI extends StatelessWidget {
   final String groupName;
   final List<String> members;
   final String groupPhotoUrl; // Placeholder for group photo URL
 
-  GroupChatUI(
-      {required this.groupName,
+  const GroupChatUI(
+      {super.key, required this.groupName,
       required this.members,
       required this.groupPhotoUrl});
 
@@ -24,7 +21,7 @@ class GroupChatUI extends StatelessWidget {
               backgroundImage:
                   NetworkImage(groupPhotoUrl), // Use group photo URL
             ),
-            SizedBox(width: 8.0), // Add some spacing between image and name
+            const SizedBox(width: 8.0), // Add some spacing between image and name
             // Group name
             Text(groupName),
           ],
@@ -45,10 +42,10 @@ class GroupChatUI extends StatelessWidget {
           ),
           // Chat input field (placeholder for now)
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Type a message...',
@@ -56,7 +53,7 @@ class GroupChatUI extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () => {}, // Placeholder for sending message
                 ),
               ],
@@ -71,16 +68,16 @@ class GroupChatUI extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             builder: (context) => Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min, // Wrap content vertically
                 children: [
-                  Text(
+                  const Text(
                     'Group Members',
                     style:
                         TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10.0), // Add some spacing
+                  const SizedBox(height: 10.0), // Add some spacing
                   ListView.builder(
                     // Display group members in a list
                     shrinkWrap: true, // Prevent list from expanding
@@ -92,7 +89,7 @@ class GroupChatUI extends StatelessWidget {
             ),
           );
         },
-        child: Icon(Icons.group),
+        child: const Icon(Icons.group),
       ),
     );
   }

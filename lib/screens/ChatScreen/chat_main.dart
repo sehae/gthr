@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ChatPage());
+  runApp(const ChatPage());
 }
 
 class ChatPage extends StatelessWidget {
+  const ChatPage({super.key});
+
   //final String userEmail;
   //final String receiverUserID;
   //const MyApp({super.key,
@@ -14,7 +16,7 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Chat Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -26,6 +28,8 @@ class ChatPage extends StatelessWidget {
 }
 
 class Content extends StatefulWidget {
+  const Content({super.key});
+
   @override
   _ContentState createState() => _ContentState();
 }
@@ -43,7 +47,7 @@ class _ContentState extends State<Content> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -51,7 +55,7 @@ class _ContentState extends State<Content> {
             children: [
               buildHeader(),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
                     if (selectedIndex == 0) buildMessagesContent(),
@@ -68,7 +72,7 @@ class _ContentState extends State<Content> {
 
   Widget buildHeader() {
     return Container(
-      color: Color(0xFF1E7251),
+      color: const Color(0xFF1E7251),
       height: headerHeight,
       child: Column(
         children: [
@@ -85,7 +89,7 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildContent() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,12 +106,12 @@ class _ContentState extends State<Content> {
 
     return Expanded(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Container(
             decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                      color: isActive ? Color(0xFFFFDD0A) : Colors.transparent,
+                      color: isActive ? const Color(0xFFFFDD0A) : Colors.transparent,
                       width: 5.0,
                     ))),
             child: TextButton(
@@ -135,7 +139,7 @@ class _ContentState extends State<Content> {
                 ),
               ),
               child: Text(text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                   )),
             ),
@@ -144,7 +148,7 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildMessagesContent() {
-    return Column(
+    return const Column(
       children: [
         Center(
           child: Text('Loading messages...'),
@@ -154,7 +158,7 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildGroupsContent() {
-    return Column(
+    return const Column(
       children: [
         Center(
           child: Text('Loading groups...'),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
+class profileEdit extends StatefulWidget {
+  const profileEdit({super.key});
+
+  @override
+  State<profileEdit> createState() => _profileEditState();
 }
 
-class MyApp extends StatelessWidget {
+class _profileEditState extends State<profileEdit> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,10 +16,10 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.chevron_left),
+            onPressed: () {},
+            icon: const Icon(Icons.chevron_left),
           ),
-          title: Text(
+          title: const Text(
             'Edit Profile',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -25,13 +28,15 @@ class MyApp extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: Content(),
+        body: const Content(),
       ),
     );
   }
 }
 
 class Content extends StatefulWidget {
+  const Content({super.key});
+
   @override
   _ContentState createState() => _ContentState();
 }
@@ -44,7 +49,7 @@ class _ContentState extends State<Content> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -52,7 +57,7 @@ class _ContentState extends State<Content> {
             children: <Widget> [
               buildEditImage(),
               Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                 child: buildForm(),
               ),
             ],
@@ -93,15 +98,15 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildEditProfile() => Container(
-    padding: EdgeInsets.all(5),
-    decoration: BoxDecoration(
+    padding: const EdgeInsets.all(5),
+    decoration: const BoxDecoration(
       color: Colors.white,
       shape: BoxShape.circle,
     ),
     child: CircleAvatar(
       radius: profileHeight/2,
       backgroundColor: Colors.grey.shade800,
-      backgroundImage: NetworkImage(
+      backgroundImage: const NetworkImage(
           'https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg'
       ),
     ),
@@ -113,7 +118,7 @@ class _ContentState extends State<Content> {
       child: Column(
         children: [
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Name',
               labelStyle: TextStyle(
                 fontSize: 18,
@@ -128,7 +133,7 @@ class _ContentState extends State<Content> {
           ),
           const SizedBox(height: 20,),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Bio',
               labelStyle: TextStyle(
                 fontSize: 18,
@@ -144,7 +149,7 @@ class _ContentState extends State<Content> {
           ),
           const SizedBox(height: 20,),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Location',
               labelStyle: TextStyle(
                 fontSize: 18,
@@ -162,12 +167,12 @@ class _ContentState extends State<Content> {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
-                  return Color(0xFF1E7251);
+                  return const Color(0xFF1E7251);
                 },
               ),
             ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                 child: Text(
                   'Save',
                   style: TextStyle(
