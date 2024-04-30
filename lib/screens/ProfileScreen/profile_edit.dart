@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gthr/models/user.dart';
 import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user_list.dart';
+import '../../models/user.dart';
 import '../../services/database.dart';
 
 class profileEdit extends StatefulWidget {
@@ -27,7 +25,7 @@ class _profileEditState extends State<profileEdit> {
       stream: DatabaseService(uid: user?.uid).userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          UserData? userData = snapshot.data as UserData?;
+          UserData? userData = snapshot.data;
           return MaterialApp(
             title: 'Profile Edit Screen',
             debugShowCheckedModeBanner: false,
