@@ -76,8 +76,12 @@ class DatabaseService {
 
   //get user list stream
   Stream<List<UserList>> get userLists {
-    return userdataCollection.snapshots()
-        .map((_uDataFromSnapshot));
+    return userdataCollection.snapshots().map((snapshot) {
+      print('Snapshot received: ${snapshot.docs.length} documents');
+      final userList = _uDataFromSnapshot(snapshot);
+      print('UserList: $userList');
+      return userList;
+    });
   }
 
   //get user data stream
