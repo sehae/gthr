@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gthr/models/user.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/userInfo.dart';
+import '../../services/database.dart';
 
 class profileEdit extends StatefulWidget {
   const profileEdit({super.key});
@@ -210,7 +214,10 @@ class _ContentState extends State<Content> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                // If all validators pass, you can proceed with saving
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Processing Data')),
+                );
+
               }
             },
             style: ButtonStyle(
