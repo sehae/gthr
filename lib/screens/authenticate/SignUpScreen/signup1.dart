@@ -112,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () async {
                   setState(() => loading = true);
                   if (_formKey.currentState!.validate()){
-                    dynamic result = await _auth.registerWithEmailAndPassword(fname, lname, username, email, password);
+                    dynamic result = await _auth.registerWithEmailAndPassword(fname, lname, username, email, password, uni);
                     if (result == null){
                       setState(() {
                         error = 'Please supply a valid email';

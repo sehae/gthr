@@ -1,28 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
+import 'package:gthr/services/database.dart';
+import 'package:gthr/shared/loading.dart';
+import 'package:provider/provider.dart';
 
-
-void main() {
-  runApp(const ProfilePage());
-}
+import '../../models/user.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Profile Main Screen',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Content(),
-      ),
+    final user = Provider.of<myUser?>(context);
+    return StreamBuilder(
+        stream: DatabaseService(uid: user?.uid).userData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserData? userData = snapshot.data;
+            return Content(user: user, userData: userData);
+            print('data received');
+          } else {
+            print('not received');
+            return Loading();
+          }
+        }
     );
   }
 }
 
 class Content extends StatefulWidget {
-  const Content({super.key});
+  final myUser? user;
+  final UserData? userData;
+
+  const Content({Key? key, required this.user, required this.userData}) : super(key: key);
 
   @override
   _ContentState createState() => _ContentState();
@@ -137,11 +149,17 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildCoverImage() => Container (
-    child: Image.network(
-      'https://betanews.com/wp-content/uploads/2015/09/Windows-10-lock-screen.jpg',
+    child: (widget.userData?.header != null && widget.userData!.header.isNotEmpty)
+        ? Image.memory(
+      base64Decode(widget.userData!.header),
       width: double.infinity,
       height: coverHeight,
       fit: BoxFit.cover,
+    )
+        : Container(
+      width: double.infinity,
+      height: coverHeight,
+      color: Color(0xFF1E7251),
     ),
   );
 
@@ -153,10 +171,19 @@ class _ContentState extends State<Content> {
     ),
     child: CircleAvatar(
       radius: profileHeight/2,
-      backgroundColor: Colors.grey.shade800,
-      backgroundImage: const NetworkImage(
-          'https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg'
-      ),
+      backgroundColor: Color(0xFF1E7251),
+      backgroundImage: widget.userData?.icon != null
+          ? MemoryImage(base64Decode(widget.userData!.icon))
+          : null,
+      child: (widget.userData?.icon != null && widget.userData?.icon == '')
+          ? Text(
+        widget.userData?.fname[0].toUpperCase() ?? '',
+        style: TextStyle(
+            fontSize: 40.0,
+          color: Colors.white,
+        ),
+      )
+          : null,
     ),
   );
 
@@ -164,26 +191,26 @@ class _ContentState extends State<Content> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const SizedBox(height: 8,),
-      const Text(
-        'Bill Gates',
+      Text(
+        '${widget.userData!.fname} ${widget.userData!.lname}',
         style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
         ),
       ),
-      const Text(
-        '@billgates',
+      Text(
+        '@${widget.userData?.username}',
         style: TextStyle(
           fontSize: 18,
         ),
       ),
-      const Text(
-        'I am always bussing.',
+      Text(
+        widget.userData!.bio,
         style: TextStyle(
           fontSize: 18,
         ),
       ),
-      const Row(
+      Row(
         children: [
           Icon(
             Icons.location_on,
@@ -192,7 +219,7 @@ class _ContentState extends State<Content> {
           ),
           SizedBox(width: 5,),
           Text(
-            'Medina, Washington',
+            widget.userData!.location,
             style: TextStyle(
               fontSize: 18,
             ),

@@ -12,27 +12,33 @@ class DatabaseService {
 
   //init user data
   Future initUserData(
-      String fname, String lname, String username, String email) async {
+      String fname, String lname, String username, String bio,
+      String location, String email, String base64Image, String base64CoverImage, String uni) async {
     return await userdataCollection.doc(uid).set({
       'fname': fname,
       'lname': lname,
       'username': username,
       'email': email,
+      'bio': '',
+      'location': '',
+      'icon': '',
+      'header': '',
+      'uni': uni,
       'uid': uid,
     });
   }
 
   //update user data
   Future updateUserData(String fname, String lname, String username, String bio,
-      String location, String email) async {
+      String location, String email, String base64Image, String base64CoverImage) async {
     return await userdataCollection.doc(uid).set({
       'fname': fname,
       'lname': lname,
       'username': username,
       'bio': bio,
       'location': location,
-      'icon': '',
-      'header': '',
+      'icon': base64Image,
+      'header': base64CoverImage,
       'email': email,
     });
   }
@@ -60,7 +66,7 @@ class DatabaseService {
       fname: snapshot.get('fname'),
       lname: snapshot.get('lname'),
       username: snapshot.get('username'),
-      bio: snapshot.get('bio'),
+      bio: snapshot.get('bio') ,
       location: snapshot.get('location'),
       icon: snapshot.get('icon'),
       header: snapshot.get('header'),
@@ -76,7 +82,9 @@ class DatabaseService {
 
   //get user data stream
   Stream<UserData> get userData {
-    return userdataCollection.doc(uid).snapshots()
-        .map(_uDataFromDocument);
+    return userdataCollection.doc(uid).snapshots().map(_uDataFromDocument)
+        .handleError((error) {
+      print('Error in userData stream: $error');
+    });
   }
 }
