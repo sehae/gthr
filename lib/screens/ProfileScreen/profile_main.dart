@@ -83,9 +83,25 @@ class _ContentState extends State<Content> {
           right: 20,
           child: ElevatedButton(
             onPressed: () {
-              showDialog(
+              showGeneralDialog(
                 context: context,
-                builder: (BuildContext context) => profileEdit(),
+                pageBuilder: (BuildContext context, Animation<double> animation,  Animation<double> secondaryAnimation) => Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: profileEdit(),
+                ),
+                barrierDismissible: true,
+                barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                barrierColor: Colors.black45,
+                transitionDuration: const Duration(milliseconds: 250),
+                transitionBuilder: (context, animation, secondaryAnimation, child) {
+                  return SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  );
+                },
               );
             },
             style: ButtonStyle(
