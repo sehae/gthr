@@ -1,5 +1,5 @@
-class UserData {
-  final String uid;
+class UserList {
+  final String? uid;
   final String fname;
   final String lname;
   final String username;
@@ -9,7 +9,7 @@ class UserData {
   final String header;
   final String email;
 
-  UserData({
+  UserList({
     required this.uid,
     required this.fname,
     required this.lname,

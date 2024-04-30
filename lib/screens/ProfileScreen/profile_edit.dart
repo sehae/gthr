@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gthr/models/user.dart';
+import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/userInfo.dart';
+import '../../models/user_list.dart';
 import '../../services/database.dart';
 
 class profileEdit extends StatefulWidget {
@@ -13,10 +14,7 @@ class profileEdit extends StatefulWidget {
   State<profileEdit> createState() => _profileEditState();
 }
 
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
 class _profileEditState extends State<profileEdit> {
-
   String fname = '';
   String lname = '';
   String bio = '';
@@ -24,43 +22,63 @@ class _profileEditState extends State<profileEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Profile Edit Screen',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.chevron_left),
-          ),
-          title: const Text(
-            'Edit Profile',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    final user = Provider.of<myUser?>(context);
+    return StreamBuilder(
+      stream: DatabaseService(uid: user?.uid).userData,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          UserData? userData = snapshot.data as UserData?;
+          return MaterialApp(
+            title: 'Profile Edit Screen',
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.chevron_left),
+                ),
+                title: const Text(
+                  'Edit Profile',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                centerTitle: true,
+              ),
+              body: Content(user: user, userData: userData),
             ),
-          ),
-          centerTitle: true,
-        ),
-        body: const Content(),
-      ),
+          );
+        } else {
+          return const Loading();
+        }
+      },
     );
   }
 }
 
 class Content extends StatefulWidget {
-  const Content({super.key});
+  final myUser? user;
+  final UserData? userData;
+
+  const Content({Key? key, required this.user, required this.userData}) : super(key: key);
 
   @override
   _ContentState createState() => _ContentState();
 }
 
 class _ContentState extends State<Content> {
+  String _currentfname = '';
+  String _currentlname = '';
+  String _currentbio = '';
+  String _currentlocation = '';
+
   final double coverHeight = 150;
   final double profileHeight = 144;
-  //var _formKey = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +88,10 @@ class _ContentState extends State<Content> {
         width: double.infinity,
         child: SingleChildScrollView(
           child: Column(
-            children: <Widget> [
+            children: <Widget>[
               buildEditImage(),
               Padding(
-                  padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: buildForm(),
               ),
             ],
@@ -104,7 +122,7 @@ class _ContentState extends State<Content> {
     );
   }
 
-  Widget buildEditCover() => Container (
+  Widget buildEditCover() => Container(
     child: Image.network(
       'https://betanews.com/wp-content/uploads/2015/09/Windows-10-lock-screen.jpg',
       width: double.infinity,
@@ -120,11 +138,10 @@ class _ContentState extends State<Content> {
       shape: BoxShape.circle,
     ),
     child: CircleAvatar(
-      radius: profileHeight/2,
+      radius: profileHeight / 2,
       backgroundColor: Colors.grey.shade800,
       backgroundImage: const NetworkImage(
-          'https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg'
-      ),
+          'https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg'),
     ),
   );
 
@@ -152,8 +169,15 @@ class _ContentState extends State<Content> {
               }
               return null;
             },
+            onChanged: (value) {
+              setState(() {
+                _currentfname = value;
+              });
+            },
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Last Name',
@@ -173,8 +197,15 @@ class _ContentState extends State<Content> {
               }
               return null;
             },
+            onChanged: (value) {
+              setState(() {
+                _currentlname = value;
+              });
+            },
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Bio',
@@ -189,8 +220,15 @@ class _ContentState extends State<Content> {
             obscureText: false,
             maxLines: 3,
             maxLength: 160,
+            onChanged: (value) {
+              setState(() {
+                _currentbio = value;
+              });
+            },
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Location',
@@ -210,14 +248,29 @@ class _ContentState extends State<Content> {
               }
               return null;
             },
+            onChanged: (value) {
+              setState(() {
+                _currentlocation = value;
+              });
+            },
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Processing Data')),
+                await DatabaseService(uid: widget.user!.uid).updateUserData(
+                  _currentfname.isEmpty ? widget.userData!.fname : _currentfname,
+                  _currentlname.isEmpty ? widget.userData!.lname : _currentlname,
+                  widget.userData?.username ?? '',
+                  _currentbio.isEmpty ? widget.userData!.bio : _currentbio,
+                  _currentlocation.isEmpty ? widget.userData!.location : _currentlocation,
+                  widget.userData?.email ?? '',
                 );
-
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Profile updated successfully'),
+                  ),
+                );
+                Navigator.of(context).pop();
               }
             },
             style: ButtonStyle(
@@ -243,8 +296,4 @@ class _ContentState extends State<Content> {
       ),
     );
   }
-
 }
-
-
-
