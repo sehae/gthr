@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'directMessages.dart';
-import 'groupMessages.dart';
-import 'groupChatUI.dart';
 
 // Placeholder for user data (replace with actual data source)
-final String userPhotoUrl = 'https://placehold.it/100'; // Placeholder image URL
+const String userPhotoUrl = 'https://placehold.it/100'; // Placeholder image URL
 
 class ChatUI extends StatelessWidget {
   final String userName; // Define userName parameter
 
-  ChatUI({required this.userName}); // Include userName in constructor
+  const ChatUI({super.key, required this.userName}); // Include userName in constructor
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +15,10 @@ class ChatUI extends StatelessWidget {
         title: Row(
           children: [
             // User profile image
-            CircleAvatar(
+            const CircleAvatar(
               backgroundImage: NetworkImage(userPhotoUrl),
             ),
-            SizedBox(width: 8.0), // Add some spacing between image and name
+            const SizedBox(width: 8.0), // Add some spacing between image and name
             // User name
             Text(userName), // Use passed userName
           ],
@@ -42,10 +39,10 @@ class ChatUI extends StatelessWidget {
           ),
           // Chat input field (placeholder for now)
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Type a message...',
@@ -53,7 +50,7 @@ class ChatUI extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () => {}, // Placeholder for sending message
                 ),
               ],

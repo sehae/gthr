@@ -1,11 +1,4 @@
-class myUser {
-  final String? uid;
-
-  myUser({ required this.uid });
-
-}
-
-class UserData {
+class UserList {
   final String? uid;
   final String fname;
   final String lname;
@@ -16,7 +9,7 @@ class UserData {
   final String header;
   final String email;
 
-  UserData({
+  UserList({
     required this.uid,
     required this.fname,
     required this.lname,

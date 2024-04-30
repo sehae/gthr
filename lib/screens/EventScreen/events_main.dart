@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gthr/navigation/drawer.dart';
-import 'package:gthr/navigation/navDrawer.dart';
-import 'package:gthr/navigation/routing.dart';
 import 'package:readmore/readmore.dart';
 
 class EventsPage extends StatelessWidget{
+  const EventsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Events Main Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -18,6 +17,8 @@ class EventsPage extends StatelessWidget{
 }
 
 class Content extends StatefulWidget {
+  const Content({super.key});
+
   @override
   _ContentState createState() => _ContentState();
 }
@@ -30,14 +31,14 @@ class _ContentState extends State<Content> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: Stack(
           children: [
             SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
                     buildEventImage(),
@@ -64,13 +65,13 @@ class _ContentState extends State<Content> {
                 color: Colors.black.withOpacity(0.3),
                 spreadRadius: 2,
                 blurRadius: 8,
-                offset: Offset(0, 8),
+                offset: const Offset(0, 8),
               ),
             ],
           ),
           child: ColorFiltered(
             colorFilter: ColorFilter.mode(
-              Color(0xFF1E7251).withOpacity(0.4),
+              const Color(0xFF1E7251).withOpacity(0.4),
               BlendMode.srcATop,
             ),
             child: Image.asset(
@@ -87,7 +88,7 @@ class _ContentState extends State<Content> {
   Widget buildEventDetails() {
     return Column(
       children: [
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Container(
           child: Row(
             children: [
@@ -96,62 +97,62 @@ class _ContentState extends State<Content> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                     },
-                    icon: Icon(Icons.star),
-                    label: Text('Interested'),
+                    icon: const Icon(Icons.star),
+                    label: const Text('Interested'),
                     style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 10)),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFFFDD09)),
-                      foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF2C2C30)),
+                      backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFFDD09)),
+                      foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 10),
-              Container(
+              const SizedBox(width: 10),
+              SizedBox(
                 width: 97,
                 child: Expanded(
                   child: FittedBox(
                     child: ElevatedButton.icon(
                       onPressed: () {
                       },
-                      icon: Icon(Icons.check),
-                      label: Text('Going'),
+                      icon: const Icon(Icons.check),
+                      label: const Text('Going'),
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 10)),
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFD9D9D9)),
-                        foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF2C2C30)),
+                        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
+                        foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: FittedBox(
                   child: ElevatedButton.icon(
                     onPressed: () {
                     },
-                    icon: Icon(Icons.close),
-                    label: Text('Not Going'),
+                    icon: const Icon(Icons.close),
+                    label: const Text('Not Going'),
                     style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 10)),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFD9D9D9)),
-                      foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF2C2C30)),
+                      backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
+                      foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
                     ),
                   ),
                 ),
@@ -159,10 +160,10 @@ class _ContentState extends State<Content> {
             ],
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -238,11 +239,11 @@ class _ContentState extends State<Content> {
                     width: 70,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Color(0xFFD9D9D9),
+                      color: const Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Center(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    child: const Center(
                       child: Column(
                         children: [
                           Text(
@@ -267,16 +268,16 @@ class _ContentState extends State<Content> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                     width: 70,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Color(0xFFD9D9D9),
+                      color: const Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Center(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    child: const Center(
                         child: Column(
                           children: [
                             Text(
@@ -317,7 +318,7 @@ class _ContentState extends State<Content> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildContentButton('About', 0),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             buildContentButton('Discussion', 1),
           ],
         ),
@@ -337,27 +338,27 @@ class _ContentState extends State<Content> {
             selectedIndex = index;
           });
         },
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-          ),
-        ),
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          minimumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 30)),
-          maximumSize: MaterialStateProperty.all<Size>(Size(double.infinity, 50)),
+          minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 30)),
+          maximumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
           backgroundColor: MaterialStateProperty.all<Color>(
-              isActive ? Color(0xFF787878) : Color(0xFFD9D9D9)
+              isActive ? const Color(0xFF787878) : const Color(0xFFD9D9D9)
           ),
           foregroundColor: MaterialStateProperty.all<Color>(
-              isActive ? Color(0xFFFFFFFF) : Color(0xFF2C2C30)
+              isActive ? const Color(0xFFFFFFFF) : const Color(0xFF2C2C30)
           ),
 
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
         ),
       ),
     );
@@ -374,7 +375,7 @@ class _ContentState extends State<Content> {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'About Event',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -387,17 +388,17 @@ class _ContentState extends State<Content> {
           trimMode: TrimMode.Line,
           trimCollapsedText: 'Read More.',
           trimExpandedText: 'Read Less.',
-          moreStyle: TextStyle(
+          moreStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFF1E7251),
             decoration: TextDecoration.underline,
           ),
-          lessStyle: TextStyle(
+          lessStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Color(0xFF1E7251),
             decoration: TextDecoration.underline,
           ),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),
@@ -406,7 +407,7 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildGuestSpeaker() => Container(
-    child: Column(
+    child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 10),
@@ -456,16 +457,16 @@ class _ContentState extends State<Content> {
           onPressed: (){
           },
           style: ButtonStyle(
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.symmetric(horizontal: 10)),
+            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-            backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFD9D9D9)),
-            foregroundColor: MaterialStateProperty.all<Color>(Color(0xFF2C2C30)),
+            backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
+            foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
           ),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
 
-import '../../navigation/drawer.dart';
 
 void main() {
-  runApp(ProfilePage());
+  runApp(const ProfilePage());
 }
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Profile Main Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -20,6 +22,8 @@ class ProfilePage extends StatelessWidget {
 }
 
 class Content extends StatefulWidget {
+  const Content({super.key});
+
   @override
   _ContentState createState() => _ContentState();
 }
@@ -33,7 +37,7 @@ class _ContentState extends State<Content> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -41,7 +45,7 @@ class _ContentState extends State<Content> {
             children: <Widget>[
               buildTop(),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     buildProfileInfo(),
@@ -78,7 +82,12 @@ class _ContentState extends State<Content> {
           top: buttonPOS,
           right: 20,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => profileEdit(),
+              );
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
@@ -87,15 +96,15 @@ class _ContentState extends State<Content> {
               ),
               side: MaterialStateProperty.resolveWith<BorderSide>(
                     (Set<MaterialState> states) {
-                  return BorderSide(
+                  return const BorderSide(
                     color: Color(0xFF1E7251),
                     width: 2.0,
                   );
                 },
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
+            child: const Padding(
+              padding: EdgeInsets.all(10),
               child: Text(
                 'Edit Profile',
                 style: TextStyle(
@@ -121,15 +130,15 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildProfileImage() => Container(
-    padding: EdgeInsets.all(5),
-    decoration: BoxDecoration(
+    padding: const EdgeInsets.all(5),
+    decoration: const BoxDecoration(
       color: Colors.white,
       shape: BoxShape.circle,
     ),
     child: CircleAvatar(
       radius: profileHeight/2,
       backgroundColor: Colors.grey.shade800,
-      backgroundImage: NetworkImage(
+      backgroundImage: const NetworkImage(
           'https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg'
       ),
     ),
@@ -139,33 +148,33 @@ class _ContentState extends State<Content> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const SizedBox(height: 8,),
-      Text(
+      const Text(
         'Bill Gates',
         style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
         ),
       ),
-      Text(
+      const Text(
         '@billgates',
         style: TextStyle(
           fontSize: 18,
         ),
       ),
-      Text(
+      const Text(
         'I am always bussing.',
         style: TextStyle(
           fontSize: 18,
         ),
       ),
-      Row(
+      const Row(
         children: [
           Icon(
             Icons.location_on,
             size: 20,
             color: Color(0xFF2C2C30),
           ),
-          const SizedBox(width: 5,),
+          SizedBox(width: 5,),
           Text(
             'Medina, Washington',
             style: TextStyle(
@@ -192,13 +201,13 @@ class _ContentState extends State<Content> {
               foregroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
                   if (states.contains(MaterialState.pressed)) {
-                    return Color(0xFF4E4C4C).withOpacity(0.5);
+                    return const Color(0xFF4E4C4C).withOpacity(0.5);
                   }
-                  return Color(0xFF4E4C4C);
+                  return const Color(0xFF4E4C4C);
                 },
               ),
             ),
-            child: Row(
+            child: const Row(
               children: [
                 Text(
                   '69',
@@ -218,7 +227,7 @@ class _ContentState extends State<Content> {
               ],
             )
           ),
-          SizedBox(width: 10,),
+          const SizedBox(width: 10,),
           TextButton(
               onPressed: () {
               },
@@ -235,13 +244,13 @@ class _ContentState extends State<Content> {
                 foregroundColor: MaterialStateProperty.resolveWith<Color>(
                       (Set<MaterialState> states) {
                     if (states.contains(MaterialState.pressed)) {
-                      return Color(0xFF4E4C4C).withOpacity(0.5);
+                      return const Color(0xFF4E4C4C).withOpacity(0.5);
                     }
-                    return Color(0xFF4E4C4C);
+                    return const Color(0xFF4E4C4C);
                   },
                 ),
               ),
-              child: Row(
+              child: const Row(
                 children: [
                   Text(
                     '420',
@@ -293,7 +302,7 @@ class _ContentState extends State<Content> {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: isActive ? Color(0xFFFF4E1A) : Colors.transparent,
+            color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
             width: 5.0,
           )
         )
@@ -316,15 +325,15 @@ class _ContentState extends State<Content> {
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
                 (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
-                return Color(0xFF4E4C4C).withOpacity(0.5);
+                return const Color(0xFF4E4C4C).withOpacity(0.5);
               }
-              return isActive ? Color(0xFF4E4C4C) : Colors.black;
+              return isActive ? const Color(0xFF4E4C4C) : Colors.black;
             },
           ),
         ),
         child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
             )
         ),
@@ -332,7 +341,7 @@ class _ContentState extends State<Content> {
     );
   }
 
-  Widget buildPostsContent() => Padding(
+  Widget buildPostsContent() => const Padding(
     padding: EdgeInsets.symmetric(vertical: 20),
     child: Column(
       children: [
@@ -343,7 +352,7 @@ class _ContentState extends State<Content> {
     ),
   );
 
-  Widget buildRepliesContent() => Padding(
+  Widget buildRepliesContent() => const Padding(
     padding: EdgeInsets.symmetric(vertical: 20),
     child: Column(
       children: [
@@ -355,7 +364,7 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildGthrContent() => Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
     child: Column(
       children: [
         Image.network(
@@ -368,7 +377,7 @@ class _ContentState extends State<Content> {
     ),
   );
 
-  Widget buildLikesContent() => Padding(
+  Widget buildLikesContent() => const Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
     child: Column(
       children: [

@@ -1,61 +1,152 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'signup2.dart';
+import 'package:gthr/services/auth.dart';
+
+import '../../../shared/loading.dart';
 
 class SignUpScreen extends StatefulWidget {
+
+  final void Function(bool, bool) toggleView;
+  const SignUpScreen({super.key, required this.toggleView});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
+  final AuthService _auth = AuthService();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool loading = false;
+
+  String username = '';
+  String fname = '';
+  String lname = '';
+  String email = '';
+  String password = '';
+  String uni = '';
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? const Loading() : Scaffold(
       appBar: AppBar(
-        leading: BackButton(),
-        title: Text('Sign Up'),
+        leading: const BackButton(),
+        title: const Text('Sign Up'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildStepCircle('1', Color(0xff1E7251)), // HIGHLIGHTED SINCE STEP 1
-                _buildLineConnector([Color(0xff1E7251), Color(0xffFFDD0A)]), // Gradient line from 1-2
-                _buildStepCircle('2', Colors.grey), // Grey = not highlighted yet
-                _buildLineConnector([Color(0xffFFDD0A), Color(0xffFF4E1A)]), // Gradient line from 2-3
-                _buildStepCircle('3', Colors.grey),
-              ],
-            ),
-            SizedBox(height: 20),
-            Text('Personal Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 30),
-            _buildTextField('First Name'),
-            SizedBox(height: 15),
-            _buildTextField('Last Name'),
-            SizedBox(height: 15),
-            _buildTextField('Date of Birth'),
-            SizedBox(height: 15),
-            _buildTextField('E-mail address'),
-            SizedBox(height: 15),
-            _buildTextField('Contact Number'),
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpStepTwoScreen()),
-                );
-              },
-              child: Text('Next'),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xff1E7251), // bg color
-                onPrimary: Colors.white, // text color
-                minimumSize: Size(double.infinity, 50), // button size
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 10),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter your First Name" : null,
+                onChanged: (val){
+                  setState(() => fname = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'First Name',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter your Last Name" : null,
+                onChanged: (val){
+                  setState(() => lname = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Last Name',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter a username" : null,
+                onChanged: (val){
+                  setState(() => username = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter an email" : null,
+                onChanged: (val){
+                  setState(() => email = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'E-mail',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
+                onChanged: (val){
+                  setState(() => password = val);
+                },
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
+              TextFormField(
+                validator: (val) => val!.isEmpty ? "Enter a University" : null,
+                onChanged: (val){
+                  setState(() => uni = val);
+                },
+                decoration: const InputDecoration(
+                  labelText: 'University',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () async {
+                  setState(() => loading = true);
+                  if (_formKey.currentState!.validate()){
+                    dynamic result = await _auth.registerWithEmailAndPassword(fname, lname, username, email, password);
+                    if (result == null){
+                      setState(() {
+                        error = 'Please supply a valid email';
+                        loading = false;
+                      });
+                    }
+                  } else {
+                    setState(() => loading = false);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: const Color(0xff1E7251), // text color
+                  minimumSize: const Size(double.infinity, 50), // button size
+                ),
+                child: const Text('Sign Up'),
+              ),
+              RichText(
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black, fontSize: 14.0),
+                  children: <TextSpan>[
+                    const TextSpan(text: "Already have an account? "),
+                    TextSpan(
+                      text: 'Log In',
+                      style: const TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          widget.toggleView(true, true);
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -64,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildStepCircle(String number, Color color) {
     return CircleAvatar(
       backgroundColor: color,
-      child: Text(number, style: TextStyle(color: Colors.white)),
+      child: Text(number, style: const TextStyle(color: Colors.white)),
     );
   }
 
@@ -88,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }

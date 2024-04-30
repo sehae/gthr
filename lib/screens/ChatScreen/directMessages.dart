@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'groupMessages.dart';
 import 'chatUI.dart';
-import 'groupChatUI.dart';
 
 class DirectMessagesScreen extends StatelessWidget {
   // Placeholder user names (replace with actual data source)
@@ -13,11 +11,13 @@ class DirectMessagesScreen extends StatelessWidget {
     'Emily Jones'
   ];
 
+  DirectMessagesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Direct Messages'),
+        title: const Text('Direct Messages'),
       ),
       body: ListView.builder(
         itemCount: userNames.length, // Use userNames list length
@@ -35,8 +35,8 @@ class DirectMessagesScreen extends StatelessWidget {
             leading: Stack(
               children: [
                 CircleAvatar(
-                  child: Icon(Icons.person),
                   backgroundColor: Colors.grey[200],
+                  child: const Icon(Icons.person),
                 ),
                 // Online status indicator (green for all now)
                 Positioned(
@@ -45,7 +45,7 @@ class DirectMessagesScreen extends StatelessWidget {
                   child: Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.green, // Set to green for all users
                     ),
@@ -54,7 +54,7 @@ class DirectMessagesScreen extends StatelessWidget {
               ],
             ),
             title: Text(userNames[index]), // Use user names from list
-            subtitle: Text('This is a message preview'),
+            subtitle: const Text('This is a message preview'),
             trailing: Text(
               '10:00 PM',
               style: TextStyle(

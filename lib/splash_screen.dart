@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gthr/screens/authenticate/SelectionScreen/selectionscreen.dart';
+import 'package:gthr/screens/wrapper.dart';
 
 
 class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,19 +16,19 @@ class SplashScreen extends StatelessWidget {
             Image.asset(
               'assets/gthr_LogoWithText.png',
             ),
-            SizedBox(height: 100),
+            const SizedBox(height: 100),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SelectionScreen(),
-                ));
+                 Navigator.of(context).push(MaterialPageRoute(
+                   builder: (context) => const Wrapper(),
+                 ));
               },
-              child: Text('Get Started'),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xff1E7251)),
+                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff1E7251)),
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                minimumSize: MaterialStateProperty.all<Size>(Size(250, 50)),
+                minimumSize: MaterialStateProperty.all<Size>(const Size(250, 50)),
               ),
+              child: const Text('Get Started'),
             ),
           ],
         ),

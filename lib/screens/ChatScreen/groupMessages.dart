@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'directMessages.dart';
-import 'chatUI.dart';
 import 'groupChatUI.dart';
 
 // Placeholder group names and member lists (replace with actual data)
@@ -12,11 +10,13 @@ final List<List<String>> groupMembers = [
 ];
 
 class GroupMessagesScreen extends StatelessWidget {
+  const GroupMessagesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Group Messages'),
+        title: const Text('Group Messages'),
       ),
       body: ListView.builder(
         itemCount: groupNames.length,
@@ -41,8 +41,9 @@ class GroupMessagesScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   // Placeholder for group image (replace with actual image loading)
-                  child: Icon(Icons.group),
                   backgroundColor: Colors.grey[200],
+                  // Placeholder for group image (replace with actual image loading)
+                  child: const Icon(Icons.group),
                 ),
                 // Online status indicator (green for all now)
                 Positioned(
@@ -51,7 +52,7 @@ class GroupMessagesScreen extends StatelessWidget {
                   child: Container(
                     width: 10.0,
                     height: 10.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.green, // Set to green for all groups
                     ),
@@ -60,7 +61,7 @@ class GroupMessagesScreen extends StatelessWidget {
               ],
             ),
             title: Text(groupNames[index]),
-            subtitle: Text('This is a message preview'),
+            subtitle: const Text('This is a message preview'),
             trailing: Text(
               '10:00 PM',
               style: TextStyle(

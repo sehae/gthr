@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 
-import '../LoginScreen/login.dart';
+import '../../../services/auth.dart';
+import '../../../shared/loading.dart';
+class SelectionScreen extends StatefulWidget {
+  final VoidCallback onLoginSelected;
+  final VoidCallback onGuestSignInSelected;
 
-class SelectionScreen extends StatelessWidget {
+  const SelectionScreen({super.key, required this.onLoginSelected, required this.onGuestSignInSelected});
+
+  @override
+  State<SelectionScreen> createState() => _SelectionScreenState();
+}
+
+class _SelectionScreenState extends State<SelectionScreen> {
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
+    final AuthService auth = AuthService();
+
     //Minimum screen width and 1/2 screen height to make sure shit squares up
     final size = MediaQuery.of(context).size;
     final buttonWidth = size.width;
@@ -15,7 +29,7 @@ class SelectionScreen extends StatelessWidget {
       buttonHeight,
     );
 
-    return Scaffold(
+    return loading ? const Loading() : Scaffold(
       body: Column(
         children: <Widget>[
           SizedBox(
@@ -23,21 +37,15 @@ class SelectionScreen extends StatelessWidget {
             height: buttonSize.height,
             child: TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Color(0xff1E7251),
-                primary: Color(0xffFFDD0A),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                foregroundColor: const Color(0xffFFDD0A), backgroundColor: const Color(0xff1E7251),
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-              child: Column(
+              onPressed: widget.onLoginSelected,
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.school, size: 80), // Primary color = Yellow primary color = yellow icon
-                      Text('I am a STUDENT',
+                  Text('I am a STUDENT',
                       style: TextStyle(fontSize: 20)),
                 ],
               ),
@@ -48,14 +56,17 @@ class SelectionScreen extends StatelessWidget {
             height: buttonSize.height,
             child: TextButton(
               style: TextButton.styleFrom(
-                backgroundColor: Color(0xffFFDD0A),
-                primary: Color(0xff1E7251),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                foregroundColor: const Color(0xff1E7251),
+                backgroundColor: const Color(0xffFFDD0A),
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
               onPressed: () {
-                // TODO: Add what happens when the guest button is pressed
+                setState(() {
+                  loading = true;
+                });
+                widget.onGuestSignInSelected();
               },
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.people, size: 80), // Green primary color = green icon
