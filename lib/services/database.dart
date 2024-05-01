@@ -80,8 +80,21 @@ class DatabaseService {
       return Post(
         content: doc.get('content') ?? '',
         timestamp: dateTime,
+        postId: doc.id,
       );
     }).toList();
+  }
+
+  // delete post
+  Future<void> deletePost(String postId) async {
+    return await userdataCollection.doc(uid).collection('posts').doc(postId).delete();
+  }
+
+  //edit post
+  Future<void> updatePost(String postId, String newContent) async {
+    return await userdataCollection.doc(uid).collection('posts').doc(postId).update({
+      'content': newContent,
+    });
   }
 
   // get user data from document
