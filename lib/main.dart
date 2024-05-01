@@ -74,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Color appBarColor = _getAppBarColor();
 
     return Scaffold(
-      extendBodyBehindAppBar: _selectedRoute == Routes.chats || _selectedRoute == Routes.friends,
+      extendBodyBehindAppBar:
+          _selectedRoute == Routes.chats || _selectedRoute == Routes.friends,
       appBar: AppBar(
         title: Text(
           _getAppBarTitle(),
@@ -157,33 +158,28 @@ class _MyHomePageState extends State<MyHomePage> {
       return [
         IconButton(
           icon: Image.asset('assets/gthr_LogoALT.png'),
-          onPressed: (){
-          },
+          onPressed: () {},
         )
       ];
     } else if (_selectedRoute == Routes.friends) {
       return [
         IconButton(
           icon: Image.asset('assets/gthr_LogoALT.png'),
-          onPressed: (){
-          },
+          onPressed: () {},
         )
       ];
     } else if (_selectedRoute == Routes.chats) {
       return [
         IconButton(
           icon: Image.asset('assets/gthr_LogoALT.png'),
-          onPressed: (){
-          },
+          onPressed: () {},
         )
       ];
     } else if (_selectedRoute == Routes.profile) {
       return [
         IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () {
-
-          },
+          onPressed: () {},
         ),
       ];
     }

@@ -357,9 +357,23 @@ class _ContentState extends State<Content> {
                 );
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Profile updated successfully'),
-                    backgroundColor: Color(0xFF1E7251),
-                    duration: Duration(seconds: 2),
+                    content: Center(
+                      child: Text(
+                        'Profile updated successfully',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Color(0xFFFFDD0A),
+                    duration: Duration(seconds: 3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
                   ),
                 );
                 Navigator.pop(context);

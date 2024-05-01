@@ -1,17 +1,68 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gthr/services/database.dart';
+import 'package:provider/provider.dart';
 
-class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({Key? key}) : super(key: key);
+import '../../models/user.dart';
+import '../../models/user_posts.dart';
+import '../../shared/loading.dart';
 
-  @override
-  _CreatePostScreenState createState() => _CreatePostScreenState();
-}
-
-class _CreatePostScreenState extends State<CreatePostScreen> {
-  final TextEditingController _textController = TextEditingController();
+class CreatePostScreen extends StatelessWidget {
+  const CreatePostScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<myUser?>(context);
+    return StreamBuilder(
+        stream: DatabaseService(uid: user?.uid).userData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserData? userData = snapshot.data;
+            return Content(user: user, userData: userData);
+            print('data received');
+          } else {
+            print('not received');
+            return Loading();
+          }
+        });
+  }
+}
+
+
+class Content extends StatefulWidget {
+  final myUser? user;
+  final UserData? userData;
+
+  const Content({Key? key, required this.user, required this.userData})
+      : super(key: key);
+
+  @override
+  _createContentState createState() => _createContentState();
+}
+
+class _createContentState extends State<Content> {
+  final TextEditingController _textController = TextEditingController();
+  late final FocusNode _textFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _textFocusNode = FocusNode();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _textFocusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _textFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<myUser?>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -21,63 +72,87 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => CreatePostScreen(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      var begin = Offset(0.0, 1.0);  // Start from the bottom
-                      var end = Offset.zero;  // End at the center
-                      var curve = Curves.easeInOut;  // Use an ease-in-out curve for smooth animation
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () async {
+                Post newPost = Post(
+                  content: _textController.text,
+                  timestamp: DateTime.now(),
+                );
 
-                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                      var offsetAnimation = animation.drive(tween);
+                await DatabaseService(uid: user?.uid).addPost(newPost);
 
-                      return SlideTransition(
-                        position: offsetAnimation,
-                        child: child,
-                      );
-                    },
-                    transitionDuration: Duration(milliseconds: 300), // Customize the duration of the transition
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Center(
+                      child: Text(
+                        'Post created successfully!',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Color(0xFFFFDD0A),
+                    duration: Duration(seconds: 3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
                   ),
                 );
+                Navigator.pop(context);
               },
-              child: Text('Post', style: TextStyle(color: Color(0xFF1E7251), fontWeight: FontWeight.bold)),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              child: Text('Post', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
         ],
       ),
-      body: Column(
+      body: buildPost(),
+      backgroundColor: Colors.white,
+    );
+  }
+
+  Widget buildPost(){
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: <Widget>[
-                CircleAvatar(
-                  backgroundImage: NetworkImage('https://via.placeholder.com/150'), // Replace with actual image URL
-                  radius: 20,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: TextField(
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        hintText: "What's poppin'?",
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(color: Colors.white),
+          Row(
+            children: <Widget>[
+              CircleAvatar(
+                backgroundImage: widget.userData?.icon != null
+                    ? MemoryImage(base64Decode(widget.userData!.icon))
+                    : null,
+                radius: 25,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    controller: _textController,
+                    focusNode: _textFocusNode,
+                    decoration: const InputDecoration(
+                      hintText: "What's poppin'?",
+                      border: InputBorder.none,
+                    ),
+                    style: const TextStyle(
+                        color: Colors.black,
+                      fontSize: 18,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
-      backgroundColor: Colors.white,
     );
   }
 }

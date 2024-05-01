@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
 import 'package:gthr/services/database.dart';
@@ -8,26 +8,26 @@ import 'package:provider/provider.dart';
 import 'package:gthr/screens/ProfileScreen/create_post.dart';
 
 import '../../../../../models/user.dart';
+import '../../models/user_posts.dart';
 
 class ProfilePage extends StatelessWidget {
-    const ProfilePage({super.key});
+  const ProfilePage({super.key});
 
-    @override
-    Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final user = Provider.of<myUser?>(context);
     return StreamBuilder(
-    stream: DatabaseService(uid: user?.uid).userData,
-    builder: (context, snapshot) {
-    if (snapshot.hasData) {
-    UserData? userData = snapshot.data;
-    return Content(user: user, userData: userData);
-    print('data received');
-    } else {
-    print('not received');
-    return Loading();
-    }
-        }
-    );
+        stream: DatabaseService(uid: user?.uid).userData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserData? userData = snapshot.data;
+            return Content(user: user, userData: userData);
+            print('data received');
+          } else {
+            print('not received');
+            return Loading();
+          }
+        });
   }
 }
 
@@ -35,7 +35,8 @@ class Content extends StatefulWidget {
   final myUser? user;
   final UserData? userData;
 
-  const Content({Key? key, required this.user, required this.userData}) : super(key: key);
+  const Content({Key? key, required this.user, required this.userData})
+      : super(key: key);
 
   @override
   _ContentState createState() => _ContentState();
@@ -50,53 +51,53 @@ class _ContentState extends State<Content> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              buildTop(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal:20),
-                child: Column(
-                  children: [
-                    buildProfileInfo(),
-                    buildContent(),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            buildTop(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  buildProfileInfo(),
+                  buildContent(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => CreatePostScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                var begin = Offset(0.0, 1.0);  // Start from the bottom
-                var end = Offset.zero;  // End at the center
-                var curve = Curves.easeInOut;  // Use an ease-in-out curve for smooth animation
-
-                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                var offsetAnimation = animation.drive(tween);
-
-                return SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                );
-              },
-              transitionDuration: Duration(milliseconds: 300), // Customize the duration of the transition
+          showGeneralDialog(
+            context: context,
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) =>
+                SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: const CreatePostScreen(),
             ),
+            barrierDismissible: true,
+            barrierLabel:
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+            barrierColor: Colors.black45,
+            transitionDuration: const Duration(milliseconds: 250),
+            transitionBuilder: (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 1),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
           );
         },
         child: Icon(Icons.add, color: Colors.white),
         shape: CircleBorder(),
-        backgroundColor: Color(0xff1E7251),  // Customize the button color
+        backgroundColor: Color(0xff1E7251),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // Positions the button to the bottom right corner
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -125,15 +126,19 @@ class _ContentState extends State<Content> {
             onPressed: () {
               showGeneralDialog(
                 context: context,
-                pageBuilder: (BuildContext context, Animation<double> animation,  Animation<double> secondaryAnimation) => Container(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                        Animation<double> secondaryAnimation) =>
+                    Container(
                   width: MediaQuery.of(context).size.width,
                   child: profileEdit(),
                 ),
                 barrierDismissible: true,
-                barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                barrierLabel:
+                    MaterialLocalizations.of(context).modalBarrierDismissLabel,
                 barrierColor: Colors.black45,
                 transitionDuration: const Duration(milliseconds: 250),
-                transitionBuilder: (context, animation, secondaryAnimation, child) {
+                transitionBuilder:
+                    (context, animation, secondaryAnimation, child) {
                   return SlideTransition(
                     position: Tween<Offset>(
                       begin: const Offset(0, 1),
@@ -146,12 +151,12 @@ class _ContentState extends State<Content> {
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   return Colors.white;
                 },
               ),
               side: MaterialStateProperty.resolveWith<BorderSide>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   return const BorderSide(
                     color: Color(0xFF1E7251),
                     width: 2.0,
@@ -176,193 +181,203 @@ class _ContentState extends State<Content> {
     );
   }
 
-  Widget buildCoverImage() => Container (
-    child: (widget.userData?.header != null && widget.userData!.header.isNotEmpty)
-        ? Image.memory(
-      base64Decode(widget.userData!.header),
-      width: double.infinity,
-      height: coverHeight,
-      fit: BoxFit.cover,
-    )
-        : Container(
-      width: double.infinity,
-      height: coverHeight,
-      color: Color(0xFF1E7251),
-    ),
-  );
+  Widget buildCoverImage() => Container(
+        child: (widget.userData?.header != null &&
+                widget.userData!.header.isNotEmpty)
+            ? Image.memory(
+                base64Decode(widget.userData!.header),
+                width: double.infinity,
+                height: coverHeight,
+                fit: BoxFit.cover,
+              )
+            : Container(
+                width: double.infinity,
+                height: coverHeight,
+                color: Color(0xFF1E7251),
+              ),
+      );
 
   Widget buildProfileImage() => Container(
-    padding: const EdgeInsets.all(5),
-    decoration: const BoxDecoration(
-      color: Colors.white,
-      shape: BoxShape.circle,
-    ),
-    child: CircleAvatar(
-      radius: profileHeight/2,
-      backgroundColor: Color(0xFF1E7251),
-      backgroundImage: widget.userData?.icon != null
-          ? MemoryImage(base64Decode(widget.userData!.icon))
-          : null,
-      child: (widget.userData?.icon != null && widget.userData?.icon == '')
-          ? Text(
-        widget.userData?.fname[0].toUpperCase() ?? '',
-        style: TextStyle(
-          fontSize: 40.0,
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
           color: Colors.white,
+          shape: BoxShape.circle,
         ),
-      )
-          : null,
-    ),
-  );
+        child: CircleAvatar(
+          radius: profileHeight / 2,
+          backgroundColor: Color(0xFF1E7251),
+          backgroundImage: widget.userData?.icon != null
+              ? MemoryImage(base64Decode(widget.userData!.icon))
+              : null,
+          child: (widget.userData?.icon != null && widget.userData?.icon == '')
+              ? Text(
+                  widget.userData?.fname[0].toUpperCase() ?? '',
+                  style: TextStyle(
+                    fontSize: 40.0,
+                    color: Colors.white,
+                  ),
+                )
+              : null,
+        ),
+      );
 
   Widget buildProfileInfo() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SizedBox(height: 8,),
-      Text(
-        '${widget.userData!.fname} ${widget.userData!.lname}',
-        style: TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      Text(
-        '@${widget.userData?.username}',
-        style: TextStyle(
-          fontSize: 18,
-        ),
-      ),
-      Text(
-        widget.userData!.bio,
-        style: TextStyle(
-          fontSize: 18,
-        ),
-      ),
-      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.location_on,
-            size: 20,
-            color: Color(0xFF2C2C30),
+          const SizedBox(
+            height: 8,
           ),
-          SizedBox(width: 5,),
           Text(
-            widget.userData!.location,
+            '${widget.userData!.fname} ${widget.userData!.lname}',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            '@${widget.userData?.username}',
             style: TextStyle(
               fontSize: 18,
             ),
           ),
-        ],
-      ),
-      Row(
-        children: [
-          TextButton(
-              onPressed: () {
-              },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                overlayColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.transparent;
-                    }
-                    return Colors.transparent;
-                  },
-                ),
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return const Color(0xFF4E4C4C).withOpacity(0.5);
-                    }
-                    return const Color(0xFF4E4C4C);
-                  },
+          Text(
+            widget.userData!.bio,
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.location_on,
+                size: 20,
+                color: Color(0xFF2C2C30),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                widget.userData!.location,
+                style: TextStyle(
+                  fontSize: 18,
                 ),
               ),
-              child: const Row(
-                children: [
-                  Text(
-                    '69',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(width: 4,),
-                  Text(
-                    'Friends',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              )
+            ],
           ),
-          const SizedBox(width: 10,),
-          TextButton(
-              onPressed: () {
-              },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                overlayColor: MaterialStateProperty.resolveWith<Color>(
+          Row(
+            children: [
+              TextButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+                    overlayColor: MaterialStateProperty.resolveWith<Color>(
                       (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.transparent;
-                    }
-                    return Colors.transparent;
-                  },
-                ),
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                        if (states.contains(MaterialState.pressed)) {
+                          return Colors.transparent;
+                        }
+                        return Colors.transparent;
+                      },
+                    ),
+                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
                       (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return const Color(0xFF4E4C4C).withOpacity(0.5);
-                    }
-                    return const Color(0xFF4E4C4C);
-                  },
-                ),
+                        if (states.contains(MaterialState.pressed)) {
+                          return const Color(0xFF4E4C4C).withOpacity(0.5);
+                        }
+                        return const Color(0xFF4E4C4C);
+                      },
+                    ),
+                  ),
+                  child: const Row(
+                    children: [
+                      Text(
+                        '69',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        'Friends',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  )),
+              const SizedBox(
+                width: 10,
               ),
-              child: const Row(
-                children: [
-                  Text(
-                    '420',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+              TextButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.zero),
+                    overlayColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return Colors.transparent;
+                        }
+                        return Colors.transparent;
+                      },
+                    ),
+                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return const Color(0xFF4E4C4C).withOpacity(0.5);
+                        }
+                        return const Color(0xFF4E4C4C);
+                      },
                     ),
                   ),
-                  SizedBox(width: 4,),
-                  Text(
-                    'Following',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              )
+                  child: const Row(
+                    children: [
+                      Text(
+                        '420',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        'Following',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  )),
+            ],
           ),
         ],
-      ),
-    ],
-  );
+      );
 
   Widget buildContent() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildContentButton('Posts', 0),
-            buildContentButton('Replies', 1),
-            buildContentButton("GTHR'D", 2),
-            buildContentButton('Likes', 3),
-          ],
-        ),
-        if (selectedIndex == 0) buildPostsContent(),
-        if (selectedIndex == 1) buildRepliesContent(),
-        if (selectedIndex == 2) buildGthrContent(),
-        if (selectedIndex == 3) buildLikesContent(),
-      ],
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildContentButton('Posts', 0),
+              buildContentButton('Replies', 1),
+              buildContentButton("GTHR'D", 2),
+              buildContentButton('Likes', 3),
+            ],
+          ),
+          if (selectedIndex == 0) buildPostsContent(),
+          if (selectedIndex == 1) buildRepliesContent(),
+          if (selectedIndex == 2) buildGthrContent(),
+          if (selectedIndex == 3) buildLikesContent(),
+        ],
+      ),
     );
   }
 
@@ -373,20 +388,18 @@ class _ContentState extends State<Content> {
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(
-                color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
-                width: 5.0,
-              )
-          )
-      ),
+        color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
+        width: 5.0,
+      ))),
       child: TextButton(
-        onPressed: (){
+        onPressed: () {
           setState(() {
             selectedIndex = index;
           });
         },
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
                 return Colors.transparent;
               }
@@ -394,7 +407,7 @@ class _ContentState extends State<Content> {
             },
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
                 return const Color(0xFF4E4C4C).withOpacity(0.5);
               }
@@ -402,61 +415,84 @@ class _ContentState extends State<Content> {
             },
           ),
         ),
-        child: Text(
-            text,
+        child: Text(text,
             style: const TextStyle(
               fontSize: 18,
-            )
-        ),
+            )),
       ),
     );
   }
 
-  Widget buildPostsContent() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Text(
-            '1'
-        )
-      ],
-    ),
-  );
+  Widget buildPostsContent() {
+    return StreamBuilder<List<Post>>(
+      stream: DatabaseService(uid: widget.user?.uid).posts,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Post> posts = snapshot.data!;
+          return Expanded(
+            child: ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                      backgroundImage: widget.userData?.icon != null
+                          ? MemoryImage(base64Decode(widget.userData!.icon))
+                          : null,
+                  ),
+                  title: Text(
+                    posts[index].content,
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    timeago.format(posts[index].timestamp),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  trailing: Icon(Icons.more_horiz),
+                );
+              },
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
 
   Widget buildRepliesContent() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Text(
-            '2'
-        )
-      ],
-    ),
-  );
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            Text('Nothing to see here, fam. Why not reply to someone?')
+          ],
+        ),
+      );
 
   Widget buildGthrContent() => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Image.network(
-            'https://asset-ent.abs-cbn.com/ent/entertainment/media/onemusic/lovebox.jpg?ext=.jpg'
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            Image.network(
+                'https://asset-ent.abs-cbn.com/ent/entertainment/media/onemusic/lovebox.jpg?ext=.jpg'),
+            Image.network(
+                'https://scontent.fmnl8-1.fna.fbcdn.net/v/t39.30808-6/401836757_737590591748457_5740288807220724461_n.jpg?stp=dst-jpg_p843x403&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=zW3lI9lyNNkAb7qpwLC&_nc_ht=scontent.fmnl8-1.fna&cb_e2o_trans=q&oh=00_AfARb92ZkIqxiMZf_HvGqwaLlD0l7sqe-SUmUguq4gSjNQ&oe=66259EC4'),
+          ],
         ),
-        Image.network(
-            'https://scontent.fmnl8-1.fna.fbcdn.net/v/t39.30808-6/401836757_737590591748457_5740288807220724461_n.jpg?stp=dst-jpg_p843x403&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=zW3lI9lyNNkAb7qpwLC&_nc_ht=scontent.fmnl8-1.fna&cb_e2o_trans=q&oh=00_AfARb92ZkIqxiMZf_HvGqwaLlD0l7sqe-SUmUguq4gSjNQ&oe=66259EC4'
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget buildLikesContent() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Text(
-            '4'
-        )
-      ],
-    ),
-  );
-
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [Text('Nothing to see here, fam. Why not like something?')],
+        ),
+      );
 }

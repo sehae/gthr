@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gthr/models/user.dart';
 import 'package:gthr/models/user_list.dart';
 
+import '../models/user_posts.dart';
+
 class DatabaseService {
   final String? uid;
   DatabaseService({this.uid});
@@ -9,6 +11,14 @@ class DatabaseService {
   //collection reference
   final CollectionReference userdataCollection =
   FirebaseFirestore.instance.collection('UData');
+
+  // get user posts data
+  Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async{
+    return await userdataCollection.doc(uid).collection('posts').add({
+      'content': post.content,
+      'timestamp': post.timestamp,
+    });
+  }
 
   //init user data
   Future initUserData(
@@ -59,6 +69,21 @@ class DatabaseService {
     }).toList();
   }
 
+  // Post data from snapshot
+  List<Post> _postListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      // Get the timestamp from the document
+      Timestamp timestamp = doc.get('timestamp');
+      // Convert the Timestamp to a DateTime
+      DateTime dateTime = timestamp.toDate();
+
+      return Post(
+        content: doc.get('content') ?? '',
+        timestamp: dateTime,  // Use the converted DateTime here
+      );
+    }).toList();
+  }
+
   // get user data from document
   UserData _uDataFromDocument(DocumentSnapshot snapshot) {
     return UserData(
@@ -90,5 +115,11 @@ class DatabaseService {
         .handleError((error) {
       print('Error in userData stream: $error');
     });
+  }
+
+  // Get posts stream
+  Stream<List<Post>> get posts {
+    return userdataCollection.doc(uid).collection('posts').snapshots()
+        .map(_postListFromSnapshot);
   }
 }
