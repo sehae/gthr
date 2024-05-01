@@ -2,10 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../models/user_list.dart';
 import '../../services/database.dart';
-
-void main() {
-  runApp(const ChatPage());
-}
+import 'chat_page.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -142,42 +139,52 @@ class _ContentState extends State<Content> {
     return ListView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      itemCount: users.length, // This should be the number of users in the list
+      itemCount: users.length, // The number of users in the list
       itemBuilder: (context, index) {
         final user = users[index]; // Extract the user from the list
         return Padding(
           padding: const EdgeInsets.only(bottom: 15),
           child: ListTile(
-              title: Text(
-                '${user.fname} ${user.lname}', // Display user's full name
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+            title: Text(
+              '${user.fname} ${user.lname}', // Display user's full name
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            subtitle: const Text(
+              'Most recent chat message',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundColor: const Color(0xFF1E7251),
+              backgroundImage: user.icon != null
+                  ? MemoryImage(base64Decode(user.icon))
+                  : null,
+              child: (user.icon == null || user.icon.isEmpty)
+                  ? Text(
+                      user.fname[0].toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    )
+                  : null,
+            ),
+            onTap: () {
+              // Navigate to ChatPage when the user is clicked
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ChatScreen(user: user), // Pass the user to ChatPage
                 ),
-              ),
-              subtitle: const Text(
-                'Most recent chat message',
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              leading: CircleAvatar(
-                radius: 30,
-                backgroundColor: const Color(0xFF1E7251),
-                backgroundImage: user.icon != null
-                    ? MemoryImage(base64Decode(user.icon))
-                    : null,
-                child: (user.icon == null || user.icon.isEmpty)
-                    ? Text(
-                        user.fname[0].toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      )
-                    : null,
-              ),
-              onTap: () {}),
+              );
+            },
+          ),
         );
       },
     );
