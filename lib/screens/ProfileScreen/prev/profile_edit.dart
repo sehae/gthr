@@ -6,8 +6,8 @@ import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../../models/user.dart';
-import '../../../../../services/database.dart';
+import '../../../models/user.dart';
+import '../../../services/database.dart';
 
 class profileEdit extends StatefulWidget {
   const profileEdit({super.key});
@@ -17,6 +17,11 @@ class profileEdit extends StatefulWidget {
 }
 
 class _profileEditState extends State<profileEdit> {
+  String fname = '';
+  String lname = '';
+  String bio = '';
+  String location = '';
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<myUser?>(context);
@@ -25,24 +30,28 @@ class _profileEditState extends State<profileEdit> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           UserData? userData = snapshot.data;
-          return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.chevron_left),
-              ),
-              title: const Text(
-                'Edit Profile',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+          return MaterialApp(
+            title: 'Profile Edit Screen',
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.chevron_left),
                 ),
+                title: const Text(
+                  'Edit Profile',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                centerTitle: true,
               ),
-              centerTitle: true,
+              body: Content(user: user, userData: userData),
             ),
-            body: Content(user: user, userData: userData),
           );
         } else {
           return const Loading();
@@ -358,8 +367,6 @@ class _ContentState extends State<Content> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Profile updated successfully'),
-                    backgroundColor: Color(0xFF1E7251),
-                    duration: Duration(seconds: 2),
                   ),
                 );
                 Navigator.pop(context);

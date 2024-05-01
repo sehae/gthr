@@ -1,31 +1,30 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
+import 'package:gthr/screens/ProfileScreen/prev/profile_edit.dart';
 import 'package:gthr/services/database.dart';
 import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:gthr/screens/ProfileScreen/create_post.dart';
 
-import '../../../../../models/user.dart';
+import '../../../models/user.dart';
 
 class ProfilePage extends StatelessWidget {
-    const ProfilePage({super.key});
+  const ProfilePage({super.key});
 
-    @override
-    Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final user = Provider.of<myUser?>(context);
     return StreamBuilder(
-    stream: DatabaseService(uid: user?.uid).userData,
-    builder: (context, snapshot) {
-    if (snapshot.hasData) {
-    UserData? userData = snapshot.data;
-    return Content(user: user, userData: userData);
-    print('data received');
-    } else {
-    print('not received');
-    return Loading();
-    }
+        stream: DatabaseService(uid: user?.uid).userData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            UserData? userData = snapshot.data;
+            return Content(user: user, userData: userData);
+            print('data received');
+          } else {
+            print('not received');
+            return Loading();
+          }
         }
     );
   }
@@ -58,7 +57,7 @@ class _ContentState extends State<Content> {
             children: <Widget>[
               buildTop(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal:20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     buildProfileInfo(),
@@ -69,34 +68,7 @@ class _ContentState extends State<Content> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) => CreatePostScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                var begin = Offset(0.0, 1.0);  // Start from the bottom
-                var end = Offset.zero;  // End at the center
-                var curve = Curves.easeInOut;  // Use an ease-in-out curve for smooth animation
-
-                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                var offsetAnimation = animation.drive(tween);
-
-                return SlideTransition(
-                  position: offsetAnimation,
-                  child: child,
-                );
-              },
-              transitionDuration: Duration(milliseconds: 300), // Customize the duration of the transition
-            ),
-          );
-        },
-        child: Icon(Icons.add, color: Colors.white),
-        shape: CircleBorder(),
-        backgroundColor: Color(0xff1E7251),  // Customize the button color
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // Positions the button to the bottom right corner
+      )
     );
   }
 
@@ -207,7 +179,7 @@ class _ContentState extends State<Content> {
           ? Text(
         widget.userData?.fname[0].toUpperCase() ?? '',
         style: TextStyle(
-          fontSize: 40.0,
+            fontSize: 40.0,
           color: Colors.white,
         ),
       )
@@ -257,46 +229,46 @@ class _ContentState extends State<Content> {
       Row(
         children: [
           TextButton(
-              onPressed: () {
-              },
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                overlayColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.transparent;
-                    }
+            onPressed: () {
+            },
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
+              overlayColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
                     return Colors.transparent;
-                  },
-                ),
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return const Color(0xFF4E4C4C).withOpacity(0.5);
-                    }
-                    return const Color(0xFF4E4C4C);
-                  },
-                ),
+                  }
+                  return Colors.transparent;
+                },
               ),
-              child: const Row(
-                children: [
-                  Text(
-                    '69',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+              foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return const Color(0xFF4E4C4C).withOpacity(0.5);
+                  }
+                  return const Color(0xFF4E4C4C);
+                },
+              ),
+            ),
+            child: const Row(
+              children: [
+                Text(
+                  '69',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(width: 4,),
-                  Text(
-                    'Friends',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                SizedBox(width: 4,),
+                Text(
+                  'Friends',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              )
+                ),
+              ],
+            )
           ),
           const SizedBox(width: 10,),
           TextButton(
@@ -371,12 +343,12 @@ class _ContentState extends State<Content> {
 
     return Container(
       decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-                color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
-                width: 5.0,
-              )
+        border: Border(
+          bottom: BorderSide(
+            color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
+            width: 5.0,
           )
+        )
       ),
       child: TextButton(
         onPressed: (){
@@ -435,7 +407,7 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildGthrContent() => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
     child: Column(
       children: [
         Image.network(
@@ -449,7 +421,7 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildLikesContent() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20),
     child: Column(
       children: [
         Text(
