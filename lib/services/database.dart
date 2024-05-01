@@ -72,14 +72,14 @@ class DatabaseService {
   // Post data from snapshot
   List<Post> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      // Get the timestamp from the document
+
       Timestamp timestamp = doc.get('timestamp');
-      // Convert the Timestamp to a DateTime
+
       DateTime dateTime = timestamp.toDate();
 
       return Post(
         content: doc.get('content') ?? '',
-        timestamp: dateTime,  // Use the converted DateTime here
+        timestamp: dateTime,
       );
     }).toList();
   }

@@ -125,6 +125,7 @@ class _createContentState extends State<Content> {
       child: Column(
         children: <Widget>[
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CircleAvatar(
                 backgroundImage: widget.userData?.icon != null
@@ -135,7 +136,10 @@ class _createContentState extends State<Content> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0),
-                  child: TextField(
+                  child: TextFormField(
+                    maxLength: 250,
+                    minLines: 1,
+                    maxLines: null,
                     controller: _textController,
                     focusNode: _textFocusNode,
                     decoration: const InputDecoration(

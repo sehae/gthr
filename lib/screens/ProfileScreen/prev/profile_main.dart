@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:gthr/screens/ProfileScreen/prev/profile_edit.dart';
+import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
 import 'package:gthr/services/database.dart';
 import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
