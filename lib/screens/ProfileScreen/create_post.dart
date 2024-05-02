@@ -23,7 +23,7 @@ class CreatePostScreen extends StatelessWidget {
             print('data received');
           } else {
             print('not received');
-            return Loading();
+            return const Loading();
           }
         });
   }
@@ -49,7 +49,7 @@ class _createContentState extends State<Content> {
   void initState() {
     super.initState();
     _textFocusNode = FocusNode();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _textFocusNode.requestFocus();
     });
   }
@@ -67,7 +67,7 @@ class _createContentState extends State<Content> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.close, color: Color(0xFF1E7251)),
+          icon: const Icon(Icons.close, color: Color(0xFF1E7251)),
           onPressed: () => Navigator.pop(context),
         ),
         actions: <Widget>[
@@ -106,10 +106,10 @@ class _createContentState extends State<Content> {
                 Navigator.pop(context);
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               ),
-              child: Text('Post', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text('Post', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -121,7 +121,7 @@ class _createContentState extends State<Content> {
 
   Widget buildPost(){
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
           Row(

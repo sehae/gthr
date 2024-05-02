@@ -164,7 +164,7 @@ class _ContentState extends State<Content> {
               backgroundImage: user.icon != null
                   ? MemoryImage(base64Decode(user.icon))
                   : null,
-              child: (user.icon == null || user.icon.isEmpty)
+              child: (user.icon.isEmpty)
                   ? Text(
                       user.fname[0].toUpperCase(),
                       style: const TextStyle(

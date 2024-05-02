@@ -77,8 +77,8 @@ class _ContentState extends State<Content> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<void> pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       setState(() {
@@ -88,8 +88,8 @@ class _ContentState extends State<Content> {
   }
 
   Future<void> pickCoverImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       setState(() {
@@ -157,7 +157,7 @@ class _ContentState extends State<Content> {
             ),
             child: CircleAvatar(
               radius: profileHeight / 2,
-              backgroundColor: Color(0xFF1E7251),
+              backgroundColor: const Color(0xFF1E7251),
               backgroundImage: FileImage(_imageFile!),
             ),
           )
@@ -171,14 +171,14 @@ class _ContentState extends State<Content> {
             ),
             child: CircleAvatar(
               radius: profileHeight / 2,
-              backgroundColor: Color(0xFF1E7251),
+              backgroundColor: const Color(0xFF1E7251),
               backgroundImage: widget.userData?.icon != null
                   ? MemoryImage(base64Decode(widget.userData!.icon))
                   : null,
             ),
           ),
         ),
-        Icon(Icons.camera_alt, color: Colors.white),
+        const Icon(Icons.camera_alt, color: Colors.white),
       ],
     );
   }
@@ -206,10 +206,10 @@ class _ContentState extends State<Content> {
               : Container(
             width: double.infinity,
             height: coverHeight,
-            color: Color(0xFF1E7251),
+            color: const Color(0xFF1E7251),
           ),
         ),
-        Icon(Icons.camera_alt, color: Colors.white),
+        const Icon(Icons.camera_alt, color: Colors.white),
       ],
     );
   }

@@ -117,8 +117,8 @@ class _ChatScreenState extends State<ChatScreen> {
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: isOutgoing
-                  ? Color(0xFF6D9D8A)
-                  : Color(
+                  ? const Color(0xFF6D9D8A)
+                  : const Color(
                       0xFFB5CFC5), // Different colors for outgoing and incoming
               borderRadius: BorderRadius.circular(10),
             ),

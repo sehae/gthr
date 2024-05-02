@@ -27,7 +27,7 @@ class ProfilePage extends StatelessWidget {
             print('data received');
           } else {
             print('not received');
-            return Loading();
+            return const Loading();
           }
         });
   }
@@ -95,9 +95,9 @@ class _ContentState extends State<Content> {
             },
           );
         },
-        child: Icon(Icons.add, color: Colors.white),
-        shape: CircleBorder(),
-        backgroundColor: Color(0xff1E7251),
+        shape: const CircleBorder(),
+        backgroundColor: const Color(0xff1E7251),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -130,9 +130,9 @@ class _ContentState extends State<Content> {
                 context: context,
                 pageBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation) =>
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      child: profileEdit(),
+                      child: const profileEdit(),
                     ),
                 barrierDismissible: true,
                 barrierLabel:
@@ -195,7 +195,7 @@ class _ContentState extends State<Content> {
         : Container(
       width: double.infinity,
       height: coverHeight,
-      color: Color(0xFF1E7251),
+      color: const Color(0xFF1E7251),
     ),
   );
 
@@ -207,14 +207,14 @@ class _ContentState extends State<Content> {
     ),
     child: CircleAvatar(
       radius: profileHeight / 2,
-      backgroundColor: Color(0xFF1E7251),
+      backgroundColor: const Color(0xFF1E7251),
       backgroundImage: widget.userData?.icon != null
           ? MemoryImage(base64Decode(widget.userData!.icon))
           : null,
       child: (widget.userData?.icon != null && widget.userData?.icon == '')
           ? Text(
         widget.userData?.fname[0].toUpperCase() ?? '',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 40.0,
           color: Colors.white,
         ),
@@ -231,36 +231,36 @@ class _ContentState extends State<Content> {
       ),
       Text(
         '${widget.userData!.fname} ${widget.userData!.lname}',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
         ),
       ),
       Text(
         '@${widget.userData?.username}',
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
         ),
       ),
       Text(
         widget.userData!.bio,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
         ),
       ),
       Row(
         children: [
-          Icon(
+          const Icon(
             Icons.location_on,
             size: 20,
             color: Color(0xFF2C2C30),
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(
             widget.userData!.location,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
             ),
           ),
@@ -361,7 +361,7 @@ class _ContentState extends State<Content> {
   );
 
   Widget buildContent() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: [
@@ -454,10 +454,10 @@ class _ContentState extends State<Content> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(top: 10, right: 10),
+                          padding: const EdgeInsets.only(top: 10, right: 10),
                           child: CircleAvatar(
                             radius: 20,
-                            backgroundColor: Color(0xFF1E7251),
+                            backgroundColor: const Color(0xFF1E7251),
                             backgroundImage: widget.userData?.icon != null
                                 ? MemoryImage(base64Decode(widget.userData!.icon))
                                 : null,
@@ -465,7 +465,7 @@ class _ContentState extends State<Content> {
                                 widget.userData?.icon == '')
                                 ? Text(
                               widget.userData?.fname[0].toUpperCase() ?? '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 40.0,
                                 color: Colors.white,
                               ),
@@ -559,7 +559,7 @@ class _ContentState extends State<Content> {
                               ),
                               Text(
                                 posts[index].content,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18.0,
                                 ),
                               ),
@@ -575,7 +575,7 @@ class _ContentState extends State<Content> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );
