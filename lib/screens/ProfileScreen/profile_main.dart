@@ -582,10 +582,24 @@ class _ContentState extends State<Content> {
                                   )
                                 ],
                               ),
-                              Text(
-                                posts[index].content,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
+                              RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    color: Colors.black,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(text: posts[index].content),
+                                    if (posts[index].isEdited)
+                                      const TextSpan(
+                                        text: ' (edited)',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontStyle: FontStyle.italic,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 20,)

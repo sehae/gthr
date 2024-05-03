@@ -87,6 +87,7 @@ class DatabaseService {
   // Post data from snapshot
   List<Post> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
       Timestamp timestamp = doc.get('timestamp');
 
@@ -96,6 +97,7 @@ class DatabaseService {
         content: doc.get('content') ?? '',
         timestamp: dateTime,
         postId: doc.id,
+        isEdited: data.containsKey('isEdited') ? data['isEdited'] : false,
       );
     }).toList();
   }
