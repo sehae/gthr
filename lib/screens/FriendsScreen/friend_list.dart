@@ -266,7 +266,7 @@ class _ContentState extends State<Content> {
         itemBuilder: (context, index) {
           final user = users[index];
           return Padding(
-              padding: const EdgeInsets.only(bottom: 15),
+              padding: const EdgeInsets.only(bottom: 15, right: 0),
               child: ListTile(
                   title: Text(
                     '${user.fname} ${user.lname}',
@@ -302,101 +302,106 @@ class _ContentState extends State<Content> {
                       child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  print('Friend button pressed');
-                                });
-                              },
-                              child: SizedBox(
-                                width: 100,
-                                height: 30,
-                                child: Center(
-                                  child: Text( 'Friend'),
-                                ),
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
-                                padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
+                            Padding(padding: const EdgeInsets.all(0),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    print('Friend button pressed');
+                                  });
+                                },
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 30,
+                                  child: Center(
+                                    child: Text( 'Friend'),
                                   ),
                                 ),
-                                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF1E7251)),
+                                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(vertical: 0, horizontal: 0)),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                    ),
+                                  ),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                ),
                               ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.more_horiz),
-                              onPressed: () {
-                                showModalBottomSheet<int>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        SizedBox(height: 20, width: double.infinity),
-                                        CircleAvatar(
-                                          radius: 40,
-                                          backgroundColor: Color(0xFF1E7251),
-                                          backgroundImage: user.icon != null
-                                              ? MemoryImage(base64Decode(user.icon))
-                                              : null,
-                                          child: (user.icon != null && user.icon == '')
-                                              ? Text(
-                                            user.fname[0].toUpperCase() ?? '',
-                                            style: TextStyle(
-                                              fontSize: 30.0,
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                              : null,
-                                        ),
-                                        SizedBox(height: 10, width: double.infinity),
-                                        Text(
-                                          user.username,
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
+                            Padding(
+                              padding: const EdgeInsets.all(0),
+                              child: IconButton(
+                                icon: const Icon(Icons.more_horiz),
+                                onPressed: () {
+                                  showModalBottomSheet<int>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          SizedBox(height: 20, width: double.infinity),
+                                          CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: Color(0xFF1E7251),
+                                            backgroundImage: user.icon != null
+                                                ? MemoryImage(base64Decode(user.icon))
+                                                : null,
+                                            child: (user.icon != null && user.icon == '')
+                                                ? Text(
+                                              user.fname[0].toUpperCase() ?? '',
+                                              style: TextStyle(
+                                                fontSize: 30.0,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                                : null,
                                           ),
-                                        ),
-                                        ListTile(
-                                            title: Center(child: const Text('Manage Notifications')),
+                                          SizedBox(height: 10, width: double.infinity),
+                                          Text(
+                                            user.username,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          ListTile(
+                                              title: Center(child: const Text('Manage Notifications')),
+                                              onTap: () {
+                                                Navigator.pop(context, 1);
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return notificationsContent();
+                                                  },
+                                                );
+                                              }
+                                          ),
+                                          ListTile(
+                                            title: Center(child: const Text('Mute')),
                                             onTap: () {
-                                              Navigator.pop(context, 1);
+                                              Navigator.pop(context, 2);
                                               showModalBottomSheet(
                                                 context: context,
                                                 builder: (BuildContext context) {
-                                                  return notificationsContent();
+                                                  return muteContent();
                                                 },
                                               );
-                                            }
-                                        ),
-                                        ListTile(
-                                          title: Center(child: const Text('Mute')),
-                                          onTap: () {
-                                            Navigator.pop(context, 2);
-                                            showModalBottomSheet(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return muteContent();
-                                              },
-                                            );
-                                          },
-                                        ),
-                                        ListTile(
-                                          title: Center(child: const Text('Cancel')),
-                                          onTap: () => Navigator.pop(context, 3),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ).then((value) {
-                                  if (value != null) {
-                                    print('Selected value: $value');
-                                  }
-                                });
-                              },
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: Center(child: const Text('Cancel')),
+                                            onTap: () => Navigator.pop(context, 3),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ).then((value) {
+                                    if (value != null) {
+                                      print('Selected value: $value');
+                                    }
+                                  });
+                                },
+                              ),
                             ),
                           ]
                       )
