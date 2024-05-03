@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gthr/screens/ProfileScreen/post_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
@@ -448,124 +449,151 @@ class _ContentState extends State<Content> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, right: 10),
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: const Color(0xFF1E7251),
-                          backgroundImage: widget.userData?.icon != null
-                              ? MemoryImage(base64Decode(widget.userData!.icon))
-                              : null,
-                          child: (widget.userData?.icon != null &&
-                              widget.userData?.icon == '')
-                              ? Text(
-                            widget.userData?.fname[0].toUpperCase() ?? '',
-                            style: const TextStyle(
-                              fontSize: 40.0,
-                              color: Colors.white,
+                  return InkWell(
+                    onTap: () {
+                      showGeneralDialog(
+                        context: context,
+                        pageBuilder: (BuildContext context, Animation<double> animation,
+                            Animation<double> secondaryAnimation) =>
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: PostScreen(post: posts[index]),
                             ),
-                          )
-                              : null,
-                        ),
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '@${widget.userData!.username} · ${timeago.format(posts[index].timestamp, locale: 'en_short')}',
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                                PopupMenuButton<int>(
-                                  icon: const Icon(Icons.more_horiz),
-                                  color: Colors.grey[100],
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                                  elevation: 2.0,
-                                  itemBuilder: (context) => [
-                                    const PopupMenuItem(
-                                      value: 1,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Delete Post',
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                          FaIcon(FontAwesomeIcons.trashCan, color: Colors.red,),
-                                        ],
-                                      ),
-                                    ),
-                                    const PopupMenuItem(
-                                      value: 2,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Edit Post'),
-                                          FaIcon(FontAwesomeIcons.pen),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                  onSelected: (value) {
-                                    if (value == 1) {
-                                      String? postId = posts[index].postId;
-                                      if (postId != null) {
-                                        confirmDeletePost(postId);
-                                      } else {
-                                        print('Post ID is null');
-                                      }
-                                    } else if (value == 2) {
-                                      showGeneralDialog(
-                                        context: context,
-                                        pageBuilder: (BuildContext context, Animation<double> animation,
-                                            Animation<double> secondaryAnimation) =>
-                                            EditPostScreen(
-                                              postId: posts[index].postId!,
-                                              initialContent: posts[index].content,
-                                            ),
-                                        barrierDismissible: true,
-                                        barrierLabel:
-                                        MaterialLocalizations.of(context).modalBarrierDismissLabel,
-                                        barrierColor: Colors.black45,
-                                        transitionDuration: const Duration(milliseconds: 250),
-                                        transitionBuilder:
-                                            (context, animation, secondaryAnimation, child) {
-                                          return SlideTransition(
-                                            position: Tween<Offset>(
-                                              begin: const Offset(0, 1),
-                                              end: Offset.zero,
-                                            ).animate(animation),
-                                            child: child,
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                )
-                              ],
-                            ),
-                            Text(
-                              posts[index].content,
+                        barrierDismissible: true,
+                        barrierLabel:
+                        MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                        barrierColor: Colors.black45,
+                        transitionDuration: const Duration(milliseconds: 250),
+                        transitionBuilder: (context, animation, secondaryAnimation, child) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0, 1),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          );
+                        },
+                      );
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, right: 10),
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: const Color(0xFF1E7251),
+                            backgroundImage: widget.userData?.icon != null
+                                ? MemoryImage(base64Decode(widget.userData!.icon))
+                                : null,
+                            child: (widget.userData?.icon != null &&
+                                widget.userData?.icon == '')
+                                ? Text(
+                              widget.userData?.fname[0].toUpperCase() ?? '',
                               style: const TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 40.0,
+                                color: Colors.white,
                               ),
-                            ),
-                            const SizedBox(height: 20,)
-                          ],
+                            )
+                                : null,
+                          ),
                         ),
-                      ),
-                    ],
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '@${widget.userData!.username} · ${timeago.format(posts[index].timestamp, locale: 'en_short')}',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                  PopupMenuButton<int>(
+                                    icon: const Icon(Icons.more_horiz),
+                                    color: Colors.grey[100],
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                                    elevation: 2.0,
+                                    itemBuilder: (context) => [
+                                      const PopupMenuItem(
+                                        value: 1,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Delete Post',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            FaIcon(FontAwesomeIcons.trashCan, color: Colors.red,),
+                                          ],
+                                        ),
+                                      ),
+                                      const PopupMenuItem(
+                                        value: 2,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Edit Post'),
+                                            FaIcon(FontAwesomeIcons.pen),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                    onSelected: (value) {
+                                      if (value == 1) {
+                                        String? postId = posts[index].postId;
+                                        if (postId != null) {
+                                          confirmDeletePost(postId);
+                                        } else {
+                                          print('Post ID is null');
+                                        }
+                                      } else if (value == 2) {
+                                        showGeneralDialog(
+                                          context: context,
+                                          pageBuilder: (BuildContext context, Animation<double> animation,
+                                              Animation<double> secondaryAnimation) =>
+                                              EditPostScreen(
+                                                postId: posts[index].postId!,
+                                                initialContent: posts[index].content,
+                                              ),
+                                          barrierDismissible: true,
+                                          barrierLabel:
+                                          MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                          barrierColor: Colors.black45,
+                                          transitionDuration: const Duration(milliseconds: 250),
+                                          transitionBuilder:
+                                              (context, animation, secondaryAnimation, child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: const Offset(0, 1),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                  )
+                                ],
+                              ),
+                              Text(
+                                posts[index].content,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                              const SizedBox(height: 20,)
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
             );
