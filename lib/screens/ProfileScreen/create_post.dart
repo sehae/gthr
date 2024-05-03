@@ -29,7 +29,6 @@ class CreatePostScreen extends StatelessWidget {
   }
 }
 
-
 class Content extends StatefulWidget {
   final myUser? user;
   final UserData? userData;
@@ -75,41 +74,40 @@ class _createContentState extends State<Content> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () async {
-                Post newPost = Post(
-                  content: _textController.text,
-                  timestamp: DateTime.now(),
-                );
-
-                await DatabaseService(uid: user?.uid).addPost(newPost);
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
+                String postContent = _textController.text.trim();
+                if (postContent.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Color(0xFF1E7251),
                     content: Center(
                       child: Text(
-                        'Post created successfully!',
+                        'Please enter some text',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
+                          color: Colors.white,
+                          fontSize: 14,
                         ),
                       ),
                     ),
-                    backgroundColor: Color(0xFFFFDD0A),
-                    duration: Duration(seconds: 3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                );
-                Navigator.pop(context);
+                  ));
+                } else {
+                  Post newPost = Post(
+                    content: postContent,
+                    timestamp: DateTime.now(),
+                  );
+
+                  await DatabaseService(uid: user?.uid).addPost(newPost);
+
+                  showSnackBarFun(context);
+
+                  Navigator.pop(context);
+                }
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(const Color(0xFF1E7251)),
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               ),
-              child: const Text('Post', style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text('Post',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
         ],
@@ -119,7 +117,23 @@ class _createContentState extends State<Content> {
     );
   }
 
-  Widget buildPost(){
+  showSnackBarFun(context) {
+    SnackBar snackBar = SnackBar(
+      content: const Text('Your post has been uploaded!',
+          style: TextStyle(fontSize: 16)),
+      backgroundColor: const Color(0xFF1E7251),
+      dismissDirection: DismissDirection.up,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height - 150,
+          left: 10,
+          right: 10),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Widget buildPost() {
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -147,7 +161,7 @@ class _createContentState extends State<Content> {
                       border: InputBorder.none,
                     ),
                     style: const TextStyle(
-                        color: Colors.black,
+                      color: Colors.black,
                       fontSize: 18,
                     ),
                   ),
