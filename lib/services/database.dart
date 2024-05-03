@@ -94,6 +94,7 @@ class DatabaseService {
   Future<void> updatePost(String postId, String newContent) async {
     return await userdataCollection.doc(uid).collection('posts').doc(postId).update({
       'content': newContent,
+      'isEdited': true,
     });
   }
 
