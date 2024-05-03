@@ -39,14 +39,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.transparent),
           scaffoldBackgroundColor: Colors.white,
           scrollbarTheme: ScrollbarThemeData(
             thickness: MaterialStateProperty.all(6.0),
             minThumbLength: 25.0,
-            radius: Radius.circular(15.0),
+            radius: const Radius.circular(15.0),
             thumbColor: MaterialStateProperty.all(Color(0xff1E7251)),
           ),
-
         ),
         home: const SplashScreen(), //Wrapper(), //
         routes: {
