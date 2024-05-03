@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gthr/models/user.dart';
 import 'package:gthr/models/user_list.dart';
+
+import '../models/user_posts.dart';
 
 class DatabaseService {
   final String? uid;
@@ -11,29 +12,58 @@ class DatabaseService {
   final CollectionReference userdataCollection =
   FirebaseFirestore.instance.collection('UData');
 
+
+  // add user posts data
+  Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async{
+    return await userdataCollection.doc(uid).collection('posts').add({
+      'content': post.content,
+      'timestamp': post.timestamp,
+    });
+  }
+
+  // add user reply data
+  Future addReply(String postId, Reply reply) async {
+    return await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .collection('replies')
+        .add({
+      'content': reply.content,
+      'timestamp': reply.timestamp,
+      'userId': reply.userId,
+    });
+  }
+
   //init user data
   Future initUserData(
-      String fname, String lname, String username, String email) async {
+      String fname, String lname, String username, String bio,
+      String location, String email, String base64Image, String base64CoverImage, String uni) async {
     return await userdataCollection.doc(uid).set({
       'fname': fname,
       'lname': lname,
       'username': username,
       'email': email,
+      'bio': '',
+      'location': '',
+      'icon': '',
+      'header': '',
+      'uni': uni,
       'uid': uid,
     });
   }
 
   //update user data
   Future updateUserData(String fname, String lname, String username, String bio,
-      String location, String email) async {
+      String location, String email, String base64Image, String base64CoverImage) async {
     return await userdataCollection.doc(uid).set({
       'fname': fname,
       'lname': lname,
       'username': username,
       'bio': bio,
       'location': location,
-      'icon': '',
-      'header': '',
+      'icon': base64Image,
+      'header': base64CoverImage,
       'email': email,
     });
   }
@@ -54,6 +84,56 @@ class DatabaseService {
     }).toList();
   }
 
+  // Post data from snapshot
+  List<Post> _postListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      Timestamp timestamp = doc.get('timestamp');
+
+      DateTime dateTime = timestamp.toDate();
+
+      return Post(
+        content: doc.get('content') ?? '',
+        timestamp: dateTime,
+        postId: doc.id,
+        isEdited: data.containsKey('isEdited') ? data['isEdited'] : false,
+      );
+    }).toList();
+  }
+
+  // get replies
+  Future<List<Reply>> getReplies(String postId) async {
+    QuerySnapshot querySnapshot = await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .collection('replies')
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      return Reply(
+        content: doc.get('content'),
+        timestamp: doc.get('timestamp').toDate(),
+        postId: doc.get('postId'),
+        userId: doc.get('userId'),
+      );
+    }).toList();
+  }
+
+  // delete post
+  Future<void> deletePost(String postId) async {
+    return await userdataCollection.doc(uid).collection('posts').doc(postId).delete();
+  }
+
+  //edit post
+  Future<void> updatePost(String postId, String newContent) async {
+    return await userdataCollection.doc(uid).collection('posts').doc(postId).update({
+      'content': newContent,
+      'isEdited': true,
+    });
+  }
+
   // get user data from document
   UserData _uDataFromDocument(DocumentSnapshot snapshot) {
     return UserData(
@@ -61,7 +141,7 @@ class DatabaseService {
       fname: snapshot.get('fname'),
       lname: snapshot.get('lname'),
       username: snapshot.get('username'),
-      bio: snapshot.get('bio'),
+      bio: snapshot.get('bio') ,
       location: snapshot.get('location'),
       icon: snapshot.get('icon'),
       header: snapshot.get('header'),
@@ -71,13 +151,25 @@ class DatabaseService {
 
   //get user list stream
   Stream<List<UserList>> get userLists {
-    return userdataCollection.snapshots()
-        .map((_uDataFromSnapshot));
+    return userdataCollection.snapshots().map((snapshot) {
+      print('Snapshot received: ${snapshot.docs.length} documents');
+      final userList = _uDataFromSnapshot(snapshot);
+      print('UserList: $userList');
+      return userList;
+    });
   }
 
   //get user data stream
   Stream<UserData> get userData {
-    return userdataCollection.doc(uid).snapshots()
-        .map(_uDataFromDocument);
+    return userdataCollection.doc(uid).snapshots().map(_uDataFromDocument)
+        .handleError((error) {
+      print('Error in userData stream: $error');
+    });
+  }
+
+  // Get posts stream
+  Stream<List<Post>> get posts {
+    return userdataCollection.doc(uid).collection('posts').snapshots()
+        .map(_postListFromSnapshot);
   }
 }

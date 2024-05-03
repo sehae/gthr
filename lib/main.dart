@@ -10,7 +10,7 @@ import 'package:gthr/screens/HomePage/homepage.dart';
 import 'package:gthr/screens/ProfileScreen/profile_main.dart';
 import 'package:gthr/screens/Settings/settings.dart';
 import 'package:gthr/services/auth.dart';
-import 'package:gthr/splash_screen.dart';
+import 'package:gthr/shared/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -38,6 +38,16 @@ class MyApp extends StatelessWidget {
       initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.transparent),
+          scaffoldBackgroundColor: Colors.white,
+          scrollbarTheme: ScrollbarThemeData(
+            thickness: MaterialStateProperty.all(6.0),
+            minThumbLength: 25.0,
+            radius: const Radius.circular(15.0),
+            thumbColor: MaterialStateProperty.all(Color(0xff1E7251)),
+          ),
+        ),
         home: const SplashScreen(), //Wrapper(), //
         routes: {
           Routes.home: (context) => const MyHomePage(),
@@ -74,7 +84,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Color appBarColor = _getAppBarColor();
 
     return Scaffold(
-      extendBodyBehindAppBar: _selectedRoute == Routes.chats || _selectedRoute == Routes.friends,
+      extendBodyBehindAppBar:
+          _selectedRoute == Routes.chats || _selectedRoute == Routes.friends,
       appBar: AppBar(
         title: Text(
           _getAppBarTitle(),
@@ -157,33 +168,28 @@ class _MyHomePageState extends State<MyHomePage> {
       return [
         IconButton(
           icon: Image.asset('assets/gthr_LogoALT.png'),
-          onPressed: (){
-          },
+          onPressed: () {},
         )
       ];
     } else if (_selectedRoute == Routes.friends) {
       return [
         IconButton(
           icon: Image.asset('assets/gthr_LogoALT.png'),
-          onPressed: (){
-          },
+          onPressed: () {},
         )
       ];
     } else if (_selectedRoute == Routes.chats) {
       return [
         IconButton(
           icon: Image.asset('assets/gthr_LogoALT.png'),
-          onPressed: (){
-          },
+          onPressed: () {},
         )
       ];
     } else if (_selectedRoute == Routes.profile) {
       return [
         IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () {
-
-          },
+          onPressed: () {},
         ),
       ];
     }

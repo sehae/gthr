@@ -1,11 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gthr/models/user.dart';
 import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
-import '../../models/user_list.dart';
-import '../../services/database.dart';
+import '../../../../../models/user.dart';
+import '../../../../../services/database.dart';
 
 class profileEdit extends StatefulWidget {
   const profileEdit({super.key});
@@ -15,11 +17,6 @@ class profileEdit extends StatefulWidget {
 }
 
 class _profileEditState extends State<profileEdit> {
-  String fname = '';
-  String lname = '';
-  String bio = '';
-  String location = '';
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<myUser?>(context);
@@ -27,29 +24,25 @@ class _profileEditState extends State<profileEdit> {
       stream: DatabaseService(uid: user?.uid).userData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          UserData? userData = snapshot.data as UserData?;
-          return MaterialApp(
-            title: 'Profile Edit Screen',
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              appBar: AppBar(
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.chevron_left),
-                ),
-                title: const Text(
-                  'Edit Profile',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                centerTitle: true,
+          UserData? userData = snapshot.data;
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.chevron_left),
               ),
-              body: Content(user: user, userData: userData),
+              title: const Text(
+                'Edit Profile',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              centerTitle: true,
             ),
+            body: Content(user: user, userData: userData),
           );
         } else {
           return const Loading();
@@ -70,6 +63,9 @@ class Content extends StatefulWidget {
 }
 
 class _ContentState extends State<Content> {
+  File? _imageFile;
+  File? _coverImageFile;
+
   String _currentfname = '';
   String _currentlname = '';
   String _currentbio = '';
@@ -79,6 +75,28 @@ class _ContentState extends State<Content> {
   final double profileHeight = 144;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _imageFile = File(image.path);
+      });
+    }
+  }
+
+  Future<void> pickCoverImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _coverImageFile = File(image.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,28 +140,79 @@ class _ContentState extends State<Content> {
     );
   }
 
-  Widget buildEditCover() => Container(
-    child: Image.network(
-      'https://betanews.com/wp-content/uploads/2015/09/Windows-10-lock-screen.jpg',
-      width: double.infinity,
-      height: coverHeight,
-      fit: BoxFit.cover,
-    ),
-  );
+  Widget buildEditProfile() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GestureDetector(
+          onTap: pickImage,
+          child: _imageFile != null
+              ? Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 5.0,
+              ),
+            ),
+            child: CircleAvatar(
+              radius: profileHeight / 2,
+              backgroundColor: const Color(0xFF1E7251),
+              backgroundImage: FileImage(_imageFile!),
+            ),
+          )
+              : Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.white,
+                width: 5.0,
+              ),
+            ),
+            child: CircleAvatar(
+              radius: profileHeight / 2,
+              backgroundColor: const Color(0xFF1E7251),
+              backgroundImage: widget.userData?.icon != null
+                  ? MemoryImage(base64Decode(widget.userData!.icon))
+                  : null,
+            ),
+          ),
+        ),
+        const Icon(Icons.camera_alt, color: Colors.white),
+      ],
+    );
+  }
 
-  Widget buildEditProfile() => Container(
-    padding: const EdgeInsets.all(5),
-    decoration: const BoxDecoration(
-      color: Colors.white,
-      shape: BoxShape.circle,
-    ),
-    child: CircleAvatar(
-      radius: profileHeight / 2,
-      backgroundColor: Colors.grey.shade800,
-      backgroundImage: const NetworkImage(
-          'https://cdn.britannica.com/47/188747-050-1D34E743/Bill-Gates-2011.jpg'),
-    ),
-  );
+  Widget buildEditCover() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GestureDetector(
+          onTap: pickCoverImage,
+          child: _coverImageFile != null
+              ? Image.file(
+            _coverImageFile!,
+            width: double.infinity,
+            height: coverHeight,
+            fit: BoxFit.cover,
+          )
+              : (widget.userData?.header != null && widget.userData!.header.isNotEmpty)
+              ? Image.memory(
+            base64Decode(widget.userData!.header),
+            width: double.infinity,
+            height: coverHeight,
+            fit: BoxFit.cover,
+          )
+              : Container(
+            width: double.infinity,
+            height: coverHeight,
+            color: const Color(0xFF1E7251),
+          ),
+        ),
+        const Icon(Icons.camera_alt, color: Colors.white),
+      ],
+    );
+  }
 
   Widget buildForm() {
     return Form(
@@ -151,6 +220,7 @@ class _ContentState extends State<Content> {
       child: Column(
         children: [
           TextFormField(
+            initialValue: widget.userData?.fname,
             decoration: const InputDecoration(
               labelText: 'First Name',
               labelStyle: TextStyle(
@@ -179,6 +249,7 @@ class _ContentState extends State<Content> {
             height: 20,
           ),
           TextFormField(
+            initialValue: widget.userData?.lname,
             decoration: const InputDecoration(
               labelText: 'Last Name',
               labelStyle: TextStyle(
@@ -207,6 +278,7 @@ class _ContentState extends State<Content> {
             height: 20,
           ),
           TextFormField(
+            initialValue: widget.userData?.bio,
             decoration: const InputDecoration(
               labelText: 'Bio',
               labelStyle: TextStyle(
@@ -230,6 +302,7 @@ class _ContentState extends State<Content> {
             height: 20,
           ),
           TextFormField(
+            initialValue: widget.userData?.location,
             decoration: const InputDecoration(
               labelText: 'Location',
               labelStyle: TextStyle(
@@ -257,6 +330,21 @@ class _ContentState extends State<Content> {
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
+                String icon = widget.userData?.icon ?? '';
+                String header = widget.userData?.header ?? '';
+                List<int>? imageBytes;
+                List<int>? coverImageBytes;
+
+                if (_imageFile != null) {
+                  imageBytes = _imageFile!.readAsBytesSync();
+                  icon = base64Encode(imageBytes);
+                }
+
+                if (_coverImageFile != null) {
+                  coverImageBytes = _coverImageFile!.readAsBytesSync();
+                  header = base64Encode(coverImageBytes);
+                }
+
                 await DatabaseService(uid: widget.user!.uid).updateUserData(
                   _currentfname.isEmpty ? widget.userData!.fname : _currentfname,
                   _currentlname.isEmpty ? widget.userData!.lname : _currentlname,
@@ -264,13 +352,31 @@ class _ContentState extends State<Content> {
                   _currentbio.isEmpty ? widget.userData!.bio : _currentbio,
                   _currentlocation.isEmpty ? widget.userData!.location : _currentlocation,
                   widget.userData?.email ?? '',
+                  icon,
+                  header,
                 );
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Profile updated successfully'),
+                    content: Center(
+                      child: Text(
+                        'Profile updated successfully',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Color(0xFFFFDD0A),
+                    duration: Duration(seconds: 3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
                   ),
                 );
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               }
             },
             style: ButtonStyle(
