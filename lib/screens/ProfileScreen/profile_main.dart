@@ -25,9 +25,7 @@ class ProfilePage extends StatelessWidget {
           if (snapshot.hasData) {
             UserData? userData = snapshot.data;
             return Content(user: user, userData: userData);
-            print('data received');
           } else {
-            print('not received');
             return const Loading();
           }
         });
