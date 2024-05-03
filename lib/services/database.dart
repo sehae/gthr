@@ -12,11 +12,26 @@ class DatabaseService {
   final CollectionReference userdataCollection =
   FirebaseFirestore.instance.collection('UData');
 
-  // get user posts data
+
+  // add user posts data
   Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async{
     return await userdataCollection.doc(uid).collection('posts').add({
       'content': post.content,
       'timestamp': post.timestamp,
+    });
+  }
+
+  // add user reply data
+  Future addReply(String postId, Reply reply) async {
+    return await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .collection('replies')
+        .add({
+      'content': reply.content,
+      'timestamp': reply.timestamp,
+      'userId': reply.userId,
     });
   }
 
@@ -81,6 +96,25 @@ class DatabaseService {
         content: doc.get('content') ?? '',
         timestamp: dateTime,
         postId: doc.id,
+      );
+    }).toList();
+  }
+
+  // get replies
+  Future<List<Reply>> getReplies(String postId) async {
+    QuerySnapshot querySnapshot = await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .collection('replies')
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      return Reply(
+        content: doc.get('content'),
+        timestamp: doc.get('timestamp').toDate(),
+        postId: doc.get('postId'),
+        userId: doc.get('userId'),
       );
     }).toList();
   }
