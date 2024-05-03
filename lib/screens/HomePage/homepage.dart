@@ -3,6 +3,7 @@ import 'package:gthr/services/database.dart';
 import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
 import '../../models/user.dart';
+import '../../shared/custom_scrollbar.dart';
 
 void main() {
   runApp(const HomePage());
@@ -21,10 +22,9 @@ class HomePage extends StatelessWidget {
         if (snapshot.hasData) {
           UserData? userData = snapshot.data;
           print('data received');
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              body: SingleChildScrollView(
+          return Scaffold(
+            body: CustomScrollbar(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
