@@ -164,8 +164,10 @@ class _ContentState extends State<Content> {
 
   Widget buildMessagesContent(List<UserList> users) {
     if (users.isEmpty) {
-      return const Center(child: Text('No users available'));
+      return const Center(child: Text('Loading Users...'));
     }
+
+    final myUser? currentUser = Provider.of<myUser?>(context);
 
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -182,22 +184,25 @@ class _ContentState extends State<Content> {
             child: user.icon.isEmpty
                 ? Text(
                     user.fname[0].toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
                   )
                 : null,
           ),
           title: Text('${user.fname} ${user.lname}'),
           subtitle: const Text('Last message preview'),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatScreen(user: user),
-              ),
-            );
+            if (currentUser != null) {
+              // Ensure currentUser exists
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                    chatPartner: user, // Chat partner
+                    currentUser: currentUser, // Pass the current user
+                  ),
+                ),
+              );
+            }
           },
         );
       },
