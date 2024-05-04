@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../models/user_list.dart';
+import 'package:provider/provider.dart';
 import '../../services/database.dart';
+import '../../models/user.dart';
+import '../../models/user_list.dart';
 import 'chat_page.dart';
 
 class ChatPage extends StatelessWidget {
@@ -9,13 +11,8 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Chat Screen',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        extendBodyBehindAppBar: true,
-        body: Content(),
-      ),
+    return Scaffold(
+      body: Content(),
     );
   }
 }
@@ -30,30 +27,51 @@ class Content extends StatefulWidget {
 class _ContentState extends State<Content> {
   late Stream<List<UserList>> _usersStream;
   final double headerHeight = 180;
-
   int selectedIndex = 0;
 
   _ContentState() {
-    selectedIndex = 0;
-    _usersStream = DatabaseService().userLists; // Assuming it fetches user data
+    _usersStream = DatabaseService().userLists;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          buildHeader(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(0),
-              child: selectedIndex == 0
-                  ? buildMessagesStream()
-                  : buildGroupsContent(),
-            ),
-          ),
-        ],
-      ),
+    final myUser? currentUser = Provider.of<myUser?>(context);
+
+    if (currentUser == null) {
+      return const Center(child: Text('No current user found'));
+    }
+
+    return StreamBuilder<UserData>(
+      stream: DatabaseService(uid: currentUser.uid).userData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          final currentUserData = snapshot.data;
+
+          if (currentUserData == null) {
+            return const Center(child: Text('No current user data found'));
+          }
+
+          return Column(
+            children: [
+              buildHeader(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: selectedIndex == 0
+                      ? buildMessagesStream(currentUserData.fname)
+                      : buildGroupsContent(),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const Center(child: Text('No data available'));
+        }
+      },
     );
   }
 
@@ -63,14 +81,14 @@ class _ContentState extends State<Content> {
       height: headerHeight,
       child: Column(
         children: [
-          Expanded(child: Container()),
-          buildContent(),
+          const Spacer(),
+          buildContentHeader(),
         ],
       ),
     );
   }
 
-  Widget buildContent() {
+  Widget buildContentHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -118,7 +136,7 @@ class _ContentState extends State<Content> {
     );
   }
 
-  Widget buildMessagesStream() {
+  Widget buildMessagesStream(String currentUserFname) {
     return StreamBuilder<List<UserList>>(
       stream: _usersStream,
       builder: (context, snapshot) {
@@ -127,7 +145,16 @@ class _ContentState extends State<Content> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
-          return buildMessagesContent(snapshot.data!);
+          final users = snapshot.data!;
+
+          // Exclude users with same fname as current user
+          final filteredUsers = users
+              .where(
+                (user) => user.fname != currentUserFname,
+              )
+              .toList();
+
+          return buildMessagesContent(filteredUsers);
         } else {
           return const Center(child: Text('No data available'));
         }
@@ -136,63 +163,48 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildMessagesContent(List<UserList> users) {
+    if (users.isEmpty) {
+      return const Center(child: Text('No users available'));
+    }
+
     return ListView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
-      itemCount: users.length, // The number of users in the list
+      itemCount: users.length,
       itemBuilder: (context, index) {
-        final user = users[index]; // Extract the user from the list
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 15),
-          child: ListTile(
-            title: Text(
-              '${user.fname} ${user.lname}', // Display user's full name
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            subtitle: const Text(
-              'Most recent chat message',
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: const Color(0xFF1E7251),
-              backgroundImage: user.icon != null
-                  ? MemoryImage(base64Decode(user.icon))
-                  : null,
-              child: (user.icon.isEmpty)
-                  ? Text(
-                      user.fname[0].toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    )
-                  : null,
-            ),
-            onTap: () {
-              // Navigate to ChatPage when the user is clicked
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      ChatScreen(user: user), // Pass the user to ChatPage
-                ),
-              );
-            },
+        final user = users[index];
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundColor: const Color(0xFF1E7251),
+            backgroundImage: user.icon.isNotEmpty
+                ? MemoryImage(base64Decode(user.icon))
+                : null,
+            child: user.icon.isEmpty
+                ? Text(
+                    user.fname[0].toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  )
+                : null,
           ),
+          title: Text('${user.fname} ${user.lname}'),
+          subtitle: const Text('Last message preview'),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatScreen(user: user),
+              ),
+            );
+          },
         );
       },
     );
   }
 
   Widget buildGroupsContent() {
-    return const Center(
-      child: Text('You currently have no groups'),
-    );
+    return const Center(child: Text('No groups available'));
   }
 }
