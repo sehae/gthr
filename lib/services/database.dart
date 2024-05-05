@@ -213,13 +213,26 @@ class DatabaseService {
 
   // Method to send a message
   Future<void> sendMessage(String chatId, Chat message) {
-    return userdataCollection.doc(message.senderId).collection('chats').doc(chatId).collection('messages').add({
+    // Add the message to the sender's subcollection
+    Future<void> sendersFuture = userdataCollection.doc(message.senderId).collection('chats').doc(chatId).collection('messages').add({
       'chatId': message.chatId,
       'senderId': message.senderId,
       'receiverId': message.receiverId,
       'message': message.message,
       'timestamp': message.timestamp,
     });
+
+    // Add the message to the receiver's subcollection
+    Future<void> receiversFuture = userdataCollection.doc(message.receiverId).collection('chats').doc(chatId).collection('messages').add({
+      'chatId': message.chatId,
+      'senderId': message.senderId,
+      'receiverId': message.receiverId,
+      'message': message.message,
+      'timestamp': message.timestamp,
+    });
+
+    // Return a Future that completes when both futures complete
+    return Future.wait([sendersFuture, receiversFuture]);
   }
 
   // Method to get messages
@@ -284,6 +297,7 @@ class DatabaseService {
       print('Error in userData stream: $error');
     });
   }
+
   /* End of Getters */
 
 }

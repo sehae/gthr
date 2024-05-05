@@ -111,7 +111,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   // Function to send a message
-  // Function to send a message
   void _sendMessage() {
     final text = _textController.text.trim();
     if (text.isNotEmpty) {
