@@ -48,6 +48,8 @@ class Content extends StatefulWidget {
 }
 
 class _ContentState extends State<Content> {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -77,7 +79,7 @@ class _ContentState extends State<Content> {
           child: SingleChildScrollView(
             child: Column(children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.8, // adjust the value as needed
+                height: MediaQuery.of(context).size.height * 0.8,
                 child: CustomScrollbar(
                   child: Column(
                     children: <Widget>[
@@ -97,12 +99,35 @@ class _ContentState extends State<Content> {
 
   Widget chatBar() {
     return Container(
-      padding: EdgeInsets.all(8.0),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: "Write a reply...",
-          border: OutlineInputBorder(),
-        ),
+      color: Colors.transparent,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: "Post your reply",
+                border: OutlineInputBorder(),
+                fillColor: Colors.grey[200],
+              ),
+            ),
+          ),
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: _controller,
+            builder: (context, TextEditingValue value, _) {
+              if (value.text.isNotEmpty) {
+                return IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    // Handle sending message
+                  },
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            },
+          ),
+        ],
       ),
     );
   }
