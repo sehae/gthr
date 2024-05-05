@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/database.dart';
@@ -28,6 +29,7 @@ class _ContentState extends State<Content> {
   late Stream<List<UserList>> _usersStream;
   final double headerHeight = 180;
   int selectedIndex = 0;
+  myUser? currentUser;
 
   _ContentState() {
     _usersStream = DatabaseService().userLists;
@@ -35,14 +37,14 @@ class _ContentState extends State<Content> {
 
   @override
   Widget build(BuildContext context) {
-    final myUser? currentUser = Provider.of<myUser?>(context);
+    currentUser = Provider.of<myUser?>(context);
 
     if (currentUser == null) {
       return const Center(child: Text('No current user found'));
     }
 
     return StreamBuilder<UserData>(
-      stream: DatabaseService(uid: currentUser.uid).userData,
+      stream: DatabaseService(uid: currentUser?.uid).userData,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -121,8 +123,8 @@ class _ContentState extends State<Content> {
             },
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.resolveWith(
-                (states) =>
-                    isActive ? Colors.white : Colors.white.withOpacity(0.8),
+                    (states) =>
+                isActive ? Colors.white : Colors.white.withOpacity(0.8),
               ),
               overlayColor: MaterialStateProperty.all(Colors.transparent),
             ),
@@ -151,7 +153,7 @@ class _ContentState extends State<Content> {
           final filteredUsers = users
               .where(
                 (user) => user.fname != currentUserFname,
-              )
+          )
               .toList();
 
           return buildMessagesContent(filteredUsers);
@@ -164,10 +166,8 @@ class _ContentState extends State<Content> {
 
   Widget buildMessagesContent(List<UserList> users) {
     if (users.isEmpty) {
-      return const Center(child: Text('Loading Users...'));
+      return const Center(child: Text('No users available'));
     }
-
-    final myUser? currentUser = Provider.of<myUser?>(context);
 
     return ListView.builder(
       padding: EdgeInsets.zero,
@@ -183,26 +183,49 @@ class _ContentState extends State<Content> {
                 : null,
             child: user.icon.isEmpty
                 ? Text(
-                    user.fname[0].toUpperCase(),
-                    style: const TextStyle(fontSize: 20, color: Colors.white),
-                  )
+              user.fname[0].toUpperCase(),
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            )
                 : null,
           ),
           title: Text('${user.fname} ${user.lname}'),
           subtitle: const Text('Last message preview'),
-          onTap: () {
-            if (currentUser != null) {
-              // Ensure currentUser exists
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    chatPartner: user, // Chat partner
-                    currentUser: currentUser, // Pass the current user
-                  ),
-                ),
-              );
+          onTap: () async {
+            final senderId = currentUser?.uid;
+            final receiverId = user.uid;
+            if (senderId == null || receiverId == null) {
+              print('Error: sender or receiver uid is null');
+              return;
             }
+
+            final dbService = DatabaseService(uid: senderId);
+
+            showGeneralDialog(
+              context: context,
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) =>
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: ChatScreen(user: user, currentUserId: senderId),
+                  ),
+              barrierDismissible: true,
+              barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+              barrierColor: Colors.black45,
+              transitionDuration: const Duration(milliseconds: 250),
+              transitionBuilder: (context, animation, secondaryAnimation, child) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            );
           },
         );
       },
