@@ -1,39 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-class ChatMessage {
-  final String text;
-  final DateTime? timestamp; // Nullable for safety
+class Chat {
+  final String chatId;
   final String senderId;
-  final bool isRead; // Example additional property: read status
-  final String? messageId; // Optional message ID for unique identification
+  final String receiverId;
+  final String message;
+  final DateTime timestamp;
 
-  ChatMessage({
-    required this.text,
-    required this.timestamp,
+  Chat({
+    required this.chatId,
     required this.senderId,
-    this.isRead = false, // Default to not read
-    this.messageId, // Optional
+    required this.receiverId,
+    required this.message,
+    required this.timestamp,
   });
+}
 
-  // Convert Firestore data to ChatMessage object
-  factory ChatMessage.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+class GroupChat {
+  final String groupId;
+  final String groupName;
+  final List<String> members;
 
-    // Safely retrieve and convert Firestore data to ChatMessage properties
-    final text = data['text'] ?? ''; // Default to empty string if null
-    final senderId = data['senderId'] ?? ''; // Ensure senderId is not null
-    final timestamp = (data['timestamp'] as Timestamp?)
-        ?.toDate(); // Convert Timestamp to DateTime
-
-    // Determine if the message has been read
-    final isRead = data.containsKey('isRead') ? data['isRead'] as bool : false;
-
-    return ChatMessage(
-      text: text,
-      timestamp: timestamp,
-      senderId: senderId,
-      isRead: isRead, // Assign read status
-      messageId: doc.id, // Assign message ID from Firestore document ID
-    );
-  }
+  GroupChat({
+    required this.groupId,
+    required this.groupName,
+    required this.members,
+  });
 }

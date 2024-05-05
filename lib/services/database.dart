@@ -1,102 +1,92 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gthr/models/user.dart';
 import 'package:gthr/models/user_list.dart';
-import 'package:gthr/models/chat_message.dart';
+
+import '../models/chat_message.dart';
 import '../models/user_posts.dart';
 
 class DatabaseService {
   final String? uid;
-  final String? currentUserId; 
-  final String? chatPartnerId; 
+  DatabaseService({this.uid});
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  DatabaseService({
-    this.uid,
-    this.currentUserId,
-    this.chatPartnerId,
-  });
-
-  // Collection reference for user data
+  //collection reference
   final CollectionReference userdataCollection =
-      FirebaseFirestore.instance.collection('UData');
+  FirebaseFirestore.instance.collection('UData');
 
-  // Collection reference for chat
-  CollectionReference get _chatCollection {
-    if (currentUserId != null && chatPartnerId != null) {
-      final chatRoomId = _getChatRoomId();
-      return FirebaseFirestore.instance
-          .collection('chats')
-          .doc(chatRoomId)
-          .collection('messages');
-    } else {
-      throw Exception(
-          "Chat room ID requires both currentUserId and chatPartnerId");
-    }
+  //group chat collection reference
+  final CollectionReference groupChatCollection =
+  FirebaseFirestore.instance.collection('GroupChats');
+
+  // Method to create a subcollection for both the sender and the receiver
+  Future<void> createChatSubCollections(String senderId, String receiverId, Map<String, dynamic> userData) async {
+    // Create a subcollection for the sender
+    await userdataCollection.doc(senderId).collection('chats').doc(receiverId).set(userData);
+
+    // Create a subcollection for the receiver
+    await userdataCollection.doc(receiverId).collection('chats').doc(senderId).set(userData);
   }
 
-  // Generate a unique chat room ID based on currentUserId and chatPartnerId
-  String _getChatRoomId() {
-    if (currentUserId != null && chatPartnerId != null) {
-      final ids = [currentUserId!, chatPartnerId!];
-      ids.sort(); // Ensure unique and consistent room ID
-      return ids.join('_');
-    }
-    throw Exception("Unable to generate chat room ID without user IDs");
+  //init user data
+  Future initUserData(
+      String fname, String lname, String username, String bio,
+      String location, String email, String base64Image, String base64CoverImage, String uni) async {
+    return await userdataCollection.doc(uid).set({
+      'fname': fname,
+      'lname': lname,
+      'username': username,
+      'email': email,
+      'bio': '',
+      'location': '',
+      'icon': '',
+      'header': '',
+      'uni': uni,
+      'uid': uid,
+    });
   }
 
-  // Method to send a message to Firestore
-  Future<void> sendMessage(String text) async {
-    if (currentUserId == null) {
-      throw Exception("currentUserId must be set to send messages");
-    }
-
-    final message = {
-      'text': text,
-      'timestamp': FieldValue.serverTimestamp(), // Server timestamp
-      'senderId': currentUserId,
-    };
-    await _chatCollection.add(message); // Add message to Firestore
+  //update user data
+  Future updateUserData(String fname, String lname, String username, String bio,
+      String location, String email, String base64Image, String base64CoverImage) async {
+    return await userdataCollection.doc(uid).set({
+      'fname': fname,
+      'lname': lname,
+      'username': username,
+      'bio': bio,
+      'location': location,
+      'icon': base64Image,
+      'header': base64CoverImage,
+      'email': email,
+    });
   }
 
-  // Stream to get chat messages in real-time
-  Stream<List<ChatMessage>> get messagesStream {
-    return _chatCollection
-        .orderBy('timestamp',
-            descending: false) // Order by 'timestamp', in ascending order
-        .snapshots() // Get real-time updates
-        .map((snapshot) => snapshot.docs.map((doc) {
-              // Extracting and converting the timestamp to `DateTime`
-              Timestamp? firestoreTimestamp = doc.get('timestamp');
-              DateTime? dateTime =
-                  firestoreTimestamp?.toDate(); // Convert to `DateTime`
-
-              // Creating `ChatMessage` with the converted `DateTime`
-              return ChatMessage(
-                text: doc.get('text') ?? '', // Ensuring safe retrieval of text
-                timestamp: dateTime, // `DateTime` from Firestore
-                senderId: doc.get('senderId') ??
-                    '', // Ensuring safe retrieval of senderId
-              );
-            }).toList());
+  // get user list from snapshot
+  List<UserList> _uDataFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map<UserList>((doc) {
+      return UserList(
+          uid: doc.id,
+          fname: doc.get('fname'),
+          lname: doc.get('lname'),
+          username: doc.get('username'),
+          bio: doc.get('bio'),
+          location: doc.get('location'),
+          icon: doc.get('icon'),
+          header: doc.get('header'),
+          email: doc.get('email'));
+    }).toList();
   }
 
-  // Additional functionalities for user data, posts, and replies
-
-  // Add user posts
-  Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async {
-    if (uid == null) {
-      throw Exception("UID must be set to add a post");
-    }
+  /* Post and Reply Functions */
+  // add user posts data
+  Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async{
     return await userdataCollection.doc(uid).collection('posts').add({
       'content': post.content,
       'timestamp': post.timestamp,
     });
   }
 
-  // Add user reply to a specific post
+  // add user reply data
   Future addReply(String postId, Reply reply) async {
-    if (uid == null) {
-      throw Exception("UID must be set to add a reply");
-    }
     return await userdataCollection
         .doc(uid)
         .collection('posts')
@@ -109,83 +99,155 @@ class DatabaseService {
     });
   }
 
-  // Initialize user data
-  Future initUserData(
-      String fname,
-      String lname,
-      String username,
-      String email,
-      String bio,
-      String location,
-      String base64Image,
-      String base64CoverImage,
-      String uni) async {
-    if (uid == null) {
-      throw Exception("UID must be set to initialize user data");
-    }
-    return await userdataCollection.doc(uid).set({
-      'fname': fname,
-      'lname': lname,
-      'username': username,
-      'email': email,
-      'bio': bio,
-      'location': location,
-      'icon': base64Image,
-      'header': base64CoverImage,
-      'uni': uni,
-    });
-  }
-
-  // Update user data
-  Future updateUserData(
-      String fname,
-      String lname,
-      String username,
-      String bio,
-      String location,
-      String email,
-      String base64Image,
-      String base64CoverImage) async {
-    if (uid == null) {
-      throw Exception("UID must be set to update user data");
-    }
-    return await userdataCollection.doc(uid).set({
-      'fname': fname,
-      'lname': lname,
-      'username': username,
-      'bio': bio,
-      'location': location,
-      'email': email,
-      'icon': base64Image,
-      'header': base64CoverImage,
-    });
-  }
-
-  // Get user list from Firestore snapshot
-  List<UserList> _uDataFromSnapshot(QuerySnapshot snapshot) {
+  // Post data from snapshot
+  List<Post> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return UserList(
-        uid: uid,
-        fname: doc.get('fname'),
-        lname: doc.get('lname'),
-        username: doc.get('username'),
-        bio: doc.get('bio'),
-        location: doc.get('location'),
-        icon: doc.get('icon'),
-        header: doc.get('header'),
-        email: doc.get('email'),
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      Timestamp timestamp = doc.get('timestamp');
+
+      DateTime dateTime = timestamp.toDate();
+
+      return Post(
+        content: doc.get('content') ?? '',
+        timestamp: dateTime,
+        postId: doc.id,
+        isEdited: data.containsKey('isEdited') ? data['isEdited'] : false,
       );
     }).toList();
   }
 
-  // Get user data from document snapshot
+  // get replies
+  Future<List<Reply>> getReplies(String postId) async {
+    QuerySnapshot querySnapshot = await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .collection('replies')
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      return Reply(
+        content: doc.get('content'),
+        timestamp: doc.get('timestamp').toDate(),
+        postId: doc.get('postId'),
+        userId: doc.get('userId'),
+      );
+    }).toList();
+  }
+
+  // delete post
+  Future<void> deletePost(String postId) async {
+    return await userdataCollection.doc(uid).collection('posts').doc(postId).delete();
+  }
+
+  // edit post
+  Future<void> updatePost(String postId, String newContent) async {
+    return await userdataCollection.doc(uid).collection('posts').doc(postId).update({
+      'content': newContent,
+      'isEdited': true,
+    });
+  }
+
+  // Get posts stream
+  Stream<List<Post>> get posts {
+    return userdataCollection.doc(uid).collection('posts').snapshots()
+        .map(_postListFromSnapshot);
+  }
+  /* End of post and reply functions */
+
+  /* Chat and group chat functions */
+  /// Group Chat
+  // Method to get group chat document reference
+  DocumentReference getGroupChatDocument(String groupId) {
+    return groupChatCollection.doc(groupId);
+  }
+
+// Method to create a group chat
+  Future<void> createGroupChat(String groupName, List<String> members) {
+    return groupChatCollection.add({
+      'groupName': groupName,
+      'members': members,
+    });
+  }
+
+// Method to add a user to a group chat
+  Future<void> addUserToGroupChat(String groupId, String userId) {
+    return groupChatCollection.doc(groupId).update({
+      'members': FieldValue.arrayUnion([userId]),
+    });
+  }
+
+// Method to send a message in a group chat
+  Future<void> sendGroupMessage(String groupId, Chat message) {
+    return getGroupChatDocument(groupId).collection('messages').add({
+      'chatId': message.chatId,
+      'senderId': message.senderId,
+      'receiverId': message.receiverId,
+      'message': message.message,
+      'timestamp': message.timestamp,
+    });
+  }
+
+// Method to get messages from a group chat
+  Stream<List<Chat>> getGroupMessages(String groupId) {
+    return getGroupChatDocument(groupId).collection('messages').orderBy('timestamp', descending: true).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Chat(
+          chatId: doc.id,
+          senderId: doc.get('senderId'),
+          receiverId: doc.get('receiverId'),
+          message: doc.get('message'),
+          timestamp: doc.get('timestamp').toDate(),
+        );
+      }).toList();
+    });
+  }
+  /// end of group chat
+
+  /// chat
+  // Method to get chat document reference
+  DocumentReference getChatDocument(String userId, String chatId) {
+    return userdataCollection.doc(userId).collection('chats').doc(chatId);
+  }
+
+  // Method to send a message
+  Future<void> sendMessage(String chatId, Chat message) {
+    return userdataCollection.doc(message.senderId).collection('chats').doc(chatId).collection('messages').add({
+      'chatId': message.chatId,
+      'senderId': message.senderId,
+      'receiverId': message.receiverId,
+      'message': message.message,
+      'timestamp': message.timestamp,
+    });
+  }
+
+  // Method to get messages
+  Stream<List<Chat>> getMessages(String userId, String chatId) {
+    return userdataCollection.doc(userId).collection('chats').doc(chatId).collection('messages').orderBy('timestamp', descending: true).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Chat(
+          chatId: doc.id,
+          senderId: doc.get('senderId'),
+          receiverId: doc.get('receiverId'),
+          message: doc.get('message'),
+          timestamp: doc.get('timestamp').toDate(),
+        );
+      }).toList();
+    });
+  }
+  /// end of chat
+  /* End of chat and group chat functions */
+
+  /* Getters */
+  // get user data from document
   UserData _uDataFromDocument(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
       fname: snapshot.get('fname'),
       lname: snapshot.get('lname'),
       username: snapshot.get('username'),
-      bio: snapshot.get('bio'),
+      bio: snapshot.get('bio') ,
       location: snapshot.get('location'),
       icon: snapshot.get('icon'),
       header: snapshot.get('header'),
@@ -193,58 +255,35 @@ class DatabaseService {
     );
   }
 
-  // Get user list stream
+  //get user list stream
   Stream<List<UserList>> get userLists {
-    return userdataCollection
-        .snapshots()
-        .map((snapshot) => _uDataFromSnapshot(snapshot));
+    return userdataCollection.snapshots().map((snapshot) {
+      print('Snapshot received: ${snapshot.docs.length} documents');
+      final userList = snapshot.docs.map((doc) {
+        return UserList(
+          uid: doc.id, // Use the document ID as the uid
+          fname: doc.get('fname'),
+          lname: doc.get('lname'),
+          username: doc.get('username'),
+          bio: doc.get('bio'),
+          location: doc.get('location'),
+          icon: doc.get('icon'),
+          header: doc.get('header'),
+          email: doc.get('email'),
+        );
+      }).toList();
+      print('UserList: $userList');
+      return userList;
+    });
   }
 
-  // Get user data stream
+  //get user data stream
   Stream<UserData> get userData {
-    if (uid == null) {
-      throw Exception("UID must be set to retrieve user data");
-    }
-    return userdataCollection.doc(uid).snapshots().map(_uDataFromDocument);
-  }
-
-  // Get posts stream
-  Stream<List<Post>> get posts {
-    if (uid == null) {
-      throw Exception("UID must be set to retrieve posts");
-    }
-    return userdataCollection
-        .doc(uid)
-        .collection('posts')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => Post(
-                content: doc.get('content'),
-                timestamp: doc.get('timestamp').toDate(),
-                postId: doc.id,
-                isEdited: doc.get('isEdited') ?? false,
-              ))
-          .toList();
+    return userdataCollection.doc(uid).snapshots().map(_uDataFromDocument)
+        .handleError((error) {
+      print('Error in userData stream: $error');
     });
   }
+  /* End of Getters */
 
-  // Delete a post by its ID
-  Future<void> deletePost(String postId) async {
-    if (uid == null) {
-      throw Exception("UID must be set to delete a post");
-    }
-    return userdataCollection.doc(uid).collection('posts').doc(postId).delete();
-  }
-
-  // Update or edit a post
-  Future<void> updatePost(String postId, String newContent) async {
-    if (uid == null) {
-      throw Exception("UID must be set to edit a post");
-    }
-    return userdataCollection.doc(uid).collection('posts').doc(postId).update({
-      'content': newContent,
-      'isEdited': true,
-    });
-  }
 }
