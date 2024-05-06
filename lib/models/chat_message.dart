@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Chat {
   final String chatId;
   final String senderId;
@@ -12,16 +14,14 @@ class Chat {
     required this.message,
     required this.timestamp,
   });
-}
 
-class GroupChat {
-  final String groupId;
-  final String groupName;
-  final List<String> members;
-
-  GroupChat({
-    required this.groupId,
-    required this.groupName,
-    required this.members,
-  });
+  factory Chat.fromJson(Map<String, dynamic> json) {
+    return Chat(
+      chatId: json['chatId'],
+      senderId: json['senderId'],
+      receiverId: json['receiverId'],
+      message: json['message'],
+      timestamp: (json['timestamp'] as Timestamp).toDate(),
+    );
+  }
 }
