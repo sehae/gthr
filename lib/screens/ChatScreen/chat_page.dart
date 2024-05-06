@@ -1,4 +1,3 @@
-// front pa lang i2 pls don't kill me huhubells
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting timestamps
 import '../../models/chat_message.dart';
@@ -21,27 +20,39 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late Stream<List<Chat>> _chatStream;
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    print('ChatScreen user: ${widget.user.toString()}');
-    _chatStream = DatabaseService().getMessages(widget.currentUserId, widget.user.uid!);
-    _chatStream.listen((chatMessages) {
-      chatMessages.forEach((chatMessage) {
-        print('Chat message: ${chatMessage.message}');
-      });
-    });
+
+    final otherUserId = widget.user.uid;
+    final currentUserId = widget.currentUserId;
+
+    if (otherUserId == null) {
+      print('Error: Other user ID is null');
+      return;
+    }
+
+    final chatId1 = '${currentUserId}_${otherUserId}';
+    final chatId2 = '${otherUserId}_${currentUserId}';
+
+    _chatStream =
+        DatabaseService(uid: currentUserId).getAllMessages([chatId1, chatId2]);
   }
 
-  final TextEditingController _textController =
-  TextEditingController();
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with ${widget.user.fname} ${widget.user.lname}'),
+        title: Text('${widget.user.fname} ${widget.user.lname}'),
+        backgroundColor: const Color(0xFF1E7251),
       ),
       body: Column(
         children: [
@@ -53,31 +64,31 @@ class _ChatScreenState extends State<ChatScreen> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  final chatMessages = snapshot.data!;
+                } else {
+                  final chatMessages = snapshot.data ?? [];
+                  if (chatMessages.isEmpty) {
+                    return const Center(child: Text('No messages yet'));
+                  }
                   return ListView.builder(
+                    reverse: true, // Start from the bottom (latest messages)
                     itemCount: chatMessages.length,
                     itemBuilder: (context, index) {
                       final chatMessage = chatMessages[index];
-                      // Determine if the message is incoming
-                      bool isIncoming = chatMessage.senderId != widget.currentUserId;
-                      // Create a _ChatMessage object
-                      _ChatMessage _chatMessage = _ChatMessage(
+                      final isIncoming =
+                          chatMessage.senderId != widget.currentUserId;
+
+                      return _buildChatBubble(
                         text: chatMessage.message,
                         timestamp: chatMessage.timestamp,
                         isIncoming: isIncoming,
                       );
-                      // Build a chat bubble for the chat message
-                      return _buildChatBubble(_chatMessage);
                     },
                   );
-                } else {
-                  return Container(); // Return an empty container when there are no messages
                 }
               },
             ),
           ),
-          _buildMessageInput(), // Always show the message input field
+          _buildMessageInput(),
         ],
       ),
     );
@@ -90,18 +101,17 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: TextField(
-              controller:
-              _textController, // Use the controller for the text input
-              decoration: const InputDecoration(
+              controller: _textController,
+              decoration: InputDecoration(
                 hintText: 'Type your message...',
-                hintStyle: TextStyle(
-                  color: Colors.grey, // Hint text color
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
           ),
           IconButton(
-            onPressed: _sendMessage, // Call the send message function
+            onPressed: _sendMessage,
             icon: const Icon(Icons.send),
             color: const Color(0xFF1E7251),
           ),
@@ -110,96 +120,80 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // Function to send a message
   void _sendMessage() {
     final text = _textController.text.trim();
     if (text.isNotEmpty) {
-      if (widget.user.uid == null) {
-        print('Error: user uid is null');
+      final otherUserId = widget.user.uid;
+
+      if (otherUserId == null) {
+        print('Error: User UID is null');
         return;
       }
 
-      // Generate a chatId
-      final chatId = '${widget.currentUserId}_${widget.user.uid!}';
+      final chatId = '${widget.currentUserId}_${otherUserId}';
 
-      // Create a new Chat object with the message details
       final message = Chat(
         chatId: chatId,
         senderId: widget.currentUserId,
-        receiverId: widget.user.uid!,
+        receiverId: otherUserId,
         message: text,
         timestamp: DateTime.now(),
       );
 
-      // Print the chatId and message for debugging
-      print('chatId: $chatId');
-      print('message: ${message.message}');
-
-      // Send the message using the DatabaseService
-      DatabaseService().sendMessage(chatId, message);
-
-      _textController.clear(); // Clear the text input
+      DatabaseService().sendMessage(chatId, message).then((_) {
+        _textController.clear();
+      }).catchError((error) {
+        print('Error sending message: $error');
+      });
     }
   }
 
-  // Build a chat bubble based on whether the message is incoming or outgoing
-  Widget _buildChatBubble(_ChatMessage message) {
-    final isOutgoing = !message.isIncoming; // Check if the message is outgoing
+  Widget _buildChatBubble({
+    required String text,
+    required DateTime timestamp,
+    required bool isIncoming,
+  }) {
+    final alignment = isIncoming ? Alignment.centerLeft : Alignment.centerRight;
+
+    // Define the colors for incoming and outgoing messages
+    final outgoingColor = Color(0xFF6D9D8A);
+    final incomingColor = Color(0xFFB5CFC5);
+
+    // Define the outer margin for spacing
+    final margin = isIncoming
+        ? EdgeInsets.only(left: 20, right: 40, top: 10, bottom: 10)
+        : EdgeInsets.only(right: 20, left: 40, top: 10, bottom: 10);
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      alignment: isOutgoing
-          ? Alignment.centerRight
-          : Alignment.centerLeft, // Align left or right
+      margin: margin,
+      alignment: alignment,
       child: Column(
-        crossAxisAlignment: isOutgoing
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment
-            .start, // Align the timestamp to the correct side
+        crossAxisAlignment:
+            isIncoming ? CrossAxisAlignment.start : CrossAxisAlignment.end,
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: isOutgoing
-                  ? const Color(0xFF6D9D8A)
-                  : const Color(
-                  0xFFB5CFC5), // Different colors for outgoing and incoming
+              color: isIncoming ? incomingColor : outgoingColor,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
-              message.text,
+              text,
               style: TextStyle(
-                color: isOutgoing
-                    ? Colors.white
-                    : Colors.black, // Different text colors
+                color: isIncoming ? Colors.black : Colors.white,
               ),
             ),
           ),
-          const SizedBox(
-              height: 5), // Space between the bubble and the timestamp
+          const SizedBox(height: 5),
           Text(
-            DateFormat('hh:mm a')
-                .format(message.timestamp), // Format the timestamp
-            style: const TextStyle(
+            DateFormat('hh:mm a').format(timestamp),
+            style: TextStyle(
+              color: Colors.grey,
               fontSize: 12,
-              color: Colors.grey, // Color for the timestamp
             ),
           ),
         ],
       ),
     );
   }
-}
-
-// Class representing a chat message with text, a timestamp, and a flag indicating if it's incoming or outgoing
-class _ChatMessage {
-  final String text;
-  final DateTime timestamp;
-  final bool isIncoming; // Whether the message is incoming (from another user)
-
-  _ChatMessage({
-    required this.text,
-    required this.timestamp,
-    this.isIncoming = false, // Default to outgoing unless specified otherwise
-  });
 }
