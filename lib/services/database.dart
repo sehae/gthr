@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gthr/models/user.dart';
 import 'package:gthr/models/user_list.dart';
-
+import 'package:async/async.dart';
 import '../models/chat_message.dart';
 import '../models/user_posts.dart';
 
@@ -12,25 +12,41 @@ class DatabaseService {
 
   //collection reference
   final CollectionReference userdataCollection =
-  FirebaseFirestore.instance.collection('UData');
+      FirebaseFirestore.instance.collection('UData');
 
   //group chat collection reference
   final CollectionReference groupChatCollection =
-  FirebaseFirestore.instance.collection('GroupChats');
+      FirebaseFirestore.instance.collection('GroupChats');
 
   // Method to create a subcollection for both the sender and the receiver
-  Future<void> createChatSubCollections(String senderId, String receiverId, Map<String, dynamic> userData) async {
+  Future<void> createChatSubCollections(
+      String senderId, String receiverId, Map<String, dynamic> userData) async {
     // Create a subcollection for the sender
-    await userdataCollection.doc(senderId).collection('chats').doc(receiverId).set(userData);
+    await userdataCollection
+        .doc(senderId)
+        .collection('chats')
+        .doc(receiverId)
+        .set(userData);
 
     // Create a subcollection for the receiver
-    await userdataCollection.doc(receiverId).collection('chats').doc(senderId).set(userData);
+    await userdataCollection
+        .doc(receiverId)
+        .collection('chats')
+        .doc(senderId)
+        .set(userData);
   }
 
   //init user data
   Future initUserData(
-      String fname, String lname, String username, String bio,
-      String location, String email, String base64Image, String base64CoverImage, String uni) async {
+      String fname,
+      String lname,
+      String username,
+      String bio,
+      String location,
+      String email,
+      String base64Image,
+      String base64CoverImage,
+      String uni) async {
     return await userdataCollection.doc(uid).set({
       'fname': fname,
       'lname': lname,
@@ -46,8 +62,15 @@ class DatabaseService {
   }
 
   //update user data
-  Future updateUserData(String fname, String lname, String username, String bio,
-      String location, String email, String base64Image, String base64CoverImage) async {
+  Future updateUserData(
+      String fname,
+      String lname,
+      String username,
+      String bio,
+      String location,
+      String email,
+      String base64Image,
+      String base64CoverImage) async {
     return await userdataCollection.doc(uid).set({
       'fname': fname,
       'lname': lname,
@@ -78,7 +101,7 @@ class DatabaseService {
 
   /* Post and Reply Functions */
   // add user posts data
-  Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async{
+  Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async {
     return await userdataCollection.doc(uid).collection('posts').add({
       'content': post.content,
       'timestamp': post.timestamp,
@@ -138,12 +161,20 @@ class DatabaseService {
 
   // delete post
   Future<void> deletePost(String postId) async {
-    return await userdataCollection.doc(uid).collection('posts').doc(postId).delete();
+    return await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .delete();
   }
 
   // edit post
   Future<void> updatePost(String postId, String newContent) async {
-    return await userdataCollection.doc(uid).collection('posts').doc(postId).update({
+    return await userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .doc(postId)
+        .update({
       'content': newContent,
       'isEdited': true,
     });
@@ -151,7 +182,10 @@ class DatabaseService {
 
   // Get posts stream
   Stream<List<Post>> get posts {
-    return userdataCollection.doc(uid).collection('posts').snapshots()
+    return userdataCollection
+        .doc(uid)
+        .collection('posts')
+        .snapshots()
         .map(_postListFromSnapshot);
   }
   /* End of post and reply functions */
@@ -191,7 +225,11 @@ class DatabaseService {
 
 // Method to get messages from a group chat
   Stream<List<Chat>> getGroupMessages(String groupId) {
-    return getGroupChatDocument(groupId).collection('messages').orderBy('timestamp', descending: true).snapshots().map((snapshot) {
+    return getGroupChatDocument(groupId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
         return Chat(
           chatId: doc.id,
@@ -203,6 +241,7 @@ class DatabaseService {
       }).toList();
     });
   }
+
   /// end of group chat
 
   /// chat
@@ -214,7 +253,12 @@ class DatabaseService {
   // Method to send a message
   Future<void> sendMessage(String chatId, Chat message) {
     // Add the message to the sender's subcollection
-    Future<void> sendersFuture = userdataCollection.doc(message.senderId).collection('chats').doc(chatId).collection('messages').add({
+    Future<void> sendersFuture = userdataCollection
+        .doc(message.senderId)
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .add({
       'chatId': message.chatId,
       'senderId': message.senderId,
       'receiverId': message.receiverId,
@@ -223,7 +267,12 @@ class DatabaseService {
     });
 
     // Add the message to the receiver's subcollection
-    Future<void> receiversFuture = userdataCollection.doc(message.receiverId).collection('chats').doc(chatId).collection('messages').add({
+    Future<void> receiversFuture = userdataCollection
+        .doc(message.receiverId)
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .add({
       'chatId': message.chatId,
       'senderId': message.senderId,
       'receiverId': message.receiverId,
@@ -237,7 +286,14 @@ class DatabaseService {
 
   // Method to get messages
   Stream<List<Chat>> getMessages(String userId, String chatId) {
-    return userdataCollection.doc(userId).collection('chats').doc(chatId).collection('messages').orderBy('timestamp', descending: true).snapshots().map((snapshot) {
+    return userdataCollection
+        .doc(userId)
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
         return Chat(
           chatId: doc.id,
@@ -249,6 +305,41 @@ class DatabaseService {
       }).toList();
     });
   }
+
+  /// Method to retrieve all messages from multiple chat IDs
+  Stream<List<Chat>> getAllMessages(List<String> chatIds) {
+    // Create a list of streams, one for each chat ID
+    final List<Stream<List<Chat>>> chatStreams = chatIds.map((chatId) {
+      return userdataCollection
+          .doc(uid)
+          .collection('chats')
+          .doc(chatId)
+          .collection('messages')
+          .orderBy('timestamp', descending: true) // Order by descending
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs.map((doc) {
+          return Chat(
+            chatId: doc.id,
+            senderId: doc.get('senderId'),
+            receiverId: doc.get('receiverId'),
+            message: doc.get('message'),
+            timestamp: doc.get('timestamp').toDate(),
+          );
+        }).toList();
+      });
+    }).toList();
+
+    // Use StreamZip to combine the multiple chat streams into one
+    return StreamZip(chatStreams).map((chatLists) {
+      // Flatten the list of chat lists into a single list
+      final allChats = chatLists.expand((list) => list).toList();
+      // Sort by timestamp in descending order
+      allChats.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+      return allChats;
+    });
+  }
+
   /// end of chat
   /* End of chat and group chat functions */
 
@@ -260,7 +351,7 @@ class DatabaseService {
       fname: snapshot.get('fname'),
       lname: snapshot.get('lname'),
       username: snapshot.get('username'),
-      bio: snapshot.get('bio') ,
+      bio: snapshot.get('bio'),
       location: snapshot.get('location'),
       icon: snapshot.get('icon'),
       header: snapshot.get('header'),
@@ -292,12 +383,14 @@ class DatabaseService {
 
   //get user data stream
   Stream<UserData> get userData {
-    return userdataCollection.doc(uid).snapshots().map(_uDataFromDocument)
+    return userdataCollection
+        .doc(uid)
+        .snapshots()
+        .map(_uDataFromDocument)
         .handleError((error) {
       print('Error in userData stream: $error');
     });
   }
 
   /* End of Getters */
-
 }

@@ -123,8 +123,8 @@ class _ContentState extends State<Content> {
             },
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.resolveWith(
-                    (states) =>
-                isActive ? Colors.white : Colors.white.withOpacity(0.8),
+                (states) =>
+                    isActive ? Colors.white : Colors.white.withOpacity(0.8),
               ),
               overlayColor: MaterialStateProperty.all(Colors.transparent),
             ),
@@ -153,7 +153,7 @@ class _ContentState extends State<Content> {
           final filteredUsers = users
               .where(
                 (user) => user.fname != currentUserFname,
-          )
+              )
               .toList();
 
           return buildMessagesContent(filteredUsers);
@@ -183,12 +183,12 @@ class _ContentState extends State<Content> {
                 : null,
             child: user.icon.isEmpty
                 ? Text(
-              user.fname[0].toUpperCase(),
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            )
+                    user.fname[0].toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  )
                 : null,
           ),
           title: Text('${user.fname} ${user.lname}'),
@@ -206,17 +206,18 @@ class _ContentState extends State<Content> {
             showGeneralDialog(
               context: context,
               pageBuilder: (BuildContext context, Animation<double> animation,
-                  Animation<double> secondaryAnimation) =>
+                      Animation<double> secondaryAnimation) =>
                   SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: ChatScreen(user: user, currentUserId: senderId),
-                  ),
+                width: MediaQuery.of(context).size.width,
+                child: ChatScreen(user: user, currentUserId: senderId),
+              ),
               barrierDismissible: true,
               barrierLabel:
-              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                  MaterialLocalizations.of(context).modalBarrierDismissLabel,
               barrierColor: Colors.black45,
               transitionDuration: const Duration(milliseconds: 250),
-              transitionBuilder: (context, animation, secondaryAnimation, child) {
+              transitionBuilder:
+                  (context, animation, secondaryAnimation, child) {
                 return SlideTransition(
                   position: Tween<Offset>(
                     begin: const Offset(0, 1),
