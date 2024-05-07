@@ -199,31 +199,47 @@ class _ContentState extends State<Content> {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           List<Reply> replies = snapshot.data!;
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: replies.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: MemoryImage(base64Decode(replies[index].icon)),
+          if (replies.isEmpty) {
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'Huh, weird.. I guess you are not famous enough to have any replies yet.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
                 ),
-                title: Text( '@${replies[index].username} • ${timeago.format(replies[index].timestamp, locale: 'en_short')}',
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 16,
-                ),
-                ) ,
-                subtitle: Text(
-                    replies[index].content,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                )),
-              );
-            },
-          );
+              ),
+            );
+          } else {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: replies.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: MemoryImage(base64Decode(replies[index].icon)),
+                  ),
+                  title: Text( '@${replies[index].username} • ${timeago.format(replies[index].timestamp, locale: 'en_short')}',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                    ),
+                  ) ,
+                  subtitle: Text(
+                      replies[index].content,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      )),
+                );
+              },
+            );
+          }
         } else {
-          return const Text('Huh, weird.. I guess you are not famous enough to have any replies yet.');
+          return const Text('No replies yet');
         }
       },
     );
