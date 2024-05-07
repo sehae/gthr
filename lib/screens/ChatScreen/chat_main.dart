@@ -6,6 +6,7 @@ import '../../models/user.dart';
 import '../../models/user_list.dart';
 import '../../models/chat_message.dart';
 import 'chat_page.dart';
+import 'group_page.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
@@ -250,7 +251,17 @@ class _ContentState extends State<Content> {
                 ),
                 subtitle: Text("Members: ${groupChat.members.length}"),
                 onTap: () {
-                  // Navigate to group chat screen
+                  final senderId = currentUser?.uid ?? ''; // Ensure not null
+
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => GroupPage(
+                        groupId: groupChat.groupId,
+                        groupName: groupChat.groupName,
+                        currentUserId: senderId,
+                      ),
+                    ),
+                  );
                 },
               );
             },
