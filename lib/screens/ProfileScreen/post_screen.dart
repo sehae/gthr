@@ -57,7 +57,6 @@ class _ContentState extends State<Content> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        bottomSheet: chatBar(),
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -74,32 +73,32 @@ class _ContentState extends State<Content> {
           ),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                child: CustomScrollbar(
-                  child: Column(
-                    children: <Widget>[
-                      buildUser(),
-                      buildPostContent(),
-                      buildReplies(),
-                    ],
+        body: Column(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: CustomScrollbar(
+                    child: Column(
+                      children: <Widget>[
+                        buildUser(),
+                        buildPostContent(),
+                        buildReplies(),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ]),
-          ),
+              _buildReplyInput(),
+            ]
         ),
       ),
     );
   }
 
-  Widget chatBar() {
-    return Container(
-      color: Colors.transparent,
+  Widget _buildReplyInput() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
           Expanded(
@@ -107,8 +106,9 @@ class _ContentState extends State<Content> {
               controller: _controller,
               decoration: InputDecoration(
                 hintText: "Post your reply",
-                border: OutlineInputBorder(),
-                fillColor: Colors.grey[200],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ),
@@ -117,13 +117,16 @@ class _ContentState extends State<Content> {
             builder: (context, TextEditingValue value, _) {
               if (value.text.isNotEmpty) {
                 return IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(
+                      Icons.send,
+                    color: Color(0xFF1E7251),
+                  ),
                   onPressed: () {
-                    // Handle sending message
+
                   },
                 );
               } else {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
             },
           ),
@@ -135,18 +138,20 @@ class _ContentState extends State<Content> {
   Widget buildUser() {
     return ListTile(
       leading: CircleAvatar(
+        backgroundColor: const Color(0xFF1E7251),
         backgroundImage: widget.userData?.icon != null
             ? MemoryImage(base64Decode(widget.userData!.icon))
             : null,
         radius: 25,
-        child: (widget.userData?.icon != null && widget.userData?.icon == '')
+        child: (widget.userData?.icon != null &&
+            widget.userData?.icon == '')
             ? Text(
-                widget.userData?.fname[0].toUpperCase() ?? '',
-                style: const TextStyle(
-                  fontSize: 40.0,
-                  color: Colors.white,
-                ),
-              )
+          widget.userData?.fname[0].toUpperCase() ?? '',
+          style: const TextStyle(
+            fontSize: 16.0,
+            color: Colors.white,
+          ),
+        )
             : null,
       ),
       title: Text('${widget.userData?.fname} ${widget.userData!.lname}'),

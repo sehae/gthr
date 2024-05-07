@@ -268,97 +268,48 @@ class _ContentState extends State<Content> {
           ),
         ],
       ),
-      Row(
-        children: [
-          TextButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                overlayColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.transparent;
-                    }
-                    return Colors.transparent;
-                  },
-                ),
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return const Color(0xFF4E4C4C).withOpacity(0.5);
-                    }
-                    return const Color(0xFF4E4C4C);
-                  },
-                ),
-              ),
-              child: const Row(
-                children: [
-                  Text(
-                    '69',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'Friends',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              )),
-          const SizedBox(
-            width: 10,
+      TextButton(
+          onPressed: () {},
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            overlayColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return Colors.transparent;
+                }
+                return Colors.transparent;
+              },
+            ),
+            foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return const Color(0xFF4E4C4C).withOpacity(0.5);
+                }
+                return const Color(0xFF4E4C4C);
+              },
+            ),
           ),
-          TextButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
-                overlayColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.transparent;
-                    }
-                    return Colors.transparent;
-                  },
-                ),
-                foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return const Color(0xFF4E4C4C).withOpacity(0.5);
-                    }
-                    return const Color(0xFF4E4C4C);
-                  },
+          child: const Row(
+            children: [
+              Text(
+                '69',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              child: const Row(
-                children: [
-                  Text(
-                    '420',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'Following',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              )),
-        ],
-      ),
+              SizedBox(
+                width: 4,
+              ),
+              Text(
+                'Friends',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          )),
     ],
   );
 
@@ -491,7 +442,7 @@ class _ContentState extends State<Content> {
                                 ? Text(
                               widget.userData?.fname[0].toUpperCase() ?? '',
                               style: const TextStyle(
-                                fontSize: 40.0,
+                                fontSize: 16.0,
                                 color: Colors.white,
                               ),
                             )

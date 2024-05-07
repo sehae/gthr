@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../../models/user_posts.dart';
 import '../../shared/loading.dart';
+import '../../shared/snackbar.dart';
 
 class EditPostScreen extends StatelessWidget {
   final String postId;
@@ -95,28 +96,8 @@ class _createContentState extends State<Content> {
                   );
 
                   await DatabaseService(uid: widget.user!.uid).updatePost(widget.postId, _content);
+                  showSnackBarFun(context, 'Your post has been updated!');
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Center(
-                        child: Text(
-                          'Post updated successfully!',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      backgroundColor: Color(0xFFFFDD0A),
-                      duration: Duration(seconds: 3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  );
                   Navigator.pop(context);
                 } else {
                   print('User is null, cannot update post');
@@ -145,10 +126,21 @@ class _createContentState extends State<Content> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CircleAvatar(
+                backgroundColor: const Color(0xFF1E7251),
                 backgroundImage: widget.userData?.icon != null
                     ? MemoryImage(base64Decode(widget.userData!.icon))
                     : null,
                 radius: 25,
+                child: (widget.userData?.icon != null &&
+                    widget.userData?.icon == '')
+                    ? Text(
+                  widget.userData?.fname[0].toUpperCase() ?? '',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  ),
+                )
+                    : null,
               ),
               Expanded(
                 child: Padding(
@@ -181,4 +173,8 @@ class _createContentState extends State<Content> {
       ),
     );
   }
+
+
+
+
 }
