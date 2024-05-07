@@ -4,6 +4,7 @@ import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../../shared/custom_scrollbar.dart';
+import '../EventScreen/events_main.dart';
 import '../EventScreen/upcoming_events.dart';
 
 void main() {

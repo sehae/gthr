@@ -18,6 +18,10 @@ class DatabaseService {
   final CollectionReference groupChatCollection =
       FirebaseFirestore.instance.collection('GroupChats');
 
+  //replies collection reference
+  final CollectionReference repliesCollection =
+  FirebaseFirestore.instance.collection('Replies');
+
   // Method to create a subcollection for both the sender and the receiver
   Future<void> createChatSubCollections(
       String senderId, String receiverId, Map<String, dynamic> userData) async {
@@ -100,25 +104,64 @@ class DatabaseService {
   }
 
   /* Post and Reply Functions */
+  // add user reply data
+  Future addReply(String postId, Reply reply) async {
+    return await repliesCollection.add({
+      'content': reply.content,
+      'timestamp': reply.timestamp,
+      'postId': postId,
+      'userId': reply.userId,
+      'postContent': reply.postContent,
+      'icon': reply.icon,
+      'username': reply.username,
+    });
+  }
+
+  // get replies for a specific post
+  Stream<List<Reply>> getReplies(String postId) {
+    return repliesCollection
+        .where('postId', isEqualTo: postId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Reply(
+          content: doc.get('content'),
+          timestamp: doc.get('timestamp').toDate(),
+          postId: doc.get('postId'),
+          userId: doc.get('userId'),
+          postContent: doc.get('postContent'),
+          icon: doc.get('icon'),
+          username: doc.get('username'),
+        );
+      }).toList();
+    });
+  }
+
+  // get all user's replies from different posts
+  Stream<List<Reply>> getUserReplies() {
+    return repliesCollection
+        .where('userId', isEqualTo: uid)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Reply(
+          content: doc.get('content'),
+          timestamp: doc.get('timestamp').toDate(),
+          postId: doc.get('postId'),
+          userId: doc.get('userId'),
+          postContent: doc.get('postContent'),
+          icon: doc.get('icon'),
+          username: doc.get('username'),
+        );
+      }).toList();
+    });
+  }
+
   // add user posts data
   Future<DocumentReference<Map<String, dynamic>>> addPost(Post post) async {
     return await userdataCollection.doc(uid).collection('posts').add({
       'content': post.content,
       'timestamp': post.timestamp,
-    });
-  }
-
-  // add user reply data
-  Future addReply(String postId, Reply reply) async {
-    return await userdataCollection
-        .doc(uid)
-        .collection('posts')
-        .doc(postId)
-        .collection('replies')
-        .add({
-      'content': reply.content,
-      'timestamp': reply.timestamp,
-      'userId': reply.userId,
     });
   }
 
@@ -136,25 +179,8 @@ class DatabaseService {
         timestamp: dateTime,
         postId: doc.id,
         isEdited: data.containsKey('isEdited') ? data['isEdited'] : false,
-      );
-    }).toList();
-  }
-
-  // get replies
-  Future<List<Reply>> getReplies(String postId) async {
-    QuerySnapshot querySnapshot = await userdataCollection
-        .doc(uid)
-        .collection('posts')
-        .doc(postId)
-        .collection('replies')
-        .get();
-
-    return querySnapshot.docs.map((doc) {
-      return Reply(
-        content: doc.get('content'),
-        timestamp: doc.get('timestamp').toDate(),
-        postId: doc.get('postId'),
-        userId: doc.get('userId'),
+        icon: data.containsKey('icon') ? data['icon'] : '',
+        username: data.containsKey('username') ? data['username'] : '',
       );
     }).toList();
   }

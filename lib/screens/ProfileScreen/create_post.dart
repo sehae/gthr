@@ -91,6 +91,8 @@ class _createContentState extends State<Content> {
                   Post newPost = Post(
                     content: postContent,
                     timestamp: DateTime.now(),
+                    icon: widget.userData?.icon ?? '',
+                    username: widget.userData?.username ?? '',
                   );
 
                   await DatabaseService(uid: user?.uid).addPost(newPost);
