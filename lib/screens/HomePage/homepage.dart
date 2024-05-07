@@ -94,22 +94,28 @@ class HomePage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) => const UpcomingEvents(),
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    var begin = Offset(1.0, 0.0);
-                                    var end = Offset.zero;
-                                    var tween = Tween(begin: begin, end: end);
-                                    var offsetAnimation = animation.drive(tween);
-
-                                    return SlideTransition(
-                                      position: offsetAnimation,
-                                      child: child,
-                                    );
-                                  },
-                                ),
+                              showGeneralDialog(
+                                context: context,
+                                pageBuilder: (BuildContext context, Animation<double> animation,
+                                    Animation<double> secondaryAnimation) =>
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const UpcomingEvents(),
+                                    ),
+                                barrierDismissible: true,
+                                barrierLabel:
+                                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                barrierColor: Colors.black45,
+                                transitionDuration: const Duration(milliseconds: 250),
+                                transitionBuilder: (context, animation, secondaryAnimation, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                },
                               );
                             },
                             child: const Text(

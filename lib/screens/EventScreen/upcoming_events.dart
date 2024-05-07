@@ -93,21 +93,26 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                 color: Colors.white,
               ),
             ),
-            Spacer(), // Add spacing to push logo to the right
+            Spacer(),
             Container(
               height: 40,
               width: 40,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                  'assets/gthr_LogoALT.png', // Replace with your logo image path
+                  'assets/gthr_LogoALT.png',
                 ),
               ),
             ),
           ],
         ),
-        iconTheme: IconThemeData(
-            color: Colors.white), // Set back button color to white
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.chevron_left,
+          color: Colors.white,),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,13 +151,28 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                 final eventIndex = eventDateTimes.indexOf(eventDateTime);
                 return GestureDetector(
                   onTap: () {
-                    // Navigate to the redirect page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const EventDetails(),
-                      ),
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (BuildContext context, Animation<double> animation,
+                          Animation<double> secondaryAnimation) =>
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: const EventDetails(),
+                          ),
+                      barrierDismissible: true,
+                      barrierLabel:
+                      MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                      barrierColor: Colors.black45,
+                      transitionDuration: const Duration(milliseconds: 250),
+                      transitionBuilder: (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 1),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
                     );
                   },
                   child: eventCard(
