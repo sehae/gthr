@@ -196,6 +196,21 @@ class DatabaseService {
   DocumentReference getGroupChatDocument(String groupId) {
     return groupChatCollection.doc(groupId);
   }
+  
+  Stream<List<GroupChat>> getAllGroupChats() {
+    return groupChatCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return GroupChat(
+          groupId: doc.id,
+          groupName: data['groupName'] ?? 'Unnamed Group',
+          members: (data['members'] as List<dynamic>)
+              .map((member) => member.toString())
+              .toList(),
+        );
+      }).toList();
+    });
+  }
 
 // Method to create a group chat
   Future<void> createGroupChat(String groupName, List<String> members) {
