@@ -196,7 +196,7 @@ class DatabaseService {
   DocumentReference getGroupChatDocument(String groupId) {
     return groupChatCollection.doc(groupId);
   }
-  
+
   Stream<List<GroupChat>> getAllGroupChats() {
     return groupChatCollection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -213,10 +213,11 @@ class DatabaseService {
   }
 
 // Method to create a group chat
-  Future<void> createGroupChat(String groupName, List<String> members) {
+  Future<void> createGroupChat(
+      String groupName, List<Map<String, dynamic>> members) {
     return groupChatCollection.add({
       'groupName': groupName,
-      'members': members,
+      'members': members, // A list of member information as maps
     });
   }
 
@@ -280,6 +281,24 @@ class DatabaseService {
       'message': message.message,
       'timestamp': message.timestamp,
     });
+
+    Future<void> sendGroupMessage(String groupId, Chat message) {
+      try {
+        return _db
+            .collection('GroupChats') // Reference the group chat collection
+            .doc(groupId) // Use the groupId to get the group chat document
+            .collection(
+                'messages') // Add the message to the group's messages subcollection
+            .add({
+          'senderId': message.senderId,
+          'message': message.message,
+          'timestamp': message.timestamp,
+        });
+      } catch (error) {
+        print('Error sending group message: $error'); // Log the error
+        throw error; // Rethrow the error if needed
+      }
+    }
 
     // Add the message to the receiver's subcollection
     Future<void> receiversFuture = userdataCollection
