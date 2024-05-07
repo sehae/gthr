@@ -689,11 +689,27 @@ class _ContentState extends State<Content> {
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
-            const Image(
-                image: AssetImage('assets/CodeRevibe.png')
+            Image(
+              image: AssetImage('assets/CodeRevibe.png'),
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
             ),
-            Image.network(
-                'https://scontent.fmnl8-1.fna.fbcdn.net/v/t39.30808-6/401836757_737590591748457_5740288807220724461_n.jpg?stp=dst-jpg_p843x403&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=zW3lI9lyNNkAb7qpwLC&_nc_ht=scontent.fmnl8-1.fna&cb_e2o_trans=q&oh=00_AfARb92ZkIqxiMZf_HvGqwaLlD0l7sqe-SUmUguq4gSjNQ&oe=66259EC4'),
+            SizedBox(
+              height: 20,
+            ),
+            Image(
+              image: AssetImage('assets/event_5.jpg'),
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Image(
+              image: AssetImage('assets/event_6.jpg'),
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+            ),
           ],
         ),
       );
