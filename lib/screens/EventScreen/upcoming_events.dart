@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/screens/EventScreen/event_details.dart';
 import 'package:intl/intl.dart';
 
 class UpcomingEvents extends StatefulWidget {
@@ -92,21 +93,26 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                 color: Colors.white,
               ),
             ),
-            Spacer(), // Add spacing to push logo to the right
+            Spacer(),
             Container(
               height: 40,
               width: 40,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                  'assets/gthr_LogoALT.png', // Replace with your logo image path
+                  'assets/gthr_LogoALT.png',
                 ),
               ),
             ),
           ],
         ),
-        iconTheme: IconThemeData(
-            color: Colors.white), // Set back button color to white
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.chevron_left,
+          color: Colors.white,),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +129,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical:
-                          8.0), // Adjust padding of the text field content
+                      8.0), // Adjust padding of the text field content
                   hintText: 'Search events...',
                   prefixIcon: Icon(Icons.search,
                       size: 20.0), // Adjust size of the search icon
@@ -143,12 +149,39 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
               itemBuilder: (context, index) {
                 final eventDateTime = eventDateTimes[index];
                 final eventIndex = eventDateTimes.indexOf(eventDateTime);
-                return eventCard(
-                  context,
-                  eventTitles[eventIndex],
-                  clubNames[eventIndex],
-                  descriptions[eventIndex],
-                  eventDateTime,
+                return GestureDetector(
+                  onTap: () {
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (BuildContext context, Animation<double> animation,
+                          Animation<double> secondaryAnimation) =>
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: const EventDetails(),
+                          ),
+                      barrierDismissible: true,
+                      barrierLabel:
+                      MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                      barrierColor: Colors.black45,
+                      transitionDuration: const Duration(milliseconds: 250),
+                      transitionBuilder: (context, animation, secondaryAnimation, child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 1),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
+                    );
+                  },
+                  child: eventCard(
+                    context,
+                    eventTitles[eventIndex],
+                    clubNames[eventIndex],
+                    descriptions[eventIndex],
+                    eventDateTime,
+                  ),
                 );
               },
             ),

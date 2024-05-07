@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'account_info.dart';
+import 'change_pw.dart';
+import 'deactivate.dart';
+
 
 
 class SettingsPage extends StatefulWidget {
@@ -29,7 +33,6 @@ class _SettingsPageState extends State<SettingsPage> {
               _buildCategoryHeader('Account'),
               _buildOptionTile('Account Details', Icons.arrow_forward_ios),
               _buildOptionTile('Change Password', Icons.arrow_forward_ios),
-              _buildOptionTile('Your Preferences', Icons.arrow_forward_ios),
               // Notifications Category
               _buildCategoryHeader('Notifications'),
               _buildToggleOptionTile('Show Notifications', _showNotifications),
@@ -40,8 +43,6 @@ class _SettingsPageState extends State<SettingsPage> {
               // Display Category
               _buildCategoryHeader('Display'),
               _buildToggleOptionTile('Dark Mode', _darkMode),
-              // Delete Account Button
-              _buildDeleteAccountButton(),
             ],
           ),
         ),
@@ -67,10 +68,16 @@ class _SettingsPageState extends State<SettingsPage> {
       title: Text(title),
       trailing: Icon(icon),
       onTap: () {
-        // Handle tap on the option tile
+        if (title == 'Account Details') {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AccountInfo()));
+        }
+        if (title == 'Change Password'){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));
+        }
       },
     );
   }
+
 
   Widget _buildToggleOptionTile(String title, bool value) {
     return SwitchListTile(
@@ -104,28 +111,5 @@ class _SettingsPageState extends State<SettingsPage> {
       inactiveThumbColor: const Color(0xff1E7251).withOpacity(0.3), // Color when toggle is disabled
       inactiveTrackColor: const Color(0xff1E7251).withOpacity(0.3), // Color of the toggle track when toggle is disabled
     );
-  }
-
-
-  Widget _buildDeleteAccountButton() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      child: ElevatedButton(
-        onPressed: _deleteAccount,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.green.shade50), // Yellow background color
-        ),
-        child: const Text(
-          'Delete Account',
-          style: TextStyle(color: Colors.red), // Set text color to red
-        ),
-      ),
-    );
-  }
-
-  void _deleteAccount() {
-    // Implement the logic to delete the account
-    // This function will be called when the "Delete Account" button is pressed
   }
 }

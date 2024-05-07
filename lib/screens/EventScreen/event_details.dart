@@ -6,10 +6,24 @@ class EventDetails extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Events Main Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Events',
+            textAlign: TextAlign.center,
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.chevron_left),
+          ),
+        ),
         body: Content(),
       ),
     );
@@ -75,7 +89,7 @@ class _ContentState extends State<Content> {
               BlendMode.srcATop,
             ),
             child: Image.asset(
-              'assets/test.png',
+              'assets/CodeRevibe.png',
               width: 400,
               fit: BoxFit.cover,
             ),
