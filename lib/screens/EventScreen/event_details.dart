@@ -75,7 +75,7 @@ class _ContentState extends State<Content> {
               BlendMode.srcATop,
             ),
             child: Image.asset(
-              'assets/test.png',
+              'assets/CodeRevibe.png',
               width: 400,
               fit: BoxFit.cover,
             ),

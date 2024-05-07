@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/screens/EventScreen/event_details.dart';
 import 'package:intl/intl.dart';
 
 class UpcomingEvents extends StatefulWidget {
@@ -123,7 +124,7 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical:
-                          8.0), // Adjust padding of the text field content
+                      8.0), // Adjust padding of the text field content
                   hintText: 'Search events...',
                   prefixIcon: Icon(Icons.search,
                       size: 20.0), // Adjust size of the search icon
@@ -143,12 +144,24 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
               itemBuilder: (context, index) {
                 final eventDateTime = eventDateTimes[index];
                 final eventIndex = eventDateTimes.indexOf(eventDateTime);
-                return eventCard(
-                  context,
-                  eventTitles[eventIndex],
-                  clubNames[eventIndex],
-                  descriptions[eventIndex],
-                  eventDateTime,
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to the redirect page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                        const EventDetails(),
+                      ),
+                    );
+                  },
+                  child: eventCard(
+                    context,
+                    eventTitles[eventIndex],
+                    clubNames[eventIndex],
+                    descriptions[eventIndex],
+                    eventDateTime,
+                  ),
                 );
               },
             ),
