@@ -25,3 +25,17 @@ class Chat {
     );
   }
 }
+
+class GroupChat {
+  final String groupId;
+  final String groupName;
+  final List<String> members;
+
+  GroupChat({
+    required this.groupId,
+    required this.groupName,
+    required this.members,
+  });
+
+  
+}
