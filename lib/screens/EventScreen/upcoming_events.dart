@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gthr/screens/EventScreen/events_tab.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
 class UpcomingEvents extends StatefulWidget {
   const UpcomingEvents({Key? key}) : super(key: key);
@@ -10,167 +9,126 @@ class UpcomingEvents extends StatefulWidget {
 }
 
 class _UpcomingEventsState extends State<UpcomingEvents> {
-  final List<String> imgList = [
-    'https://www.tip.edu.ph/assets/genericpage/images/Olymphysics-QC-960-x-640.png',
-    'https://www.ucf.edu/wp-content/blogs.dir/19/files/2021/02/Event-Planning-Tips-Tools-and-Resources-for-Security-and-Success-01.jpg',
-    'https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=75,width=400,height=400/event-covers/s5/74a15289-20a5-4f6b-8802-bff4935239da',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnCLSHaQslFi-xjsavT7jHsRORYa7mEKqJ6ENlyzk0Ug&s',
+  // Define lists for event data
+  final List<String> eventTitles = [
+    'Code Revibe',
+    'Flutter Workshop for Beginners',
+    'Game Development with Unity',
+    'Hackathon: Building the Future',
+    'Design Thinking Masterclass',
+    'Public Speaking Workshop',
   ];
 
-  int _currentIndex = 0;
+  final List<String> clubNames = [
+    'ACM',
+    'JDSAAP',
+    'JPCS',
+    'ACM',
+    'MCube',
+    'Entrep Club',
+  ];
 
-  String selectedOrganization = 'All';
+  final List<String> descriptions = [
+    'Get ready to catch the 𝘾𝙤𝙙𝙚 𝙍𝙚𝙫𝙞𝙗𝙚! 🎉 Join us for the upcoming General Assembly – immerse yourself in the latest coding rhythms, updates, and collaborative energy! 🤖✨',
+    'Learn the basics of building mobile apps with Flutter.',
+    'Create your own video games using the Unity engine.',
+    'Compete with other developers to build innovative solutions.',
+    'Master the design thinking process for problem-solving.',
+    'Develop your confidence and public speaking skills.',
+  ];
+
+  final List<String> eventDates = [
+    '2024-02-26',
+    '2024-04-23',
+    '2024-06-10',
+    '2024-06-15',
+    '2024-06-20',
+    '2024-06-27',
+  ];
+
+  final List<String> eventTimes = [
+    '2:00 PM',
+    '5:27 AM',
+    '11:00 AM',
+    '1:00 PM',
+    '2:00 PM',
+    '3:00 PM',
+  ];
+
+  // Combine dates and times into a list of DateTime objects
+  final List<DateTime> eventDateTimes = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (int i = 0; i < eventDates.length; i++) {
+      try {
+        DateTime eventDateTime = DateFormat('yyyy-MM-dd hh:mm a')
+            .parse('${eventDates[i]} ${eventTimes[i]}');
+        if (eventDateTime.isAfter(DateTime.now())) {
+          eventDateTimes.add(eventDateTime);
+        }
+      } catch (e) {
+        print("Error parsing date/time: ${eventDates[i]} ${eventTimes[i]}");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F0F0),
       appBar: AppBar(
-        backgroundColor:
-        const Color(0xFF1E7251), // Set separate color for AppBar
+        backgroundColor: const Color(0xFF1E7251),
         elevation: 0,
-        title: Text(
-          'Find events for you',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.white, // Set color of the pop button to white
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: Image.asset(
-              'assets/gthr_LogoALT.png',
+        title: Row(
+          children: [
+            Text(
+              'Upcoming Events',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Spacer(), // Add spacing to push logo to the right
+            Container(
               height: 40,
               width: 40,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/gthr_LogoALT.png', // Replace with your logo image path
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+        iconTheme: IconThemeData(
+            color: Colors.white), // Set back button color to white
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0),
-            child: Row(
-              children: [
-                Container(
-                  color: const Color(0xFF1E7251),
-                  height: 65.0,
-                  width: 411,
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                        size: 50,
-                      ),
-                      const SizedBox(width: 8.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Your location',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4.0),
-                          Text(
-                            'TIP QC',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
-            child: DropdownButton<String>(
-              value: selectedOrganization,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedOrganization = newValue!;
-                });
-              },
-              items: <String>['All', 'JDSAAP', 'JPCS', 'ACM', 'MCUBE']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0),
-            child: Row(
-              children: [
-                Text(
-                  'Latest events',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Spacer(),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            EventsTab(),
-                        transitionDuration: Duration.zero,
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 25.0),
-                    child: Text(
-                      'Browse full list',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: const Color(0xFF1E7251),
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            padding: const EdgeInsets.fromLTRB(
+                30.0, 20.0, 30.0, 20.0), // Added top margin
             child: SizedBox(
-              width: 350.0,
-              height: 50.0,
+              width: double.infinity,
+              height: 40.0, // Reduced height of the search box
               child: TextField(
+                style: TextStyle(
+                    fontSize: 14.0), // Adjust font size of the text field
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical:
+                          8.0), // Adjust padding of the text field content
                   hintText: 'Search events...',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: Icon(Icons.search,
+                      size: 20.0), // Adjust size of the search icon
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
                 onChanged: (value) {
@@ -179,57 +137,98 @@ class _UpcomingEventsState extends State<UpcomingEvents> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0, top: 20.0),
-            child: Stack(
+          Expanded(
+            child: ListView.builder(
+              itemCount: eventDateTimes.length,
+              itemBuilder: (context, index) {
+                final eventDateTime = eventDateTimes[index];
+                final eventIndex = eventDateTimes.indexOf(eventDateTime);
+                return eventCard(
+                  context,
+                  eventTitles[eventIndex],
+                  clubNames[eventIndex],
+                  descriptions[eventIndex],
+                  eventDateTime,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget eventCard(BuildContext context, String title, String club,
+      String description, DateTime eventDateTime) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E7251),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              club,
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.white70,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              description,
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.white70,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            Row(
               children: [
-                CarouselSlider(
-                  items: imgList
-                      .map((e) =>
-                      Container(child: Center(child: Image.network(e))))
-                      .toList(),
-                  options: CarouselOptions(
-                    height: 300,
-                    enableInfiniteScroll: true,
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    aspectRatio: 16 / 9,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    autoPlayInterval: Duration(seconds: 3),
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
+                Icon(
+                  Icons.calendar_today,
+                  color: Colors.white70,
+                  size: 16.0,
+                ),
+                const SizedBox(width: 4.0),
+                Text(
+                  DateFormat('EEE, MMM d').format(eventDateTime),
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.white70,
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: imgList.asMap().entries.map((entry) {
-                      int index = entry.key;
-                      return Container(
-                        width: 8.0,
-                        height: 8.0,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 2.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentIndex == index
-                              ? Color(0xFF1E7251)
-                              : Colors.grey,
-                        ),
-                      );
-                    }).toList(),
+                const Spacer(),
+                Icon(
+                  Icons.access_time,
+                  color: Colors.white70,
+                  size: 16.0,
+                ),
+                const SizedBox(width: 4.0),
+                Text(
+                  DateFormat('h:mm a').format(eventDateTime),
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.white70,
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

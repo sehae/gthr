@@ -1,488 +1,206 @@
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
+import 'package:gthr/screens/EventScreen/upcoming_events.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class EventsPage extends StatelessWidget{
-  const EventsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Events Main Screen',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Content(),
-      ),
-    );
-  }
-}
-
-class Content extends StatefulWidget {
-  const Content({super.key});
+class EventsPage extends StatefulWidget {
+  const EventsPage({Key? key}) : super(key: key);
 
   @override
-  _ContentState createState() => _ContentState();
+  _EventsPageState createState() => _EventsPageState();
 }
 
-class _ContentState extends State<Content> {
-  String text = 'Lorem ipsum dolor sit amet consectetur. Volutpat ac pulvinar egestas id vitae. Risus lacinia ac aliquam bibendum viverra facilisis id. Neque nisi pharetra quis ultrices habitasse vivamus leo. Ultricies morbi in morbi non.Lorem ipsum dolor sit amet consectetur. Volutpat ac pulvinar egestas id vitae. Risus lacinia ac aliquam bibendum viverra facilisis id. Neque nisi pharetra quis ultrices habitasse vivamus leo. Ultricies morbi in morbi non.';
+class _EventsPageState extends State<EventsPage> {
+  final List<String> imgList = [
+    'https://www.tip.edu.ph/assets/genericpage/images/Olymphysics-QC-960-x-640.png',
+    'https://www.ucf.edu/wp-content/blogs.dir/19/files/2021/02/Event-Planning-Tips-Tools-and-Resources-for-Security-and-Success-01.jpg',
+    'https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=75,width=400,height=400/event-covers/s5/74a15289-20a5-4f6b-8802-bff4935239da',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnCLSHaQslFi-xjsavT7jHsRORYa7mEKqJ6ENlyzk0Ug&s',
+  ];
 
-  int selectedIndex = 0;
+  int _currentIndex = 0;
+
+  String selectedOrganization = 'All';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: <Widget>[
-                    buildEventImage(),
-                    buildEventDetails(),
-                    buildExpandedDetails(),
-                  ],
-                ),
-              )
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildEventImage() => Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 2,
-                blurRadius: 8,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              const Color(0xFF1E7251).withOpacity(0.4),
-              BlendMode.srcATop,
-            ),
-            child: Image.asset(
-              'assets/test.png',
-              width: 400,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-
-  Widget buildEventDetails() {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        Container(
-          child: Row(
-            children: [
-              Expanded(
-                child: FittedBox(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                    },
-                    icon: const Icon(Icons.star),
-                    label: const Text('Interested'),
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFFFDD09)),
-                      foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                width: 97,
-                child: Expanded(
-                  child: FittedBox(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                      },
-                      icon: const Icon(Icons.check),
-                      label: const Text('Going'),
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
-                        foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: FittedBox(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                    },
-                    icon: const Icon(Icons.close),
-                    label: const Text('Not Going'),
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
-                      foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: const Color(0xFFF3F0F0),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
+            child: Row(
               children: [
-                Text(
-                  'Code Revibe',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-                Text(
-                  'By ACM',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      minRadius: 15,
-                      maxRadius: 15,
-                    ),
-                    SizedBox(width: 5,),
-                    Text(
-                      '9 People are Interested',
-                      style: TextStyle(
-                        fontSize: 16,
+                Container(
+                  color: const Color(0xFF1E7251),
+                  height: 65.0,
+                  width: 411,
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.white,
+                        size: 50,
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 20,
-                      color: Color(0xFF2C2C30),
-                    ),
-                    SizedBox(width: 5,),
-                    Text(
-                      'Building 9',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.lock,
-                      size: 20,
-                      color: Color(0xFF2C2C30),
-                    ),
-                    SizedBox(width: 5,),
-                    Text(
-                      'Open for TIPQC Students',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    width: 70,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD9D9D9),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: const Center(
-                      child: Column(
+                      const SizedBox(width: 8.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Feb',
-                            textAlign: TextAlign.center,
+                            'Your location',
                             style: TextStyle(
-                              color: Color(0xFF2C2C30),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
+                          const SizedBox(height: 4.0),
                           Text(
-                            '26',
-                            textAlign: TextAlign.center,
+                            'TIP QC',
                             style: TextStyle(
-                              color: Color(0xFF2C2C30),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: 70,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFD9D9D9),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: const Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              '10:30am',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF2C2C30),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '11:30am',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color(0xFF2C2C30),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget buildExpandedDetails() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildContentButton('About', 0),
-            const SizedBox(width: 10),
-            buildContentButton('Discussion', 1),
-          ],
-        ),
-        if (selectedIndex == 0) buildAboutContent(),
-        if (selectedIndex == 1) buildDiscussionContent(),
-      ],
-    );
-  }
-
-  Widget buildContentButton(String text, int index) {
-    final isActive = selectedIndex == index;
-
-    return Expanded(
-      child: ElevatedButton(
-        onPressed: () {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-          minimumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 30)),
-          maximumSize: MaterialStateProperty.all<Size>(const Size(double.infinity, 50)),
-          backgroundColor: MaterialStateProperty.all<Color>(
-              isActive ? const Color(0xFF787878) : const Color(0xFFD9D9D9)
-          ),
-          foregroundColor: MaterialStateProperty.all<Color>(
-              isActive ? const Color(0xFFFFFFFF) : const Color(0xFF2C2C30)
-          ),
-
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildAboutContent() => Column(
-    children: <Widget> [
-      buildMAINAboutContent(),
-      buildGuestSpeaker(),
-    ],
-  );
-
-  Widget buildMAINAboutContent() => Container(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'About Event',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        ReadMoreText(
-          text,
-          trimLines: 5,
-          trimMode: TrimMode.Line,
-          trimCollapsedText: 'Read More.',
-          trimExpandedText: 'Read Less.',
-          moreStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1E7251),
-            decoration: TextDecoration.underline,
-          ),
-          lessStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1E7251),
-            decoration: TextDecoration.underline,
-          ),
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      ],
-    ),
-  );
-
-  Widget buildGuestSpeaker() => Container(
-    child: const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 10),
-        Text(
-          'Guest Speaker',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10,),
-        Row(
-          children: [
-            CircleAvatar(
-              minRadius: 30,
-              maxRadius: 30,
-            ),
-            SizedBox(width: 20,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Shrek de Swamp',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Former President of ACM',
-                  style: TextStyle(
-                    fontSize: 16,
+                    ],
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-      ],
-    ),
-  );
-
-  Widget buildDiscussionContent() => Container(
-    child: Column(
-      children: [
-        ElevatedButton(
-          onPressed: (){
-          },
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.symmetric(horizontal: 10)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+          ),
+          Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10.0),
+            child: DropdownButton<String>(
+              value: selectedOrganization,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedOrganization = newValue!;
+                });
+              },
+              items: <String>['All', 'JDSAAP', 'JPCS', 'ACM', 'MCUBE']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0),
+            child: Row(
+              children: [
+                Text(
+                  'Latest events',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Spacer(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const UpcomingEvents(),
+                        transitionDuration: Duration.zero,
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 25.0),
+                    child: Text(
+                      'Browse full list',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: const Color(0xFF1E7251),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: SizedBox(
+              width: 350.0,
+              height: 50.0,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search events...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onChanged: (value) {
+                  print('Searching for events: $value');
+                },
               ),
             ),
-            backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFFD9D9D9)),
-            foregroundColor: MaterialStateProperty.all<Color>(const Color(0xFF2C2C30)),
           ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Sort By: Recent Activity',
-                style: TextStyle(
-                  fontSize: 20,
+          Padding(
+            padding: const EdgeInsets.only(left: 30.0, top: 20.0),
+            child: Stack(
+              children: [
+                CarouselSlider(
+                  items: imgList
+                      .map((e) =>
+                      Container(child: Center(child: Image.network(e))))
+                      .toList(),
+                  options: CarouselOptions(
+                    height: 300,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    autoPlayInterval: Duration(seconds: 3),
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.keyboard_arrow_down,
-                size: 35,
-              )
-            ],
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imgList.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentIndex == index
+                              ? Color(0xFF1E7251)
+                              : Colors.grey,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
