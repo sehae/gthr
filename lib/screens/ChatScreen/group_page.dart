@@ -1,44 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting timestamps
 import '../../models/chat_message.dart';
-import '../../models/user_list.dart';
 import '../../services/database.dart';
 
-class ChatScreen extends StatefulWidget {
-  final UserList user;
+class GroupPage extends StatefulWidget {
+  final String groupId;
+  final String groupName;
   final String currentUserId;
 
-  const ChatScreen({
+  const GroupPage({
     Key? key,
-    required this.user,
+    required this.groupId,
+    required this.groupName,
     required this.currentUserId,
   }) : super(key: key);
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _GroupPageState createState() => _GroupPageState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  late Stream<List<Chat>> _chatStream;
+class _GroupPageState extends State<GroupPage> {
+  late Stream<List<Chat>> _groupChatStream;
   final TextEditingController _textController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    final otherUserId = widget.user.uid;
-    final currentUserId = widget.currentUserId;
-
-    if (otherUserId == null) {
-      print('Error: Other user ID is null');
-      return;
-    }
-
-    final chatId1 = '${currentUserId}_${otherUserId}';
-    final chatId2 = '${otherUserId}_${currentUserId}';
-
-    _chatStream =
-        DatabaseService(uid: currentUserId).getAllMessages([chatId1, chatId2]);
+    _groupChatStream = DatabaseService()
+        .getGroupMessages(widget.groupId); // Retrieve messages for the group
   }
 
   @override
@@ -51,35 +40,36 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.user.fname} ${widget.user.lname}'),
+        title: Text(widget.groupName),
         backgroundColor: const Color(0xFF1E7251),
       ),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder<List<Chat>>(
-              stream: _chatStream,
+              stream: _groupChatStream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  final chatMessages = snapshot.data ?? [];
-                  if (chatMessages.isEmpty) {
-                    return const Center(child: Text('No messages yet'));
+                  final groupMessages = snapshot.data ?? [];
+                  if (groupMessages.isEmpty) {
+                    return const Center(
+                        child: Text('No messages in the group'));
                   }
                   return ListView.builder(
-                    reverse: true, // Start from the bottom (latest messages)
-                    itemCount: chatMessages.length,
+                    reverse: true, // Start from the latest messages
+                    itemCount: groupMessages.length,
                     itemBuilder: (context, index) {
-                      final chatMessage = chatMessages[index];
+                      final groupMessage = groupMessages[index];
                       final isIncoming =
-                          chatMessage.senderId != widget.currentUserId;
+                          groupMessage.senderId != widget.currentUserId;
 
                       return _buildChatBubble(
-                        text: chatMessage.message,
-                        timestamp: chatMessage.timestamp,
+                        text: groupMessage.message,
+                        timestamp: groupMessage.timestamp,
                         isIncoming: isIncoming,
                       );
                     },
@@ -123,27 +113,20 @@ class _ChatScreenState extends State<ChatScreen> {
   void _sendMessage() {
     final text = _textController.text.trim();
     if (text.isNotEmpty) {
-      final otherUserId = widget.user.uid;
-
-      if (otherUserId == null) {
-        print('Error: User UID is null');
-        return;
-      }
-
-      final chatId = '${widget.currentUserId}_${otherUserId}';
-
-      final message = Chat(
-        chatId: chatId,
+      final chat = Chat(
+        chatId: widget.groupId, // Using the groupId for group messaging
         senderId: widget.currentUserId,
-        receiverId: otherUserId,
+        receiverId: '', // No receiverId in group chat
         message: text,
         timestamp: DateTime.now(),
       );
 
-      DatabaseService().sendMessage(chatId, message).then((_) {
-        _textController.clear();
+      DatabaseService()
+          .sendGroupMessage(widget.groupId, chat) // Use the new method
+          .then((_) {
+        _textController.clear(); // Clear the text field after sending
       }).catchError((error) {
-        print('Error sending message: $error');
+        print('Error sending group message: $error');
       });
     }
   }
@@ -154,12 +137,9 @@ class _ChatScreenState extends State<ChatScreen> {
     required bool isIncoming,
   }) {
     final alignment = isIncoming ? Alignment.centerLeft : Alignment.centerRight;
-
-    // Define the colors for incoming and outgoing messages
     final outgoingColor = Color(0xFF6D9D8A);
     final incomingColor = Color(0xFFB5CFC5);
 
-    // Define the outer margin for spacing
     final margin = isIncoming
         ? EdgeInsets.only(left: 20, right: 40, top: 10, bottom: 10)
         : EdgeInsets.only(right: 20, left: 40, top: 10, bottom: 10);

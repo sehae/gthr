@@ -16,6 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool showPassword = false; // State for toggling password visibility
 
   String username = '';
   String fname = '';
@@ -47,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 15),
               buildTextField('E-mail', 'Enter an email', validator: (val) => !RegExp(r'\S+@\S+\.\S+').hasMatch(val!) ? "Enter a valid email address" : null),
               const SizedBox(height: 15),
-              buildTextField('Password', 'Enter a password 6+ chars long', obscureText: true, validator: validatePassword),
+              buildTextField('Password', 'Enter a password 6+ chars long', obscureText: !showPassword, validator: validatePassword, togglePasswordView: true),
               const SizedBox(height: 15),
               buildTextField('University', 'Enter a University', validator: (val) => val!.isEmpty ? "Enter a University" : null),
               const SizedBox(height: 30),
@@ -95,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget buildTextField(String label, String errorMessage, {bool obscureText = false, String? Function(String?)? validator}) {
+  Widget buildTextField(String label, String errorMessage, {bool obscureText = false, String? Function(String?)? validator, bool togglePasswordView = false}) {
     return TextFormField(
       validator: validator,
       onChanged: (val){
@@ -118,6 +119,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         border: InputBorder.none,
         fillColor: Colors.black12,
         filled: true,
+        suffixIcon: togglePasswordView ? IconButton(
+          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
+          onPressed: () {
+            setState(() {
+              showPassword = !showPassword;
+            });
+          },
+        ) : null,
       ),
     );
   }

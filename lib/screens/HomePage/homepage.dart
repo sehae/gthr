@@ -4,6 +4,8 @@ import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../../shared/custom_scrollbar.dart';
+import '../EventScreen/events_main.dart';
+import '../EventScreen/upcoming_events.dart';
 
 void main() {
   runApp(const HomePage());
@@ -92,7 +94,23 @@ class HomePage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              // Handle "See more..." button press
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) => const UpcomingEvents(),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    var begin = Offset(1.0, 0.0);
+                                    var end = Offset.zero;
+                                    var tween = Tween(begin: begin, end: end);
+                                    var offsetAnimation = animation.drive(tween);
+
+                                    return SlideTransition(
+                                      position: offsetAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
                             },
                             child: const Text(
                               'See more...',

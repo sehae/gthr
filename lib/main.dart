@@ -4,6 +4,7 @@ import 'package:gthr/models/user.dart';
 import 'package:gthr/navigation/drawer.dart';
 import 'package:gthr/navigation/routing.dart';
 import 'package:gthr/screens/ChatScreen/chat_main.dart';
+import 'package:gthr/screens/EventScreen/event_details.dart';
 import 'package:gthr/screens/EventScreen/events_main.dart';
 import 'package:gthr/screens/FriendsScreen/friend_list.dart';
 import 'package:gthr/screens/HomePage/homepage.dart';
@@ -130,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case Routes.home:
         return '';
       case Routes.events:
-        return 'Events';
+        return 'Find Events For You';
       case Routes.chats:
         return 'Chats';
       case Routes.friends:
@@ -149,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case Routes.home:
         return Colors.white;
       case Routes.events:
-        return Colors.white;
+        return const Color(0xff1E7251);
       case Routes.chats:
         return const Color(0xff1E7251);
       case Routes.friends:

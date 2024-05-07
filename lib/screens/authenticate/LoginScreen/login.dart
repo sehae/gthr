@@ -5,19 +5,18 @@ import 'package:gthr/services/auth.dart';
 import '../../../shared/loading.dart';
 
 class LoginScreen extends StatefulWidget {
-
   final void Function(bool, bool) toggleView;
   const LoginScreen({Key? key, required this.toggleView}) : super(key: key);
 
   @override
-  _LoginScreen createState() => _LoginScreen();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreen extends State<LoginScreen> {
-
+class _LoginScreenState extends State<LoginScreen> {
   final AuthService _auth = AuthService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool showPassword = false; // State to manage password visibility
 
   String username = '';
   String email = '';
@@ -45,7 +44,7 @@ class _LoginScreen extends State<LoginScreen> {
               const SizedBox(height: 48),
               TextFormField(
                 validator: (val) => val!.isEmpty ? "Enter an email" : null,
-                onChanged: (val){
+                onChanged: (val) {
                   setState(() => email = val);
                 },
                 decoration: const InputDecoration(
@@ -56,13 +55,19 @@ class _LoginScreen extends State<LoginScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 validator: (val) => val!.length < 6 ? "Enter a password 6+ chars long" : null,
-                onChanged: (val){
+                onChanged: (val) {
                   setState(() => password = val);
                 },
-                obscureText: true,
-                decoration: const InputDecoration(
+                obscureText: !showPassword,
+                decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(showPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() => showPassword = !showPassword);
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -122,15 +127,18 @@ class _LoginScreen extends State<LoginScreen> {
                     const TextSpan(text: "Don't have an account? "),
                     TextSpan(
                       text: 'Register',
-                      style: const TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          print("Register tapped");
-                          widget.toggleView(false, false);
-                        },
+                      style: const TextStyle(color: Color(0xffFB5017), fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                      recognizer: TapGestureRecognizer()..onTap = () {
+                        widget.toggleView(false, false);
+                      },
                     ),
                   ],
                 ),
+              ),
+              SizedBox(height: 12),
+              Text(
+                error,
+                style: const TextStyle(color: Colors.red, fontSize: 14.0),
               ),
             ],
           ),

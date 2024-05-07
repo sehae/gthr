@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../models/user.dart';
 import '../../models/user_posts.dart';
 import '../../shared/loading.dart';
+import '../../shared/snackbar.dart';
 
 class CreatePostScreen extends StatelessWidget {
   const CreatePostScreen({super.key});
@@ -90,11 +91,13 @@ class _createContentState extends State<Content> {
                   Post newPost = Post(
                     content: postContent,
                     timestamp: DateTime.now(),
+                    icon: widget.userData?.icon ?? '',
+                    username: widget.userData?.username ?? '',
                   );
 
                   await DatabaseService(uid: user?.uid).addPost(newPost);
 
-                  showSnackBarFun(context);
+                  showSnackBarFun(context, 'Post created successfully');
 
                   Navigator.pop(context);
                 }
@@ -115,22 +118,6 @@ class _createContentState extends State<Content> {
     );
   }
 
-  showSnackBarFun(context) {
-    SnackBar snackBar = SnackBar(
-      content: const Text('Your post has been uploaded!',
-          style: TextStyle(fontSize: 16)),
-      backgroundColor: const Color(0xFF1E7251),
-      dismissDirection: DismissDirection.up,
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.height - 150,
-          left: 10,
-          right: 10),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
   Widget buildPost() {
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -140,10 +127,21 @@ class _createContentState extends State<Content> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CircleAvatar(
+                backgroundColor: const Color(0xFF1E7251),
                 backgroundImage: widget.userData?.icon != null
                     ? MemoryImage(base64Decode(widget.userData!.icon))
                     : null,
                 radius: 25,
+                child: (widget.userData?.icon != null &&
+                    widget.userData?.icon == '')
+                    ? Text(
+                  widget.userData?.fname[0].toUpperCase() ?? '',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                  ),
+                )
+                    : null,
               ),
               Expanded(
                 child: Padding(

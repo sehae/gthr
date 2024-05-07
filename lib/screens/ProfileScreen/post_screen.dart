@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../models/user.dart';
 import '../../models/user_posts.dart';
@@ -48,6 +49,8 @@ class Content extends StatefulWidget {
 }
 
 class _ContentState extends State<Content> {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -55,7 +58,6 @@ class _ContentState extends State<Content> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        bottomSheet: chatBar(),
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -72,37 +74,85 @@ class _ContentState extends State<Content> {
           ),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.8, // adjust the value as needed
-                child: CustomScrollbar(
-                  child: Column(
-                    children: <Widget>[
-                      buildUser(),
-                      buildPostContent(),
-                      buildReplies(),
-                    ],
+        body: Column(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: CustomScrollbar(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Column(
+                          children: [
+                            buildUser(),
+                            buildPostContent(),
+                            buildReplies(),
+                          ],
+                        ),
+                      ),
+                    )
                   ),
                 ),
               ),
-            ]),
-          ),
+              _buildReplyInput(),
+            ]
         ),
       ),
     );
   }
 
-  Widget chatBar() {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: "Write a reply...",
-          border: OutlineInputBorder(),
-        ),
+  Widget _buildReplyInput() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: "Post your reply",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: _controller,
+            builder: (context, TextEditingValue value, _) {
+              if (value.text.isNotEmpty) {
+                return IconButton(
+                  icon: const Icon(
+                    Icons.send,
+                    color: Color(0xFF1E7251),
+                  ),
+                  onPressed: () async {
+                    if (widget.user?.uid == null || widget.post.postId == null) {
+                      // Handle null uid or postId here
+                      return;
+                    }
+                    Reply reply = Reply(
+                      content: _controller.text,
+                      timestamp: DateTime.now(),
+                      postId: widget.post.postId!,
+                      userId: widget.user?.uid ?? '',
+                      postContent: widget.post.content,
+                      icon: widget.userData?.icon ?? '',
+                      username: widget.userData?.username ?? '',
+                    );
+
+                    await DatabaseService(uid: widget.user!.uid).addReply(widget.post.postId!, reply);
+
+                    _controller.clear();
+                  },
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -110,18 +160,20 @@ class _ContentState extends State<Content> {
   Widget buildUser() {
     return ListTile(
       leading: CircleAvatar(
+        backgroundColor: const Color(0xFF1E7251),
         backgroundImage: widget.userData?.icon != null
             ? MemoryImage(base64Decode(widget.userData!.icon))
             : null,
         radius: 25,
-        child: (widget.userData?.icon != null && widget.userData?.icon == '')
+        child: (widget.userData?.icon != null &&
+            widget.userData?.icon == '')
             ? Text(
-                widget.userData?.fname[0].toUpperCase() ?? '',
-                style: const TextStyle(
-                  fontSize: 40.0,
-                  color: Colors.white,
-                ),
-              )
+          widget.userData?.fname[0].toUpperCase() ?? '',
+          style: const TextStyle(
+            fontSize: 16.0,
+            color: Colors.white,
+          ),
+        )
             : null,
       ),
       title: Text('${widget.userData?.fname} ${widget.userData!.lname}'),
@@ -138,8 +190,59 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildReplies() {
-    return const ListTile(
-      title: Text('Replies'),
+    return StreamBuilder<List<Reply>>(
+      stream: DatabaseService(uid: widget.user!.uid).getReplies(widget.post.postId!),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          List<Reply> replies = snapshot.data!;
+          if (replies.isEmpty) {
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'Huh, weird.. I guess you are not famous enough to have any replies yet.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: replies.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: MemoryImage(base64Decode(replies[index].icon)),
+                  ),
+                  title: Text( '@${replies[index].username} • ${timeago.format(replies[index].timestamp, locale: 'en_short')}',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                    ),
+                  ) ,
+                  subtitle: Text(
+                      replies[index].content,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      )),
+                );
+              },
+            );
+          }
+        } else {
+          return const Text('No replies yet');
+        }
+      },
     );
   }
+
 }
