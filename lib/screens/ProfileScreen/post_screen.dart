@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../models/user.dart';
 import '../../models/user_posts.dart';
@@ -79,13 +80,18 @@ class _ContentState extends State<Content> {
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.8,
                   child: CustomScrollbar(
-                    child: Column(
-                      children: <Widget>[
-                        buildUser(),
-                        buildPostContent(),
-                        buildReplies(),
-                      ],
-                    ),
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Column(
+                          children: [
+                            buildUser(),
+                            buildPostContent(),
+                            buildReplies(),
+                          ],
+                        ),
+                      ),
+                    )
                   ),
                 ),
               ),
@@ -118,11 +124,27 @@ class _ContentState extends State<Content> {
               if (value.text.isNotEmpty) {
                 return IconButton(
                   icon: const Icon(
-                      Icons.send,
+                    Icons.send,
                     color: Color(0xFF1E7251),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
+                    if (widget.user?.uid == null || widget.post.postId == null) {
+                      // Handle null uid or postId here
+                      return;
+                    }
+                    Reply reply = Reply(
+                      content: _controller.text,
+                      timestamp: DateTime.now(),
+                      postId: widget.post.postId!,
+                      userId: widget.user?.uid ?? '',
+                      postContent: widget.post.content,
+                      icon: widget.userData?.icon ?? '',
+                      username: widget.userData?.username ?? '',
+                    );
 
+                    await DatabaseService(uid: widget.user!.uid).addReply(widget.post.postId!, reply);
+
+                    _controller.clear();
                   },
                 );
               } else {
@@ -168,8 +190,43 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildReplies() {
-    return const ListTile(
-      title: Text('Replies'),
+    return StreamBuilder<List<Reply>>(
+      stream: DatabaseService(uid: widget.user!.uid).getReplies(widget.post.postId!),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          List<Reply> replies = snapshot.data!;
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: replies.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: MemoryImage(base64Decode(replies[index].icon)),
+                ),
+                title: Text( '@${replies[index].username} • ${timeago.format(replies[index].timestamp, locale: 'en_short')}',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 16,
+                ),
+                ) ,
+                subtitle: Text(
+                    replies[index].content,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                )),
+              );
+            },
+          );
+        } else {
+          return const Text('Huh, weird.. I guess you are not famous enough to have any replies yet.');
+        }
+      },
     );
   }
+
 }

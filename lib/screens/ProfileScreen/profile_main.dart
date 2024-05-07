@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gthr/screens/ProfileScreen/post_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:gthr/screens/ProfileScreen/profile_edit.dart';
@@ -76,14 +77,14 @@ class _ContentState extends State<Content> {
           showGeneralDialog(
             context: context,
             pageBuilder: (BuildContext context, Animation<double> animation,
-                Animation<double> secondaryAnimation) =>
+                    Animation<double> secondaryAnimation) =>
                 SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: const CreatePostScreen(),
-                ),
+              width: MediaQuery.of(context).size.width,
+              child: const CreatePostScreen(),
+            ),
             barrierDismissible: true,
             barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                MaterialLocalizations.of(context).modalBarrierDismissLabel,
             barrierColor: Colors.black45,
             transitionDuration: const Duration(milliseconds: 250),
             transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -131,14 +132,14 @@ class _ContentState extends State<Content> {
               showGeneralDialog(
                 context: context,
                 pageBuilder: (BuildContext context, Animation<double> animation,
-                    Animation<double> secondaryAnimation) =>
+                        Animation<double> secondaryAnimation) =>
                     SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: const profileEdit(),
-                    ),
+                  width: MediaQuery.of(context).size.width,
+                  child: const profileEdit(),
+                ),
                 barrierDismissible: true,
                 barrierLabel:
-                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                    MaterialLocalizations.of(context).modalBarrierDismissLabel,
                 barrierColor: Colors.black45,
                 transitionDuration: const Duration(milliseconds: 250),
                 transitionBuilder:
@@ -155,12 +156,12 @@ class _ContentState extends State<Content> {
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   return Colors.white;
                 },
               ),
               side: MaterialStateProperty.resolveWith<BorderSide>(
-                    (Set<MaterialState> states) {
+                (Set<MaterialState> states) {
                   return const BorderSide(
                     color: Color(0xFF1E7251),
                     width: 2.0,
@@ -186,132 +187,132 @@ class _ContentState extends State<Content> {
   }
 
   Widget buildCoverImage() => Container(
-    child: (widget.userData?.header != null &&
-        widget.userData!.header.isNotEmpty)
-        ? Image.memory(
-      base64Decode(widget.userData!.header),
-      width: double.infinity,
-      height: coverHeight,
-      fit: BoxFit.cover,
-    )
-        : Container(
-      width: double.infinity,
-      height: coverHeight,
-      color: const Color(0xFF1E7251),
-    ),
-  );
+        child: (widget.userData?.header != null &&
+                widget.userData!.header.isNotEmpty)
+            ? Image.memory(
+                base64Decode(widget.userData!.header),
+                width: double.infinity,
+                height: coverHeight,
+                fit: BoxFit.cover,
+              )
+            : Container(
+                width: double.infinity,
+                height: coverHeight,
+                color: const Color(0xFF1E7251),
+              ),
+      );
 
   Widget buildProfileImage() => Container(
-    padding: const EdgeInsets.all(5),
-    decoration: const BoxDecoration(
-      color: Colors.white,
-      shape: BoxShape.circle,
-    ),
-    child: CircleAvatar(
-      radius: profileHeight / 2,
-      backgroundColor: const Color(0xFF1E7251),
-      backgroundImage: widget.userData?.icon != null
-          ? MemoryImage(base64Decode(widget.userData!.icon))
-          : null,
-      child: (widget.userData?.icon != null && widget.userData?.icon == '')
-          ? Text(
-        widget.userData?.fname[0].toUpperCase() ?? '',
-        style: const TextStyle(
-          fontSize: 40.0,
+        padding: const EdgeInsets.all(5),
+        decoration: const BoxDecoration(
           color: Colors.white,
+          shape: BoxShape.circle,
         ),
-      )
-          : null,
-    ),
-  );
+        child: CircleAvatar(
+          radius: profileHeight / 2,
+          backgroundColor: const Color(0xFF1E7251),
+          backgroundImage: widget.userData?.icon != null
+              ? MemoryImage(base64Decode(widget.userData!.icon))
+              : null,
+          child: (widget.userData?.icon != null && widget.userData?.icon == '')
+              ? Text(
+                  widget.userData?.fname[0].toUpperCase() ?? '',
+                  style: const TextStyle(
+                    fontSize: 40.0,
+                    color: Colors.white,
+                  ),
+                )
+              : null,
+        ),
+      );
 
   Widget buildProfileInfo() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const SizedBox(
-        height: 8,
-      ),
-      Text(
-        '${widget.userData!.fname} ${widget.userData!.lname}',
-        style: const TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      Text(
-        '@${widget.userData?.username}',
-        style: const TextStyle(
-          fontSize: 18,
-        ),
-      ),
-      Text(
-        widget.userData!.bio,
-        style: const TextStyle(
-          fontSize: 18,
-        ),
-      ),
-      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.location_on,
-            size: 20,
-            color: Color(0xFF2C2C30),
-          ),
           const SizedBox(
-            width: 5,
+            height: 8,
           ),
           Text(
-            widget.userData!.location,
+            '${widget.userData!.fname} ${widget.userData!.lname}',
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            '@${widget.userData?.username}',
             style: const TextStyle(
               fontSize: 18,
             ),
           ),
-        ],
-      ),
-      TextButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            overlayColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return Colors.transparent;
-                }
-                return Colors.transparent;
-              },
-            ),
-            foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return const Color(0xFF4E4C4C).withOpacity(0.5);
-                }
-                return const Color(0xFF4E4C4C);
-              },
+          Text(
+            widget.userData!.bio,
+            style: const TextStyle(
+              fontSize: 18,
             ),
           ),
-          child: const Row(
+          Row(
             children: [
-              Text(
-                '69',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+              const Icon(
+                Icons.location_on,
+                size: 20,
+                color: Color(0xFF2C2C30),
               ),
-              SizedBox(
-                width: 4,
+              const SizedBox(
+                width: 5,
               ),
               Text(
-                'Friends',
-                style: TextStyle(
+                widget.userData!.location,
+                style: const TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
-          )),
-    ],
-  );
+          ),
+          TextButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.zero),
+                overlayColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.transparent;
+                    }
+                    return Colors.transparent;
+                  },
+                ),
+                foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return const Color(0xFF4E4C4C).withOpacity(0.5);
+                    }
+                    return const Color(0xFF4E4C4C);
+                  },
+                ),
+              ),
+              child: const Row(
+                children: [
+                  Text(
+                    '69',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Friends',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              )),
+        ],
+      );
 
   Widget buildContent() {
     return Column(
@@ -343,9 +344,9 @@ class _ContentState extends State<Content> {
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(
-                color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
-                width: 5.0,
-              ))),
+        color: isActive ? const Color(0xFFFF4E1A) : Colors.transparent,
+        width: 5.0,
+      ))),
       child: TextButton(
         onPressed: () {
           setState(() {
@@ -354,7 +355,7 @@ class _ContentState extends State<Content> {
         },
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
                 return Colors.transparent;
               }
@@ -362,7 +363,7 @@ class _ContentState extends State<Content> {
             },
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.pressed)) {
                 return const Color(0xFF4E4C4C).withOpacity(0.5);
               }
@@ -396,7 +397,7 @@ class _ContentState extends State<Content> {
             );
           } else {
             return ListView.builder(
-              shrinkWrap: true,
+                shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
@@ -404,18 +405,20 @@ class _ContentState extends State<Content> {
                     onTap: () {
                       showGeneralDialog(
                         context: context,
-                        pageBuilder: (BuildContext context, Animation<double> animation,
-                            Animation<double> secondaryAnimation) =>
+                        pageBuilder: (BuildContext context,
+                                Animation<double> animation,
+                                Animation<double> secondaryAnimation) =>
                             SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: PostScreen(post: posts[index]),
-                            ),
+                          width: MediaQuery.of(context).size.width,
+                          child: PostScreen(post: posts[index]),
+                        ),
                         barrierDismissible: true,
-                        barrierLabel:
-                        MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                        barrierLabel: MaterialLocalizations.of(context)
+                            .modalBarrierDismissLabel,
                         barrierColor: Colors.black45,
                         transitionDuration: const Duration(milliseconds: 250),
-                        transitionBuilder: (context, animation, secondaryAnimation, child) {
+                        transitionBuilder:
+                            (context, animation, secondaryAnimation, child) {
                           return SlideTransition(
                             position: Tween<Offset>(
                               begin: const Offset(0, 1),
@@ -435,17 +438,19 @@ class _ContentState extends State<Content> {
                             radius: 20,
                             backgroundColor: const Color(0xFF1E7251),
                             backgroundImage: widget.userData?.icon != null
-                                ? MemoryImage(base64Decode(widget.userData!.icon))
+                                ? MemoryImage(
+                                    base64Decode(widget.userData!.icon))
                                 : null,
                             child: (widget.userData?.icon != null &&
-                                widget.userData?.icon == '')
+                                    widget.userData?.icon == '')
                                 ? Text(
-                              widget.userData?.fname[0].toUpperCase() ?? '',
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.white,
-                              ),
-                            )
+                                    widget.userData?.fname[0].toUpperCase() ??
+                                        '',
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : null,
                           ),
                         ),
@@ -454,7 +459,8 @@ class _ContentState extends State<Content> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '@${widget.userData!.username} · ${timeago.format(posts[index].timestamp, locale: 'en_short')}',
@@ -466,13 +472,16 @@ class _ContentState extends State<Content> {
                                   PopupMenuButton<int>(
                                     icon: const Icon(Icons.more_horiz),
                                     color: Colors.grey[100],
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0)),
                                     elevation: 2.0,
                                     itemBuilder: (context) => [
                                       const PopupMenuItem(
                                         value: 1,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               'Delete Post',
@@ -480,14 +489,18 @@ class _ContentState extends State<Content> {
                                                 color: Colors.red,
                                               ),
                                             ),
-                                            FaIcon(FontAwesomeIcons.trashCan, color: Colors.red,),
+                                            FaIcon(
+                                              FontAwesomeIcons.trashCan,
+                                              color: Colors.red,
+                                            ),
                                           ],
                                         ),
                                       ),
                                       const PopupMenuItem(
                                         value: 2,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text('Edit Post'),
                                             FaIcon(FontAwesomeIcons.pen),
@@ -506,19 +519,26 @@ class _ContentState extends State<Content> {
                                       } else if (value == 2) {
                                         showGeneralDialog(
                                           context: context,
-                                          pageBuilder: (BuildContext context, Animation<double> animation,
-                                              Animation<double> secondaryAnimation) =>
+                                          pageBuilder: (BuildContext context,
+                                                  Animation<double> animation,
+                                                  Animation<double>
+                                                      secondaryAnimation) =>
                                               EditPostScreen(
-                                                postId: posts[index].postId!,
-                                                initialContent: posts[index].content,
-                                              ),
+                                            postId: posts[index].postId!,
+                                            initialContent:
+                                                posts[index].content,
+                                          ),
                                           barrierDismissible: true,
                                           barrierLabel:
-                                          MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                              MaterialLocalizations.of(context)
+                                                  .modalBarrierDismissLabel,
                                           barrierColor: Colors.black45,
-                                          transitionDuration: const Duration(milliseconds: 250),
-                                          transitionBuilder:
-                                              (context, animation, secondaryAnimation, child) {
+                                          transitionDuration:
+                                              const Duration(milliseconds: 250),
+                                          transitionBuilder: (context,
+                                              animation,
+                                              secondaryAnimation,
+                                              child) {
                                             return SlideTransition(
                                               position: Tween<Offset>(
                                                 begin: const Offset(0, 1),
@@ -553,15 +573,16 @@ class _ContentState extends State<Content> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 20,)
+                              const SizedBox(
+                                height: 20,
+                              )
                             ],
                           ),
                         ),
                       ],
                     ),
                   );
-                }
-            );
+                });
           }
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -603,31 +624,83 @@ class _ContentState extends State<Content> {
     }
   }
 
-  Widget buildRepliesContent() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Text('Nothing to see here, fam. Why not reply to someone?')
-      ],
-    ),
-  );
+  Widget buildRepliesContent() {
+    return StreamBuilder<List<Reply>>(
+      stream: DatabaseService(uid: widget.user?.uid).getUserReplies(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Reply> replies = snapshot.data!;
+          if (replies.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                children: [
+                  Text('Nothing to see here, fam. Why not reply to something?')
+                ],
+              ),
+            );
+          } else {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: replies.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        MemoryImage(base64Decode(replies[index].icon)),
+                  ),
+                  title: Text('@${replies[index].username} • ${timeago.format(replies[index].timestamp, locale: 'en_short')}',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(replies[index].content,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text('Reply to: ${replies[index].postContent}',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
+    );
+  }
 
   Widget buildGthrContent() => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [
-        Image.network(
-            'https://asset-ent.abs-cbn.com/ent/entertainment/media/onemusic/lovebox.jpg?ext=.jpg'),
-        Image.network(
-            'https://scontent.fmnl8-1.fna.fbcdn.net/v/t39.30808-6/401836757_737590591748457_5740288807220724461_n.jpg?stp=dst-jpg_p843x403&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=zW3lI9lyNNkAb7qpwLC&_nc_ht=scontent.fmnl8-1.fna&cb_e2o_trans=q&oh=00_AfARb92ZkIqxiMZf_HvGqwaLlD0l7sqe-SUmUguq4gSjNQ&oe=66259EC4'),
-      ],
-    ),
-  );
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            Image.network(
+                'https://asset-ent.abs-cbn.com/ent/entertainment/media/onemusic/lovebox.jpg?ext=.jpg'),
+            Image.network(
+                'https://scontent.fmnl8-1.fna.fbcdn.net/v/t39.30808-6/401836757_737590591748457_5740288807220724461_n.jpg?stp=dst-jpg_p843x403&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=zW3lI9lyNNkAb7qpwLC&_nc_ht=scontent.fmnl8-1.fna&cb_e2o_trans=q&oh=00_AfARb92ZkIqxiMZf_HvGqwaLlD0l7sqe-SUmUguq4gSjNQ&oe=66259EC4'),
+          ],
+        ),
+      );
 
   Widget buildLikesContent() => const Padding(
-    padding: EdgeInsets.symmetric(vertical: 20),
-    child: Column(
-      children: [Text('Nothing to see here, fam. Why not like something?')],
-    ),
-  );
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [Text('Nothing to see here, fam. Why not like something?')],
+        ),
+      );
 }

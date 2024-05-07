@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gthr/shared/loading.dart';
+import 'package:gthr/shared/snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -315,12 +316,6 @@ class _ContentState extends State<Content> {
             ),
             obscureText: false,
             maxLength: 30,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your location';
-              }
-              return null;
-            },
             onChanged: (value) {
               setState(() {
                 _currentlocation = value;
@@ -355,27 +350,7 @@ class _ContentState extends State<Content> {
                   icon,
                   header,
                 );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Center(
-                      child: Text(
-                        'Profile updated successfully',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    backgroundColor: Color(0xFFFFDD0A),
-                    duration: Duration(seconds: 3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      ),
-                    ),
-                  ),
-                );
+                showSnackBarFun(context, 'Profile updated successfully!');
                 Navigator.pop(context);
               }
             },
