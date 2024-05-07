@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gthr/screens/EventScreen/past_events.dart';
 import 'package:gthr/services/database.dart';
 import 'package:gthr/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -147,7 +148,29 @@ class HomePage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              // Handle "See more..." button press
+                              showGeneralDialog(
+                                context: context,
+                                pageBuilder: (BuildContext context, Animation<double> animation,
+                                    Animation<double> secondaryAnimation) =>
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const PastEvents(),
+                                    ),
+                                barrierDismissible: true,
+                                barrierLabel:
+                                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                barrierColor: Colors.black45,
+                                transitionDuration: const Duration(milliseconds: 250),
+                                transitionBuilder: (context, animation, secondaryAnimation, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                },
+                              );
                             },
                             child: const Text(
                               'See more...',
