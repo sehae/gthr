@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gthr/services/auth.dart';
 import 'routing.dart';
@@ -9,11 +10,13 @@ class AppDrawer extends StatelessWidget {
 
   AppDrawer({super.key, 
     required this.onSelectRoute,
-    required this.selectedRoute
+    required this.selectedRoute,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isGuest = FirebaseAuth.instance.currentUser?.isAnonymous ?? true;
+
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.5,
       child: Drawer(
@@ -63,7 +66,8 @@ class AppDrawer extends StatelessWidget {
                         onSelectRoute(Routes.events);
                       },
                     ),
-                    ListTile(
+                    if (!isGuest) ...[
+                      ListTile(
                       leading: const Icon(
                         Icons.chat_bubble,
                         color: Color(0xFF1E5720),
@@ -80,57 +84,58 @@ class AppDrawer extends StatelessWidget {
                         onSelectRoute(Routes.chats);
                       },
                     ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.people_alt_rounded,
-                        color: Color(0xFF1E5720),
-                        size: 32,
-                      ),
-                      title: const Text(
-                        'Friends',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
+                      ListTile(
+                        leading: const Icon(
+                          Icons.people_alt_rounded,
+                          color: Color(0xFF1E5720),
+                          size: 32,
                         ),
-                      ),
-                      onTap: () {
-                        onSelectRoute(Routes.friends);
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.person,
-                        color: Color(0xFF1E5720),
-                        size: 32,
-                      ),
-                      title: const Text(
-                        'Profile',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
+                        title: const Text(
+                          'Friends',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
+                        onTap: () {
+                          onSelectRoute(Routes.friends);
+                        },
                       ),
-                      onTap: () {
-                        onSelectRoute(Routes.profile);
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.settings,
-                        color: Color(0xFF1E5720),
-                        size: 32,
-                      ),
-                      title: const Text(
-                        'Settings',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
+                      ListTile(
+                        leading: const Icon(
+                          Icons.person,
+                          color: Color(0xFF1E5720),
+                          size: 32,
                         ),
+                        title: const Text(
+                          'Profile',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        onTap: () {
+                          onSelectRoute(Routes.profile);
+                        },
                       ),
-                      onTap: () {
-                        onSelectRoute(Routes.settings);
-                      },
-                    ),
+                      ListTile(
+                        leading: const Icon(
+                          Icons.settings,
+                          color: Color(0xFF1E5720),
+                          size: 32,
+                        ),
+                        title: const Text(
+                          'Settings',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        onTap: () {
+                          onSelectRoute(Routes.settings);
+                        },
+                      ),
+                    ],
                   ],
                 ),
               ),

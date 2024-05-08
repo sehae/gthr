@@ -193,8 +193,173 @@ class HomePage extends StatelessWidget {
             ),
           );
         } else {
-          print('not received');
-          return Loading();
+          return Scaffold(
+            body: CustomScrollbar(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            child: Text(
+                              'Welcome, Guest!',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Announcements',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
+                    _buildAnnouncement(
+                      profileImageUrl: 'assets/user_1.jpg',
+                      name: 'Karina Sanchez',
+                      date: 'April 30, 2024',
+                      time: '10:30 AM',
+                      announcementText: 'Attention all Quiz Buzz winners, please proceed to Room 5216 to collect your prizes. Thank you.',
+                    ),
+                    _buildAnnouncement(
+                      profileImageUrl: 'assets/user_2.png',
+                      name: 'Jm Tan',
+                      date: 'May 2, 2024',
+                      time: '8:03 AM',
+                      announcementText: 'The Sci-Tech Fair is postponed to May 13, 2024. Apologies for the inconvenience.',
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Upcoming Events',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              showGeneralDialog(
+                                context: context,
+                                pageBuilder: (BuildContext context, Animation<double> animation,
+                                    Animation<double> secondaryAnimation) =>
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const UpcomingEvents(),
+                                    ),
+                                barrierDismissible: true,
+                                barrierLabel:
+                                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                barrierColor: Colors.black45,
+                                transitionDuration: const Duration(milliseconds: 250),
+                                transitionBuilder: (context, animation, secondaryAnimation, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'See more...',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 230, // Adjust the height of the card
+                      child: CardCarousel(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Past Events',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              showGeneralDialog(
+                                context: context,
+                                pageBuilder: (BuildContext context, Animation<double> animation,
+                                    Animation<double> secondaryAnimation) =>
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: const PastEvents(),
+                                    ),
+                                barrierDismissible: true,
+                                barrierLabel:
+                                MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                barrierColor: Colors.black45,
+                                transitionDuration: const Duration(milliseconds: 250),
+                                transitionBuilder: (context, animation, secondaryAnimation, child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'See more...',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 230, // Adjust the height of the card
+                      child: CardCarousel2(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
         }
       },
     );
